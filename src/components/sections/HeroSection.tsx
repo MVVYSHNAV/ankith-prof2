@@ -54,6 +54,7 @@ const HeroSection = () => {
     return (
         <section ref={heroRef} className="relative h-screen w-full overflow-hidden">
             {/* Background Image */}
+            {/* Background Image */}
             <div className="absolute inset-0">
                 <img
                     ref={imageRef}
@@ -68,28 +69,28 @@ const HeroSection = () => {
             {/* Content */}
             <div className="relative z-10 h-full flex flex-col justify-end pb-20 md:pb-28 section-padding">
                 <div className="overflow-hidden">
-                    <h1 className="hero-line font-display text-6xl sm:text-7xl md:text-8xl lg:text-9xl xl:text-[10rem] font-light tracking-[0.08em] uppercase text-primary-foreground leading-[0.9]">
+                    <h1 className="hero-line font-display text-6xl sm:text-7xl md:text-8xl lg:text-9xl xl:text-[10rem] font-light tracking-[0.08em] uppercase text-foreground leading-[0.9]">
                         Ankith
                     </h1>
                 </div>
                 <div className="overflow-hidden mt-2">
-                    <h1 className="hero-line font-display text-6xl sm:text-7xl md:text-8xl lg:text-9xl xl:text-[10rem] font-light tracking-[0.08em] uppercase text-primary-foreground leading-[0.9]">
+                    <h1 className="hero-line font-display text-6xl sm:text-7xl md:text-8xl lg:text-9xl xl:text-[10rem] font-light tracking-[0.08em] uppercase text-foreground leading-[0.9]">
                         Madhav
                     </h1>
                 </div>
 
                 <div className="mt-8 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6">
                     <div className="max-w-md">
-                        <p className="hero-subtitle font-editorial text-xl md:text-2xl text-primary-foreground/80 italic tracking-wide mb-2">
+                        <p className="hero-subtitle font-editorial text-xl md:text-2xl text-foreground/90 italic tracking-wide mb-2">
                             "Man is genius when he is dreaming."
                         </p>
-                        <p className="hero-subtitle font-body text-sm tracking-[0.2em] uppercase text-primary-foreground/60">
+                        <p className="hero-subtitle font-body text-sm tracking-[0.2em] uppercase text-foreground/70">
                             Fashion & Commercial Model
                         </p>
                     </div>
                     <a
                         href="#contact"
-                        className="hero-cta font-body text-xs tracking-[0.3em] uppercase text-primary-foreground/70 hover:text-primary-foreground border-b border-primary-foreground/30 hover:border-primary-foreground pb-2 transition-all duration-300 self-start sm:self-auto"
+                        className="hero-cta font-body text-xs tracking-[0.3em] uppercase text-foreground/80 hover:text-foreground border-b border-foreground/30 hover:border-foreground pb-2 transition-all duration-300 self-start sm:self-auto"
                     >
                         Contact Me
                     </a>
@@ -101,7 +102,7 @@ const HeroSection = () => {
                     animate={{ y: [0, 10, 0] }}
                     transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
                 >
-                    <div className="w-px h-12 bg-primary-foreground/40" />
+                    <div className="w-px h-12 bg-white/50" />
                 </motion.div>
             </div>
         </section>
