@@ -1,17 +1,13 @@
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 
+import careerData from "@/data/career.json";
+
 const CampaignSection = () => {
     const sectionRef = useRef<HTMLElement>(null);
     const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
 
-    const careers = [
-        "Editorial Magazine Shoots",
-        "Luxury Brand Campaigns",
-        "Runway Shows",
-        "Commercial Advertisements",
-        "Digital & Social Media Campaigns"
-    ];
+    const { careers, timeline, highlightImage } = careerData;
 
     return (
         <section id="career" ref={sectionRef} className="py-32 md:py-40 bg-background text-foreground overflow-hidden">
@@ -34,7 +30,7 @@ const CampaignSection = () => {
                             className="mt-6 flex flex-col gap-2 items-center"
                         >
                             <p className="font-editorial italic text-2xl md:text-3xl">
-                                2000 — Present
+                                {timeline.startYear} — {timeline.endYear}
                             </p>
                         </motion.div>
                     </div>

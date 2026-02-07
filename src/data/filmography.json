@@ -1,0 +1,36 @@
+{
+    "projects": [
+        {
+            "id": 1,
+            "title": "Verisign",
+            "role": "Drama",
+            "duration": "01:06",
+            "description": "\"Register karo apne business ka .com\\nEk naam ke kayi business ho sakte hain\\nSirf .com deta hai aapke business ko\\nek alag pehchaan .com abhi, pehchaan tabhi.\"",
+            "note": "A powerful campaign emphasizing the unique identity a .com domain provides to businesses in a crowded market."
+        },
+        {
+            "id": 2,
+            "title": ".com Awareness",
+            "role": "Commercial",
+            "duration": "Active",
+            "description": "Brand awareness campaign for .com domains.",
+            "note": "Highlighted the reliability and global recognition of .com."
+        },
+        {
+            "id": 3,
+            "title": "Fashion Series",
+            "role": "Print",
+            "duration": "2024",
+            "description": "Editorial fashion series for top tier magazine.",
+            "note": "Featured in the September issue."
+        },
+        {
+            "id": 4,
+            "title": "Indie Brands",
+            "role": "Digital",
+            "duration": "Var.",
+            "description": "Digital campaigns for various independent fashion brands.",
+            "note": "Focus on sustainable fashion."
+        }
+    ]
+}

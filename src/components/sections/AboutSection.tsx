@@ -1,6 +1,8 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 
+import aboutData from "@/data/about.json";
+
 const AboutSection = () => {
     const containerRef = useRef<HTMLDivElement>(null);
     const { scrollYProgress } = useScroll({
@@ -9,6 +11,7 @@ const AboutSection = () => {
     });
 
     const y = useTransform(scrollYProgress, [0, 1], [100, -100]);
+    const { image, quote, bio, stats } = aboutData;
 
     return (
         <section id="about" ref={containerRef} className="py-32 md:py-40 section-padding">
@@ -17,7 +20,7 @@ const AboutSection = () => {
                 <div className="w-full md:w-1/2 relative">
                     <motion.div style={{ y }} className="relative z-10 overflow-hidden">
                         <img
-                            src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=2400"
+                            src={image}
                             alt="Ankith Madhav Portrait"
                             className="w-full aspect-[3/4] object-cover grayscale hover:grayscale-0 transition-all duration-700"
                         />
@@ -41,50 +44,20 @@ const AboutSection = () => {
 
                     <div className="space-y-6 font-editorial text-lg md:text-xl text-foreground/80 leading-relaxed group">
                         <p>
-                            “I’m all about nailing impressions.”
+                            {quote}
                         </p>
                         <p className="font-body text-sm md:text-base text-muted-foreground tracking-wide leading-relaxed max-w-md">
-                            [Biography to be added]
+                            {bio}
                         </p>
                     </div>
 
                     <div className="pt-8 grid grid-cols-2 sm:grid-cols-3 gap-x-8 gap-y-6">
-                        <div>
-                            <span className="block font-display text-xl mb-1">6'0"</span>
-                            <span className="font-body text-[10px] tracking-[0.2em] uppercase text-muted-foreground">Height</span>
-                        </div>
-                        <div>
-                            <span className="block font-display text-xl mb-1">40"</span>
-                            <span className="font-body text-[10px] tracking-[0.2em] uppercase text-muted-foreground">Chest</span>
-                        </div>
-                        <div>
-                            <span className="block font-display text-xl mb-1">32"</span>
-                            <span className="font-body text-[10px] tracking-[0.2em] uppercase text-muted-foreground">Waist</span>
-                        </div>
-                        <div>
-                            <span className="block font-display text-xl mb-1">38"</span>
-                            <span className="font-body text-[10px] tracking-[0.2em] uppercase text-muted-foreground">Hips</span>
-                        </div>
-                        <div>
-                            <span className="block font-display text-xl mb-1">9 UK</span>
-                            <span className="font-body text-[10px] tracking-[0.2em] uppercase text-muted-foreground">Shoe</span>
-                        </div>
-                        <div>
-                            <span className="block font-display text-xl mb-1">Black</span>
-                            <span className="font-body text-[10px] tracking-[0.2em] uppercase text-muted-foreground">Hair</span>
-                        </div>
-                        <div>
-                            <span className="block font-display text-xl mb-1">Brown</span>
-                            <span className="font-body text-[10px] tracking-[0.2em] uppercase text-muted-foreground">Eyes</span>
-                        </div>
-                        <div>
-                            <span className="block font-display text-xl mb-1">UK</span>
-                            <span className="font-body text-[10px] tracking-[0.2em] uppercase text-muted-foreground">Location</span>
-                        </div>
-                        <div className="col-span-2 sm:col-span-1">
-                            <span className="block font-display text-xl mb-1">En, Hi</span>
-                            <span className="font-body text-[10px] tracking-[0.2em] uppercase text-muted-foreground">Languages</span>
-                        </div>
+                        {stats.map((stat, index) => (
+                            <div key={stat.label} className={index === stats.length - 1 ? "col-span-2 sm:col-span-1" : ""}>
+                                <span className="block font-display text-xl mb-1">{stat.value}</span>
+                                <span className="font-body text-[10px] tracking-[0.2em] uppercase text-muted-foreground">{stat.label}</span>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </div>

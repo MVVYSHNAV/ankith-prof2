@@ -1,0 +1,43 @@
+{
+    "image": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=2400",
+    "quote": "“I’m all about nailing impressions.”",
+    "bio": "A versatile model with a passion for high fashion and editorial work. Experienced in runway, print, and commercial campaigns, bringing a unique blend of charisma and professionalism to every project.",
+    "stats": [
+        {
+            "label": "Height",
+            "value": "6'0\""
+        },
+        {
+            "label": "Chest",
+            "value": "40\""
+        },
+        {
+            "label": "Waist",
+            "value": "32\""
+        },
+        {
+            "label": "Hips",
+            "value": "38\""
+        },
+        {
+            "label": "Shoe",
+            "value": "9 UK"
+        },
+        {
+            "label": "Hair",
+            "value": "Black"
+        },
+        {
+            "label": "Eyes",
+            "value": "Brown"
+        },
+        {
+            "label": "Location",
+            "value": "UK"
+        },
+        {
+            "label": "Languages",
+            "value": "En, Hi"
+        }
+    ]
+}

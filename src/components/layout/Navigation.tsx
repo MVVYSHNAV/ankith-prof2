@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { ModeToggle } from "@/components/mode-toggle";
 
 const navItems = [
     { label: "About", href: "#about" },
@@ -42,6 +43,7 @@ const Navigation = () => {
                                 {item.label}
                             </a>
                         ))}
+                        <ModeToggle />
                     </div>
 
                     {/* Mobile Menu Button */}
