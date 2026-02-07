@@ -45,21 +45,8 @@ const PortfolioSection = () => {
         ? portfolioItems
         : portfolioItems.filter((item) => item.category === activeFilter);
 
-    useEffect(() => {
-        if (!gridRef.current) return;
-
-        gsap.from(".portfolio-item", {
-            scrollTrigger: {
-                trigger: gridRef.current,
-                start: "top 80%",
-            },
-            y: 60,
-            opacity: 0,
-            duration: 0.8,
-            stagger: 0.1,
-            ease: "power3.out",
-        });
-    }, []);
+    // GSAP animation removed to prevent conflict with Framer Motion
+    // Framer Motion handles both entrance and layout animations now
 
     return (
         <section id="portfolio" className="py-32 md:py-40 section-padding bg-secondary/30">
@@ -103,14 +90,15 @@ const PortfolioSection = () => {
                     className="columns-1 sm:columns-2 lg:columns-3 gap-4 space-y-4"
                 >
                     <AnimatePresence mode="popLayout">
-                        {filteredItems.map((item) => (
+                        {filteredItems.map((item, index) => (
                             <motion.div
                                 key={item.id}
                                 layout
-                                initial={{ opacity: 0, scale: 0.95 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                exit={{ opacity: 0, scale: 0.95 }}
-                                transition={{ duration: 0.4 }}
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true, margin: "-50px" }}
+                                transition={{ duration: 0.5, delay: 0.05 * index }}
+                                layout
                                 className="portfolio-item break-inside-avoid cursor-pointer group relative overflow-hidden"
                                 onClick={() => setLightboxImage(item)}
                             >
