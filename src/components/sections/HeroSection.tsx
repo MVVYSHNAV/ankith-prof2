@@ -1,109 +1,118 @@
-import { useRef, useEffect } from "react";
-import { motion } from "framer-motion";
-import gsap from "gsap";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { ArrowDown } from "lucide-react";
+import MagneticButton from "@/components/ui/MagneticButton";
+import { useRef } from "react";
 
 const HeroSection = () => {
-    const heroRef = useRef<HTMLDivElement>(null);
-    const imageRef = useRef<HTMLImageElement>(null);
+    const ref = useRef(null);
+    const { scrollYProgress } = useScroll({
+        target: ref,
+        offset: ["start start", "end start"]
+    });
 
-    useEffect(() => {
-        if (!imageRef.current) return;
-
-        const handleScroll = () => {
-            const scrollY = window.scrollY;
-            if (imageRef.current) {
-                imageRef.current.style.transform = `scale(${1 + scrollY * 0.0003}) translateY(${scrollY * 0.3}px)`;
-            }
-        };
-
-        window.addEventListener("scroll", handleScroll);
-        return () => window.removeEventListener("scroll", handleScroll);
-    }, []);
-
-    useEffect(() => {
-        if (!heroRef.current) return;
-
-        const tl = gsap.timeline({ delay: 0.3 });
-
-        tl.from(".hero-line", {
-            y: 120,
-            opacity: 0,
-            duration: 1.2,
-            ease: "power4.out",
-            stagger: 0.15,
-        })
-            .from(".hero-subtitle", {
-                y: 30,
-                opacity: 0,
-                duration: 0.8,
-                ease: "power3.out",
-            }, "-=0.4")
-            .from(".hero-cta", {
-                y: 20,
-                opacity: 0,
-                duration: 0.6,
-                ease: "power3.out",
-            }, "-=0.3")
-            .from(".hero-scroll", {
-                opacity: 0,
-                duration: 0.6,
-                ease: "power3.out",
-            }, "-=0.2");
-    }, []);
+    const yText = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
+    const opacityText = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+    const scaleImg = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
 
     return (
-        <section ref={heroRef} className="relative h-screen w-full overflow-hidden">
-            {/* Background Image */}
-            <div className="absolute inset-0">
-                <img
-                    ref={imageRef}
+        <section ref={ref} id="home" className="relative h-screen min-h-[800px] flex flex-col justify-center overflow-hidden bg-background">
+            {/* Background Gradient/Image Placeholder */}
+            <motion.div
+                style={{ scale: scaleImg }}
+                className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,hsl(var(--secondary))_0%,transparent_40%)] -z-10"
+            />
+            <div className="absolute inset-0 z-0">
+                <motion.img
+                    style={{ scale: scaleImg }}
                     src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=2574&auto=format&fit=crop"
                     alt="Ankith Madhav - Fashion Model on Runway"
-                    className="w-full h-full object-cover will-change-transform"
-                    loading="eager"
+                    className="w-full h-full object-cover opacity-20 grayscale"
                 />
-                <div className="absolute inset-0 bg-gradient-to-b from-primary/40 via-primary/20 to-background" />
+                <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent" />
             </div>
 
-            {/* Content */}
-            <div className="relative z-10 h-full flex flex-col justify-end pb-20 md:pb-28 section-padding">
-                <div className="overflow-hidden">
-                    <h1 className="hero-line font-display text-6xl sm:text-7xl md:text-8xl lg:text-9xl xl:text-[10rem] font-light tracking-[0.08em] uppercase text-primary-foreground leading-[0.9]">
-                        Ankith
-                    </h1>
-                </div>
-                <div className="overflow-hidden mt-2">
-                    <h1 className="hero-line font-display text-6xl sm:text-7xl md:text-8xl lg:text-9xl xl:text-[10rem] font-light tracking-[0.08em] uppercase text-primary-foreground leading-[0.9]">
-                        Madhav
-                    </h1>
-                </div>
-
-                <div className="mt-8 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6">
-                    <div className="max-w-md">
-                        <p className="hero-subtitle font-editorial text-xl md:text-2xl text-primary-foreground/80 italic tracking-wide mb-2">
-                            "Man is genius when he is dreaming."
-                        </p>
-                        <p className="hero-subtitle font-body text-sm tracking-[0.2em] uppercase text-primary-foreground/60">
-                            Fashion & Commercial Model
-                        </p>
-                    </div>
-                    <a
-                        href="#contact"
-                        className="hero-cta font-body text-xs tracking-[0.3em] uppercase text-primary-foreground/70 hover:text-primary-foreground border-b border-primary-foreground/30 hover:border-primary-foreground pb-2 transition-all duration-300 self-start sm:self-auto"
+            <div className="section-padding relative z-10 w-full">
+                <div className="max-w-4xl">
+                    <motion.span
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6, delay: 0.2 }}
+                        className="inline-block font-body text-xs tracking-[0.4em] uppercase text-muted-foreground mb-6"
                     >
-                        Contact Me
-                    </a>
-                </div>
+                        Portfolio & Campaign
+                    </motion.span>
 
-                {/* Scroll indicator */}
+                    <motion.h1
+                        style={{ y: yText, opacity: opacityText }}
+                        className="font-display text-5xl md:text-7xl lg:text-9xl font-medium tracking-tight uppercase leading-[0.9] mb-8"
+                    >
+                        <span className="block overflow-hidden">
+                            <motion.span
+                                initial={{ y: "100%" }}
+                                animate={{ y: 0 }}
+                                transition={{ duration: 1, delay: 0.4, ease: [0.33, 1, 0.68, 1] }}
+                                className="block"
+                            >
+                                Visionary
+                            </motion.span>
+                        </span>
+                        <span className="block overflow-hidden text-muted-foreground">
+                            <motion.span
+                                initial={{ y: "100%" }}
+                                animate={{ y: 0 }}
+                                transition={{ duration: 1, delay: 0.55, ease: [0.33, 1, 0.68, 1] }}
+                                className="block"
+                            >
+                                Creation
+                            </motion.span>
+                        </span>
+                    </motion.h1>
+
+                    <motion.p
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.8, delay: 0.8 }}
+                        className="font-editorial text-xl md:text-2xl text-foreground/80 max-w-lg mb-12 italic"
+                    >
+                        "Designing digital experiences that bridge the gap between functionality and art."
+                    </motion.p>
+
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.8, delay: 1 }}
+                        className="flex flex-wrap gap-6"
+                    >
+                        <MagneticButton strength={0.3}>
+                            <a href="#portfolio" className="inline-block px-8 py-4 bg-primary text-primary-foreground font-body text-xs tracking-[0.2em] uppercase hover:bg-primary/90 transition-colors">
+                                View Work
+                            </a>
+                        </MagneticButton>
+
+                        <MagneticButton strength={0.3}>
+                            <a href="#contact" className="inline-block px-8 py-4 border border-border text-foreground font-body text-xs tracking-[0.2em] uppercase hover:bg-secondary transition-colors">
+                                Contact Me
+                            </a>
+                        </MagneticButton>
+                    </motion.div>
+                </div>
+            </div>
+
+            {/* Scroll Indicator */}
+            <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 1, delay: 1.5 }}
+                className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4"
+            >
+                <span className="font-body text-[10px] tracking-[0.3em] uppercase opacity-50">Scroll</span>
                 <motion.div
-                    className="hero-scroll absolute bottom-8 left-1/2 -translate-x-1/2"
                     animate={{ y: [0, 10, 0] }}
                     transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
                 >
-                    <div className="w-px h-12 bg-primary-foreground/40" />
+                    <ArrowDown className="w-4 h-4 opacity-50" />
                 </motion.div>
-            </div>
+            </motion.div>
         </section>
     );
 };

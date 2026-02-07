@@ -1,10 +1,53 @@
-import { useState, useRef, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useState, useRef } from "react";
+import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { X } from "lucide-react";
 
-gsap.registerPlugin(ScrollTrigger);
+// Tilt Card Component
+const TiltCard = ({ children, index }: { children: React.ReactNode; index: number }) => {
+    const x = useMotionValue(0);
+    const y = useMotionValue(0);
+
+    const mouseX = useSpring(x, { stiffness: 150, damping: 15 });
+    const mouseY = useSpring(y, { stiffness: 150, damping: 15 });
+
+    const rotateX = useTransform(mouseY, [-0.5, 0.5], ["5deg", "-5deg"]);
+    const rotateY = useTransform(mouseX, [-0.5, 0.5], ["-5deg", "5deg"]);
+
+    const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+        const rect = e.currentTarget.getBoundingClientRect();
+        const width = rect.width;
+        const height = rect.height;
+        const mouseXFromCenter = e.clientX - rect.left - width / 2;
+        const mouseYFromCenter = e.clientY - rect.top - height / 2;
+
+        x.set(mouseXFromCenter / width);
+        y.set(mouseYFromCenter / height);
+    };
+
+    const handleMouseLeave = () => {
+        x.set(0);
+        y.set(0);
+    };
+
+    return (
+        <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.5, delay: 0.05 * index }}
+            style={{
+                rotateX,
+                rotateY,
+                transformStyle: "preserve-3d",
+            }}
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+            className="perspective-1000"
+        >
+            {children}
+        </motion.div>
+    );
+};
 
 type Category = "all" | "editorial" | "runway" | "commercial" | "campaign";
 
@@ -91,40 +134,36 @@ const PortfolioSection = () => {
                 >
                     <AnimatePresence mode="popLayout">
                         {filteredItems.map((item, index) => (
-                            <motion.div
-                                key={item.id}
-                                layout
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true, margin: "-50px" }}
-                                transition={{ duration: 0.5, delay: 0.05 * index }}
-                                layout
-                                className="portfolio-item break-inside-avoid cursor-pointer group relative overflow-hidden"
-                                onClick={() => setLightboxImage(item)}
-                            >
-                                <div className={`overflow-hidden ${item.aspect === "tall" ? "aspect-[3/4]" :
-                                    item.aspect === "wide" ? "aspect-[16/10]" :
-                                        "aspect-square"
-                                    }`}>
-                                    <img
-                                        src={item.src}
-                                        alt={item.alt}
-                                        className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105 image-editorial"
-                                        loading="lazy"
-                                    />
-                                </div>
-                                {/* Hover overlay */}
-                                <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/60 transition-all duration-500 flex items-end p-6">
-                                    <div className="translate-y-6 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
-                                        <span className="font-body text-[10px] tracking-[0.4em] uppercase text-primary-foreground/70">
-                                            {item.category}
-                                        </span>
-                                        <p className="font-editorial text-xl text-primary-foreground mt-1">
-                                            {item.alt}
-                                        </p>
+                            <TiltCard key={item.id} index={index}>
+                                <motion.div
+                                    layout
+                                    className="portfolio-item break-inside-avoid cursor-pointer group relative overflow-hidden"
+                                    onClick={() => setLightboxImage(item)}
+                                >
+                                    <div className={`overflow-hidden ${item.aspect === "tall" ? "aspect-[3/4]" :
+                                        item.aspect === "wide" ? "aspect-[16/10]" :
+                                            "aspect-square"
+                                        }`}>
+                                        <img
+                                            src={item.src}
+                                            alt={item.alt}
+                                            className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105 image-editorial"
+                                            loading="lazy"
+                                        />
                                     </div>
-                                </div>
-                            </motion.div>
+                                    {/* Hover overlay */}
+                                    <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/60 transition-all duration-500 flex items-end p-6">
+                                        <div className="translate-y-6 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+                                            <span className="font-body text-[10px] tracking-[0.4em] uppercase text-primary-foreground/70">
+                                                {item.category}
+                                            </span>
+                                            <p className="font-editorial text-xl text-primary-foreground mt-1">
+                                                {item.alt}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </motion.div>
+                            </TiltCard>
                         ))}
                     </AnimatePresence>
                 </motion.div>

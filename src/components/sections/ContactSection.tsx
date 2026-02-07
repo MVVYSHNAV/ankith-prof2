@@ -1,192 +1,162 @@
 import { useState, useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { Instagram, Mail, ArrowUpRight } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import { toast } from "sonner";
+
+const formSchema = z.object({
+    name: z.string().min(2, "Name must be at least 2 characters"),
+    email: z.string().email("Invalid email address"),
+    message: z.string().min(10, "Message must be at least 10 characters"),
+});
+
+type ContactFormValues = z.infer<typeof formSchema>;
 
 const ContactSection = () => {
     const sectionRef = useRef<HTMLElement>(null);
     const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
-    const [formData, setFormData] = useState({
-        name: "",
-        email: "",
-        subject: "",
-        message: "",
-    });
-    const [isSubmitted, setIsSubmitted] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [isSuccess, setIsSuccess] = useState(false);
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        setIsSubmitted(true);
-        setTimeout(() => setIsSubmitted(false), 3000);
-        setFormData({ name: "", email: "", subject: "", message: "" });
+    const { register, handleSubmit, reset, formState: { errors } } = useForm<ContactFormValues>({
+        resolver: zodResolver(formSchema),
+    });
+
+    const onSubmit = (data: ContactFormValues) => {
+        setIsSubmitting(true);
+
+        // Simulate API call
+        setTimeout(() => {
+            console.log(data);
+            setIsSubmitting(false);
+            setIsSuccess(true);
+            toast("Message sent successfully!", {
+                description: "I'll get back to you as soon as possible.",
+            });
+            reset();
+
+            // Reset success state after a few seconds
+            setTimeout(() => setIsSuccess(false), 3000);
+        }, 1500);
     };
 
     return (
-        <section id="contact" ref={sectionRef} className="py-32 md:py-40 section-padding bg-primary text-primary-foreground">
-            <div className="max-w-7xl mx-auto">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 lg:gap-32">
-                    {/* Left - Info */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 30 }}
-                        animate={isInView ? { opacity: 1, y: 0 } : {}}
-                        transition={{ duration: 0.8 }}
-                    >
-                        <span className="font-body text-xs tracking-[0.4em] uppercase text-primary-foreground/50">
-                            Contact
-                        </span>
-                        <h2 className="font-display text-4xl md:text-6xl lg:text-7xl font-light tracking-[0.05em] uppercase mt-4">
-                            Let's
-                            <br />
-                            <span className="font-editorial italic font-light normal-case tracking-wide">
-                                Work Together
-                            </span>
-                        </h2>
+        <section id="contact" ref={sectionRef} className="py-32 section-padding bg-secondary/20 border-t border-border">
+            <div className="max-w-xl mx-auto">
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    className="text-center mb-12"
+                >
+                    <span className="font-body text-xs tracking-[0.4em] uppercase text-muted-foreground">
+                        Get in Touch
+                    </span>
+                    <h2 className="font-display text-4xl md:text-5xl mt-4">
+                        Let's <span className="italic font-editorial">Collaborate</span>
+                    </h2>
+                </motion.div>
 
-                        <p className="font-editorial text-xl text-primary-foreground/60 mt-8 max-w-md italic">
-                            Feel free to contact me anytime. I will get back to you as soon as I can!
-                        </p>
-
-                        <div className="mt-16 space-y-6">
-                            <a
-                                href="mailto:infogetintouch@gmail.com"
-                                className="flex items-center gap-4 group"
-                            >
-                                <Mail size={18} strokeWidth={1} className="text-accent" />
-                                <span className="font-body text-sm tracking-[0.15em] text-primary-foreground/70 group-hover:text-primary-foreground transition-colors">
-                                    infogetintouch@gmail.com
-                                </span>
-                            </a>
-                            <div className="flex items-center gap-4 group">
-                                <span className="font-body text-sm tracking-[0.15em] text-primary-foreground/70">
-                                    +91 99 99 99 9999
-                                </span>
-                            </div>
-                            <div className="flex items-center gap-4 group">
-                                <span className="font-body text-sm tracking-[0.15em] text-primary-foreground/70">
-                                    19 SA Street, UK
-                                </span>
-                            </div>
-                            <a
-                                href="https://instagram.com"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="flex items-center gap-4 group"
-                            >
-                                <Instagram size={18} strokeWidth={1} className="text-accent" />
-                                <span className="font-body text-sm tracking-[0.15em] text-primary-foreground/70 group-hover:text-primary-foreground transition-colors">
-                                    @ankith.madhav
-                                </span>
-                            </a>
+                <motion.div
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.2 }}
+                >
+                    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                        <div className="space-y-2">
+                            <label htmlFor="name" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                                Name
+                            </label>
+                            <input
+                                id="name"
+                                className="flex h-12 w-full rounded-none border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 transition-all focus:border-accent"
+                                placeholder="Your name"
+                                {...register("name")}
+                            />
+                            {errors.name && (
+                                <p className="text-sm font-medium text-destructive animate-pulse">{errors.name.message}</p>
+                            )}
                         </div>
 
-                        <div className="mt-16">
-                            <span className="font-body text-[10px] tracking-[0.4em] uppercase text-primary-foreground/40 block mb-4">
-                                Quote
-                            </span>
-                            <span className="font-editorial text-lg text-primary-foreground/60 italic">
-                                "I always want the audience to outguess me, and then I double-cross them."
-                            </span>
+                        <div className="space-y-2">
+                            <label htmlFor="email" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                                Email
+                            </label>
+                            <input
+                                id="email"
+                                type="email"
+                                className="flex h-12 w-full rounded-none border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 transition-all focus:border-accent"
+                                placeholder="your.email@example.com"
+                                {...register("email")}
+                            />
+                            {errors.email && (
+                                <p className="text-sm font-medium text-destructive animate-pulse">{errors.email.message}</p>
+                            )}
                         </div>
-                    </motion.div>
 
-                    {/* Right - Form */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 30 }}
-                        animate={isInView ? { opacity: 1, y: 0 } : {}}
-                        transition={{ duration: 0.8, delay: 0.2 }}
-                    >
-                        <form onSubmit={handleSubmit} className="space-y-8">
-                            <div>
-                                <label className="font-body text-[10px] tracking-[0.4em] uppercase text-primary-foreground/50 block mb-3">
-                                    Name
-                                </label>
-                                <input
-                                    type="text"
-                                    required
-                                    maxLength={100}
-                                    value={formData.name}
-                                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                                    className="w-full bg-transparent border-b border-primary-foreground/20 focus:border-accent pb-3 font-editorial text-lg text-primary-foreground outline-none transition-colors placeholder:text-primary-foreground/20"
-                                    placeholder="Your name"
+                        <div className="space-y-2">
+                            <label htmlFor="message" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                                Message
+                            </label>
+                            <textarea
+                                id="message"
+                                className="flex min-h-[120px] w-full rounded-none border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 resize-y transition-all focus:border-accent"
+                                placeholder="Tell me about your project..."
+                                {...register("message")}
+                            />
+                            {errors.message && (
+                                <p className="text-sm font-medium text-destructive animate-pulse">{errors.message.message}</p>
+                            )}
+                        </div>
+
+                        <button
+                            type="submit"
+                            disabled={isSubmitting || isSuccess}
+                            className={`w-full h-12 inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 uppercase tracking-widest ${isSuccess
+                                    ? "bg-green-600 text-white hover:bg-green-700"
+                                    : "bg-primary text-primary-foreground hover:bg-primary/90"
+                                }`}
+                        >
+                            {isSubmitting ? (
+                                <motion.div
+                                    animate={{ rotate: 360 }}
+                                    transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
+                                    className="w-5 h-5 border-2 border-current border-t-transparent rounded-full"
                                 />
-                            </div>
+                            ) : isSuccess ? (
+                                <motion.span
+                                    initial={{ scale: 0.5, opacity: 0 }}
+                                    animate={{ scale: 1, opacity: 1 }}
+                                    className="flex items-center gap-2"
+                                >
+                                    Sent Successfully
+                                </motion.span>
+                            ) : (
+                                "Send Message"
+                            )}
+                        </button>
+                    </form>
+                </motion.div>
 
-                            <div>
-                                <label className="font-body text-[10px] tracking-[0.4em] uppercase text-primary-foreground/50 block mb-3">
-                                    Email
-                                </label>
-                                <input
-                                    type="email"
-                                    required
-                                    maxLength={255}
-                                    value={formData.email}
-                                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                                    className="w-full bg-transparent border-b border-primary-foreground/20 focus:border-accent pb-3 font-editorial text-lg text-primary-foreground outline-none transition-colors placeholder:text-primary-foreground/20"
-                                    placeholder="your@email.com"
-                                />
-                            </div>
-
-                            <div>
-                                <label className="font-body text-[10px] tracking-[0.4em] uppercase text-primary-foreground/50 block mb-3">
-                                    Subject
-                                </label>
-                                <input
-                                    type="text"
-                                    required
-                                    maxLength={200}
-                                    value={formData.subject}
-                                    onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                                    className="w-full bg-transparent border-b border-primary-foreground/20 focus:border-accent pb-3 font-editorial text-lg text-primary-foreground outline-none transition-colors placeholder:text-primary-foreground/20"
-                                    placeholder="Booking / Collaboration"
-                                />
-                            </div>
-
-                            <div>
-                                <label className="font-body text-[10px] tracking-[0.4em] uppercase text-primary-foreground/50 block mb-3">
-                                    Message
-                                </label>
-                                <textarea
-                                    required
-                                    maxLength={1000}
-                                    rows={4}
-                                    value={formData.message}
-                                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                                    className="w-full bg-transparent border-b border-primary-foreground/20 focus:border-accent pb-3 font-editorial text-lg text-primary-foreground outline-none transition-colors resize-none placeholder:text-primary-foreground/20"
-                                    placeholder="Tell me about your project..."
-                                />
-                            </div>
-
-                            <button
-                                type="submit"
-                                className="group flex items-center gap-3 font-body text-xs tracking-[0.3em] uppercase text-primary-foreground/70 hover:text-primary-foreground border-b border-primary-foreground/30 hover:border-accent pb-2 transition-all duration-300 mt-4"
-                            >
-                                {isSubmitted ? "Message Sent" : "Send Message"}
-                                <ArrowUpRight
-                                    size={14}
-                                    strokeWidth={1.5}
-                                    className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"
-                                />
-                            </button>
-                        </form>
-                    </motion.div>
-                </div>
-
-                {/* Footer */}
-                <div className="mt-32 pt-16 border-t border-primary-foreground/10 flex flex-col gap-8">
-                    {/* Footer Nav */}
-                    <div className="flex flex-wrap justify-center gap-x-12 gap-y-4">
-                        <a href="#" className="font-body text-xs tracking-[0.2em] uppercase text-primary-foreground/60 hover:text-primary-foreground transition-colors">Home</a>
-                        <a href="#about" className="font-body text-xs tracking-[0.2em] uppercase text-primary-foreground/60 hover:text-primary-foreground transition-colors">About</a>
-                        <a href="#career" className="font-body text-xs tracking-[0.2em] uppercase text-primary-foreground/60 hover:text-primary-foreground transition-colors">Career</a>
-                        <a href="#filmography" className="font-body text-xs tracking-[0.2em] uppercase text-primary-foreground/60 hover:text-primary-foreground transition-colors">Filmography</a>
+                {/* Footer Info */}
+                <div className="mt-16 space-y-6 text-center md:text-left">
+                    <div className="flex flex-col md:flex-row justify-between gap-8 items-center md:items-start text-sm text-muted-foreground/80">
+                        <div className="flex flex-col gap-2">
+                            <span className="font-bold text-foreground">Contact Info</span>
+                            <a href="mailto:infogetintouch@gmail.com" className="hover:text-accent transition-colors">infogetintouch@gmail.com</a>
+                            <span>+91 99 99 99 9999</span>
+                        </div>
+                        <div className="flex gap-4">
+                            <a href="#" className="hover:text-accent transition-colors"><Instagram className="w-5 h-5" /></a>
+                        </div>
                     </div>
 
-                    <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
-                        <span className="font-body text-[10px] tracking-[0.3em] uppercase text-primary-foreground/30 text-center sm:text-left">
-                            © 2025. All Rights Reserved to Ankith Madhav
-                        </span>
-                        <span className="font-editorial text-sm italic text-primary-foreground/30">
-                            Available for Global Bookings
-                        </span>
+                    <div className="pt-8 border-t border-border flex justify-center md:justify-between text-xs text-muted-foreground/50 uppercase tracking-wider">
+                        <span>© 2025 Ankith Madhav</span>
+                        <span className="hidden md:inline">Design by [Your Name]</span>
                     </div>
                 </div>
             </div>

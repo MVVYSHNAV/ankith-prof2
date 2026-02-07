@@ -1,79 +1,85 @@
-import { useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import { motion, animate } from "framer-motion";
+import { useEffect, useRef } from "react";
+
+const campaignStats = [
+    { label: "Campaigns", value: "50+" },
+    { label: "Brands", value: "20+" },
+    { label: "Years Exp", value: "5+" },
+    { label: "Magazines", value: "15+" }
+];
+
+const AnimatedCounter = ({ value, label }: { value: string; label: string }) => {
+    // Extract number from string (e.g. "50K+" -> 50)
+    const numberValue = parseInt(value.replace(/[^0-9]/g, "")) || 0;
+    const suffix = value.replace(/[0-9]/g, "");
+
+    return (
+        <div className="text-center group hover:bg-secondary/20 p-6 rounded-lg transition-colors border border-transparent hover:border-border/40">
+            <motion.span
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5 }}
+                className="block font-display text-4xl md:text-5xl lg:text-6xl text-foreground group-hover:scale-110 transition-transform duration-500"
+            >
+                <Counter from={0} to={numberValue} duration={2} />{suffix}
+            </motion.span>
+            <span className="font-body text-xs tracking-[0.2em] uppercase text-muted-foreground mt-2 block">
+                {label}
+            </span>
+        </div>
+    );
+};
+
+const Counter = ({ from, to, duration }: { from: number; to: number; duration: number }) => {
+    const nodeRef = useRef<HTMLSpanElement>(null);
+
+    useEffect(() => {
+        const node = nodeRef.current;
+        if (!node) return;
+
+        const controls = animate(from, to, {
+            duration,
+            onUpdate(value) {
+                node.textContent = Math.round(value).toString();
+            },
+            ease: "easeOut"
+        });
+
+        return () => controls.stop();
+    }, [from, to, duration]);
+
+    return <span ref={nodeRef} />;
+};
 
 const CampaignSection = () => {
     const sectionRef = useRef<HTMLElement>(null);
-    const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
-
-    const careers = [
-        "Editorial Magazine Shoots",
-        "Luxury Brand Campaigns",
-        "Runway Shows",
-        "Commercial Advertisements",
-        "Digital & Social Media Campaigns"
-    ];
+    // Removed unused useInView hook here since AnimatedCounter handles visibility now, 
+    // or we can keep it for the header if we want to animate that too.
 
     return (
-        <section id="career" ref={sectionRef} className="py-32 md:py-40 bg-background text-foreground overflow-hidden">
-            <div className="max-w-[1920px] mx-auto px-0">
-                <div className="relative">
-                    {/* Text Overlay */}
-                    <div className="absolute inset-0 z-10 flex flex-col justify-center items-center text-center pointer-events-none mix-blend-difference text-white px-4">
-                        <motion.h2
-                            initial={{ y: 50, opacity: 0 }}
-                            animate={isInView ? { y: 0, opacity: 1 } : {}}
-                            transition={{ duration: 1, delay: 0.2 }}
-                            className="font-display text-5xl md:text-7xl lg:text-8xl uppercase tracking-widest"
-                        >
-                            Career
-                        </motion.h2>
-                        <motion.div
-                            initial={{ y: 30, opacity: 0 }}
-                            animate={isInView ? { y: 0, opacity: 1 } : {}}
-                            transition={{ duration: 0.8, delay: 0.4 }}
-                            className="mt-6 flex flex-col gap-2 items-center"
-                        >
-                            <p className="font-editorial italic text-2xl md:text-3xl">
-                                2000 — Present
-                            </p>
-                        </motion.div>
-                    </div>
+        <section id="campaign" ref={sectionRef} className="py-24 bg-background border-t border-border">
+            <div className="section-padding">
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    className="mb-16 text-center"
+                >
+                    <span className="font-body text-xs tracking-[0.4em] uppercase text-muted-foreground">
+                        Impact
+                    </span>
+                    <h2 className="font-display text-4xl md:text-5xl mt-4">
+                        By The <span className="italic font-editorial">Numbers</span>
+                    </h2>
+                </motion.div>
 
-                    {/* Image */}
-                    <div className="relative w-full h-[60vh] md:h-[80vh] overflow-hidden">
-                        <motion.div
-                            initial={{ scale: 1.1 }}
-                            animate={isInView ? { scale: 1 } : {}}
-                            transition={{ duration: 1.5, ease: "easeOut" }}
-                            className="w-full h-full"
-                        >
-                            <img
-                                src="https://images.unsplash.com/photo-1496747611176-843222e1e57c?q=80&w=2400"
-                                alt="Ankith Madhav Career Highlight"
-                                className="w-full h-full object-cover grayscale"
-                            />
-                            <div className="absolute inset-0 bg-black/40" />
-                        </motion.div>
-                    </div>
-
-                    {/* Scrolling ticker */}
-                    <div className="bg-foreground text-background py-6 overflow-hidden whitespace-nowrap">
-                        <motion.div
-                            animate={{ x: ["0%", "-50%"] }}
-                            transition={{ repeat: Infinity, duration: 30, ease: "linear" }}
-                            className="flex gap-16 font-display text-sm md:text-base tracking-[0.3em] uppercase"
-                        >
-                            {[...Array(2)].map((_, i) => (
-                                <div key={i} className="flex gap-16">
-                                    {careers.map((career, idx) => (
-                                        <span key={`${i}-${idx}`}>
-                                            {career}
-                                        </span>
-                                    ))}
-                                </div>
-                            ))}
-                        </motion.div>
-                    </div>
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
+                    {campaignStats.map((stat, i) => (
+                        <div key={i} className="flex justify-center w-full">
+                            <AnimatedCounter value={stat.value} label={stat.label} />
+                        </div>
+                    ))}
                 </div>
             </div>
         </section>
