@@ -35,33 +35,31 @@ const PortfolioSection = () => {
             <div className="max-w-7xl mx-auto">
                 {/* Header */}
                 <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8 mb-16">
-                    <div>
+                    <div className="w-full">
                         <span className="font-body text-xs tracking-[0.4em] uppercase text-muted-foreground">
                             Portfolio
                         </span>
-                        <h2 className="font-display text-4xl md:text-6xl lg:text-7xl font-light tracking-[0.05em] uppercase mt-4">
-                            Selected
-                            <br />
-                            <span className="font-editorial italic font-light normal-case tracking-wide">
-                                Works
-                            </span>
-                        </h2>
-                    </div>
-
-                    {/* Filters */}
-                    <div className="flex flex-wrap gap-3">
-                        {categories.map((cat) => (
-                            <button
-                                key={cat.value}
-                                onClick={() => setActiveFilter(cat.value)}
-                                className={`font-body text-xs tracking-[0.25em] uppercase px-5 py-2.5 border transition-all duration-300 ${activeFilter === cat.value
-                                    ? "bg-primary text-primary-foreground border-primary"
-                                    : "bg-transparent text-muted-foreground border-border hover:border-foreground hover:text-foreground"
-                                    }`}
-                            >
-                                {cat.label}
-                            </button>
-                        ))}
+                        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mt-4">
+                            <h2 className="font-display text-4xl md:text-6xl lg:text-7xl font-light tracking-[0.05em] uppercase">
+                                Capture
+                            </h2>
+                            <div className="flex flex-wrap gap-x-6 gap-y-2 pb-2">
+                                {categories.map((cat) => (
+                                    <button
+                                        key={cat.value}
+                                        onClick={() => setActiveFilter(cat.value)}
+                                        className={`font-editorial italic text-xl md:text-2xl transition-all duration-300 relative group ${activeFilter === cat.value
+                                            ? "text-primary opacity-100"
+                                            : "text-muted-foreground opacity-60 hover:opacity-100 hover:text-foreground"
+                                            }`}
+                                    >
+                                        {cat.label}
+                                        <span className={`absolute -bottom-1 left-0 w-full h-px bg-primary transition-transform duration-300 origin-left ${activeFilter === cat.value ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
+                                            }`} />
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -111,11 +109,11 @@ const PortfolioSection = () => {
                 </motion.div>
 
                 {/* Show More Button */}
-                <div className="flex justify-center mt-16">
+                {/* <div className="flex justify-center mt-16">
                     <button className="font-body text-xs tracking-[0.3em] uppercase text-muted-foreground hover:text-foreground border-b border-border hover:border-foreground pb-2 transition-all duration-300">
                         Show More
                     </button>
-                </div>
+                </div> */}
             </div>
 
             {/* Lightbox */}

@@ -15,6 +15,14 @@ const ContactSection = () => {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+
+        const { name, email, subject, message } = formData;
+        const mailtoLink = `mailto:unnikrishnan27@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(
+            `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`
+        )}`;
+
+        window.location.href = mailtoLink;
+
         setIsSubmitted(true);
         setTimeout(() => setIsSubmitted(false), 3000);
         setFormData({ name: "", email: "", subject: "", message: "" });
@@ -47,15 +55,15 @@ const ContactSection = () => {
 
                         <div className="mt-16 space-y-6">
                             <a
-                                href="mailto:infogetintouch@gmail.com"
+                                href="mailto:unnikrishnan27@gmail.com"
                                 className="flex items-center gap-4 group"
                             >
                                 <Mail size={18} strokeWidth={1} className="text-accent" />
                                 <span className="font-body text-sm tracking-[0.15em] text-primary-foreground/70 group-hover:text-primary-foreground transition-colors">
-                                    infogetintouch@gmail.com
+                                    unnikrishnan27@gmail.com
                                 </span>
                             </a>
-                            <div className="flex items-center gap-4 group">
+                            {/* <div className="flex items-center gap-4 group">
                                 <span className="font-body text-sm tracking-[0.15em] text-primary-foreground/70">
                                     +91 99 99 99 9999
                                 </span>
@@ -64,9 +72,9 @@ const ContactSection = () => {
                                 <span className="font-body text-sm tracking-[0.15em] text-primary-foreground/70">
                                     19 SA Street, UK
                                 </span>
-                            </div>
+                            </div> */}
                             <a
-                                href="https://instagram.com"
+                                href="https://www.instagram.com/ankithmadhav/"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="flex items-center gap-4 group"

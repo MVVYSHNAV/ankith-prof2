@@ -14,20 +14,20 @@ export const portfolioData = {
             "value": "all"
         },
         {
-            "label": "Editorial",
-            "value": "editorial"
+            "label": "Fashion",
+            "value": "fashion"
         },
         {
-            "label": "Runway",
-            "value": "runway"
+            "label": "Ramp",
+            "value": "ramp"
         },
         {
-            "label": "Commercial",
-            "value": "commercial"
+            "label": "Adverts",
+            "value": "adverts"
         },
         {
-            "label": "Campaign",
-            "value": "campaign"
+            "label": "Campaigns",
+            "value": "campaigns"
         }
     ],
     "items": [
@@ -35,56 +35,56 @@ export const portfolioData = {
             "id": 1,
             "src": img1,
             "alt": "Ankith Madhav - Vogue Beauty Editorial",
-            "category": "editorial",
+            "category": "fashion",
             "aspect": "square"
         },
         {
             "id": 2,
             "src": img2,
             "alt": "Ankith Madhav - Milan Fashion Week FW24",
-            "category": "runway",
+            "category": "ramp",
             "aspect": "tall"
         },
         {
             "id": 3,
             "src": img3,
             "alt": "Ankith Madhav - Luxury Silk Campaign",
-            "category": "commercial",
+            "category": "adverts",
             "aspect": "square"
         },
         {
             "id": 4,
             "src": img4,
             "alt": "Ankith Madhav - Dior Haute Couture",
-            "category": "campaign",
+            "category": "campaigns",
             "aspect": "tall"
         },
         {
             "id": 5,
             "src": img5,
             "alt": "Ankith Madhav - Street Style Editorial",
-            "category": "editorial",
+            "category": "fashion",
             "aspect": "tall"
         },
         {
             "id": 6,
             "src": img6,
             "alt": "Ankith Madhav - Runway Finale Look",
-            "category": "runway",
+            "category": "ramp",
             "aspect": "wide"
         },
         {
             "id": 7,
             "src": img7,
             "alt": "Ankith Madhav - Fine Art Portrait Series",
-            "category": "editorial",
+            "category": "fashion",
             "aspect": "tall"
         },
         {
             "id": 8,
             "src": img8,
             "alt": "Ankith Madhav - Urban Campaign",
-            "category": "campaign",
+            "category": "campaigns",
             "aspect": "wide"
         }
     ]
