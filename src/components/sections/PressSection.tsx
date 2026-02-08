@@ -125,15 +125,14 @@ const PressSection = () => {
                     </motion.div>
 
                     {/* Project Visual/Preview Placeholders */}
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        animate={isInView ? { opacity: 1, scale: 1 } : {}}
-                        transition={{ duration: 0.8, delay: 0.4 }}
-                        className="flex-1 w-full aspect-video bg-secondary/50 relative overflow-hidden group"
-                    >
-                        {/* Video or Image */}
-                        {/* @ts-ignore - videoUrl may not exist on all items yet */}
-                        {currentProject.videoUrl ? (
+                    {/* @ts-ignore - videoUrl may not exist on all items yet */}
+                    {currentProject.videoUrl && (
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            animate={isInView ? { opacity: 1, scale: 1 } : {}}
+                            transition={{ duration: 0.8, delay: 0.4 }}
+                            className="flex-1 w-full aspect-video bg-secondary/50 relative overflow-hidden group"
+                        >
                             <iframe
                                 width="100%"
                                 height="100%"
@@ -144,12 +143,8 @@ const PressSection = () => {
                                 allowFullScreen
                                 className="absolute inset-0 w-full h-full object-cover"
                             ></iframe>
-                        ) : (
-                            <div className="absolute inset-0 flex items-center justify-center">
-                                <span className="font-body text-xs tracking-[0.2em] uppercase text-muted-foreground">Project Preview</span>
-                            </div>
-                        )}
-                    </motion.div>
+                        </motion.div>
+                    )}
                 </div>
 
                 {/* Video Gallery Grid */}
