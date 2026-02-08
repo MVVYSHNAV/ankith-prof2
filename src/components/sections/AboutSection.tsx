@@ -2,6 +2,7 @@ import { useState, useRef } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 
 import { aboutData } from "@/data/about";
+import resumeData from "@/data/resume.json";
 
 const AboutSection = () => {
     const containerRef = useRef<HTMLDivElement>(null);
@@ -12,7 +13,7 @@ const AboutSection = () => {
     });
 
     const y = useTransform(scrollYProgress, [0, 1], [100, -100]);
-    const { image, quote, bio, stats } = aboutData;
+    const { image, quote, bio } = aboutData;
 
     return (
         <section id="about" ref={containerRef} className="py-32 md:py-40 section-padding">
@@ -86,11 +87,15 @@ const AboutSection = () => {
                         )}
                     </AnimatePresence>
 
-                    <div className="pt-8 grid grid-cols-2 sm:grid-cols-3 gap-x-8 gap-y-6">
-                        {stats.map((stat, index) => (
-                            <div key={stat.label} className={index === stats.length - 1 ? "col-span-2 sm:col-span-1" : ""}>
-                                <span className="block font-display text-xl mb-1">{stat.value}</span>
-                                <span className="font-body text-[10px] tracking-[0.2em] uppercase text-muted-foreground">{stat.label}</span>
+                    <div className="pt-8 grid grid-cols-2 sm:grid-cols-3 gap-x-8 gap-y-6 border-t border-border/50 mt-8">
+                        {Object.entries(resumeData.personalDetails).map(([key, value]) => (
+                            <div key={key} className="space-y-1">
+                                <span className="block font-display text-xl mb-1">
+                                    {Array.isArray(value) ? value.join(", ") : value}
+                                </span>
+                                <span className="font-body text-[10px] tracking-[0.2em] uppercase text-muted-foreground">
+                                    {key.replace(/([A-Z])/g, ' $1').trim()}
+                                </span>
                             </div>
                         ))}
                     </div>

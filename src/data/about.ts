@@ -13,43 +13,5 @@ export const aboutData = {
         "He is featured in super-hit music video of the internet sensation Bollywood playback singer Sanah Moidutty which has crossed millions of views in YouTube!",
         "Ankith is playing a character, Mr Doshi, in the second season of Amazon prime's successful web series, 'Inside Edge' with Vivek Oberoi and he can be seen in the award-winning MX player web series 'magic'.",
         "Ankith has done 1000+ commercial voice projects."
-    ],
-    "stats": [
-        {
-            "label": "Height",
-            "value": "6'0\""
-        },
-        {
-            "label": "Chest",
-            "value": "40\""
-        },
-        {
-            "label": "Waist",
-            "value": "32\""
-        },
-        {
-            "label": "Hips",
-            "value": "38\""
-        },
-        {
-            "label": "Shoe",
-            "value": "9 UK"
-        },
-        {
-            "label": "Hair",
-            "value": "Black"
-        },
-        {
-            "label": "Eyes",
-            "value": "Brown"
-        },
-        {
-            "label": "Location",
-            "value": "UK"
-        },
-        {
-            "label": "Languages",
-            "value": "En, Hi"
-        }
     ]
 };
