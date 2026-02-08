@@ -27,20 +27,28 @@ const Navigation = () => {
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.8, delay: 1.5, ease: [0.33, 1, 0.68, 1] }}
                 className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled
-                    ? "bg-background/90 backdrop-blur-md border-b border-border"
-                    : "bg-transparent"
+                    ? "bg-primary/95 backdrop-blur-md border-b border-primary-foreground/10 text-primary-foreground"
+                    : "bg-transparent text-foreground"
                     }`}
             >
                 <div className="flex items-center justify-between section-padding py-5">
-                    <a href="#" className="font-display text-lg tracking-[0.2em] uppercase text-foreground">
+                    <a href="#" className={`font-display text-lg tracking-[0.2em] uppercase ${isScrolled ? "text-primary-foreground" : "text-foreground"}`}>
                         Ankith
                     </a>
 
                     {/* Desktop Nav */}
                     <div className="hidden md:flex items-center gap-10">
                         {navItems.map((item) => (
-                            <a key={item.label} href={item.href} className="nav-link-editorial">
+                            <a 
+                                key={item.label} 
+                                href={item.href} 
+                                className={`relative font-body text-xs tracking-[0.3em] uppercase transition-colors duration-300 ${isScrolled 
+                                    ? "text-primary-foreground/70 hover:text-primary-foreground" 
+                                    : "text-foreground/70 hover:text-foreground"
+                                }`}
+                            >
                                 {item.label}
+                                <span className={`absolute bottom-0 left-0 w-full h-px origin-bottom-right transition-transform duration-300 scale-x-0 ${isScrolled ? "bg-primary-foreground" : "bg-accent"}`} />
                             </a>
                         ))}
                         <ModeToggle />
@@ -54,15 +62,15 @@ const Navigation = () => {
                     >
                         <motion.span
                             animate={isMobileMenuOpen ? { rotate: 45, y: 6 } : { rotate: 0, y: 0 }}
-                            className="block w-6 h-px bg-foreground"
+                            className={`block w-6 h-px ${isScrolled ? "bg-primary-foreground" : "bg-foreground"}`}
                         />
                         <motion.span
                             animate={isMobileMenuOpen ? { opacity: 0 } : { opacity: 1 }}
-                            className="block w-6 h-px bg-foreground"
+                            className={`block w-6 h-px ${isScrolled ? "bg-primary-foreground" : "bg-foreground"}`}
                         />
                         <motion.span
                             animate={isMobileMenuOpen ? { rotate: -45, y: -6 } : { rotate: 0, y: 0 }}
-                            className="block w-6 h-px bg-foreground"
+                            className={`block w-6 h-px ${isScrolled ? "bg-primary-foreground" : "bg-foreground"}`}
                         />
                     </button>
                 </div>

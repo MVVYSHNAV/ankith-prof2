@@ -6,90 +6,120 @@
 
 @layer base {
   :root {
-    --background: 40 20% 97%;
-    --foreground: 0 0% 5%;
+    /* Primary: #0C2F1F -> HSL(153, 60%, 12%) */
+    --primary: 153 60% 12%; 
+    --primary-foreground: 0 0% 100%;
 
-    --card: 40 15% 95%;
-    --card-foreground: 0 0% 5%;
+    /* Background: #F8FAF9 -> HSL(153, 15%, 98%) - Very subtle green tint */
+    --background: 153 15% 98%;
+    --foreground: 153 60% 10%; /* Deep green-black text */
 
-    --popover: 40 20% 97%;
-    --popover-foreground: 0 0% 5%;
+    /* Card: #F1F5F3 -> HSL(153, 10%, 95%) */
+    --card: 153 10% 95%;
+    --card-foreground: 153 60% 10%;
 
-    --primary: 0 0% 8%;
-    --primary-foreground: 40 20% 97%;
+    /* Popover: Match Background */
+    --popover: 153 15% 98%;
+    --popover-foreground: 153 60% 10%;
 
-    --secondary: 38 10% 90%;
-    --secondary-foreground: 0 0% 8%;
+    /* Secondary: #E6EFEC -> HSL(153, 20%, 92%) */
+    --secondary: 153 20% 92%;
+    --secondary-foreground: 153 60% 12%;
 
-    --muted: 40 10% 92%;
-    --muted-foreground: 0 0% 40%;
+    /* Muted: #F0F4F2 -> HSL(153, 10%, 95%) */
+    --muted: 153 10% 95%;
+    --muted-foreground: 153 10% 40%;
 
-    --accent: 38 35% 55%;
-    --accent-foreground: 0 0% 5%;
+    /* Accent: Gold/Bronze #C5A065 -> HSL(38, 45%, 60%) - Kept for premium look */
+    --accent: 38 45% 60%;
+    --accent-foreground: 153 60% 12%;
 
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 38 15% 85%;
-    --input: 38 15% 85%;
-    --ring: 38 35% 55%;
+    /* Border/Input/Ring */
+    --border: 153 20% 88%;
+    --input: 153 20% 88%;
+    --ring: 153 60% 12%; /* Primary color for focus rings */
 
     --radius: 0rem;
 
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    /* Sidebar: #082015 -> HSL(153, 60%, 8%) - Slightly darker than primary */
+    --sidebar-background: 153 60% 8%;
+    --sidebar-foreground: 153 10% 90%; /* Light text */
+    --sidebar-primary: 38 45% 60%; /* Gold highlight for active items */
+    --sidebar-primary-foreground: 153 60% 12%;
+    --sidebar-accent: 153 60% 15%; /* Lighter green for hover */
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 153 60% 15%;
+    --sidebar-ring: 38 45% 60%;
 
     --font-display: 'Playfair Display', serif;
     --font-editorial: 'Cormorant Garamond', serif;
     --font-body: 'Instrument Sans', sans-serif;
 
-    --shadow-editorial: 0 20px 60px -15px hsl(0 0% 0% / 0.15);
-    --shadow-hover: 0 30px 80px -20px hsl(0 0% 0% / 0.25);
+    --shadow-editorial: 0 20px 60px -15px hsl(153 60% 5% / 0.15);
+    --shadow-hover: 0 30px 80px -20px hsl(153 60% 5% / 0.25);
   }
 
   .dark {
-    --background: 0 0% 4%;
-    --foreground: 40 15% 92%;
+    /* Dark Mode Background: #05140D -> HSL(153, 60%, 5%) */
+    --background: 153 60% 5%;
+    --foreground: 153 10% 90%;
 
-    --card: 0 0% 7%;
-    --card-foreground: 40 15% 92%;
+    /* Card: #082015 -> HSL(153, 60%, 8%) */
+    --card: 153 60% 8%;
+    --card-foreground: 153 10% 90%;
 
-    --popover: 0 0% 7%;
-    --popover-foreground: 40 15% 92%;
+    /* Popover: Match Background */
+    --popover: 153 60% 5%;
+    --popover-foreground: 153 10% 90%;
 
-    --primary: 40 15% 92%;
-    --primary-foreground: 0 0% 4%;
+    /* Primary: #0C2F1F -> HSL(153, 60%, 12%) - kept as brand color, maybe lighter for dark mode? */
+    /* Let's use a slightly lighter version for dark mode primary elements if needed, 
+       but for brand consistency "Primary" usually stays the brand color. 
+       However, dark mode usually needs lighter accents. 
+       Let's use the Gold accent as the primary interactive color in dark mode, 
+       OR keep the Green but make it stand out. 
+       Actually, standard is to invert. 
+       Let's stick to the requested #0C2F1F as global primary, 
+       but for dark mode UI elements, we often need contrast. 
+       If background is #05140D (very dark green), #0C2F1F is visible but low contrast.
+       Let's make Primary Lighter in Dark Mode: #2D6B4E (HSL 153, 40%, 30%) 
+       OR Keep consistent brand. 
+       The prompt says "Set #0C2F1F as Primary brand color". 
+       I will set --primary to the brand color, but ensure foreground has contrast.
+       If background is dark, primary might need to be 153 50% 40% for visibility.
+    */
+    --primary: 153 50% 40%; /* Lighter green for visibility on dark bg */
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 0 0% 12%;
-    --secondary-foreground: 40 15% 92%;
+    /* Secondary: #1A3D2F -> HSL(153, 40%, 17%) */
+    --secondary: 153 40% 17%;
+    --secondary-foreground: 153 10% 90%;
 
-    --muted: 0 0% 12%;
-    --muted-foreground: 0 0% 60%;
+    /* Muted: #112920 -> HSL(153, 40%, 12%) */
+    --muted: 153 40% 12%;
+    --muted-foreground: 153 10% 60%;
 
-    --accent: 38 35% 55%;
-    --accent-foreground: 40 15% 92%;
+    --accent: 38 45% 60%;
+    --accent-foreground: 153 60% 5%;
 
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 0 0% 15%;
-    --input: 0 0% 15%;
-    --ring: 38 35% 55%;
+    --border: 153 40% 15%;
+    --input: 153 40% 15%;
+    --ring: 153 50% 40%;
 
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-background: 153 60% 5%;
+    --sidebar-foreground: 153 10% 90%;
+    --sidebar-primary: 38 45% 60%;
+    --sidebar-primary-foreground: 153 60% 5%;
+    --sidebar-accent: 153 40% 12%;
+    --sidebar-accent-foreground: 153 10% 90%;
+    --sidebar-border: 153 40% 15%;
+    --sidebar-ring: 38 45% 60%;
   }
 }
 

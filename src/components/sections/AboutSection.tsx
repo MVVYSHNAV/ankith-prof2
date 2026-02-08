@@ -1,10 +1,11 @@
-import { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { useState, useRef } from "react";
+import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 
-import aboutData from "@/data/about.json";
+import { aboutData } from "@/data/about";
 
 const AboutSection = () => {
     const containerRef = useRef<HTMLDivElement>(null);
+    const [isExpanded, setIsExpanded] = useState(false);
     const { scrollYProgress } = useScroll({
         target: containerRef,
         offset: ["start end", "end start"],
@@ -49,7 +50,41 @@ const AboutSection = () => {
                         <p className="font-body text-sm md:text-base text-muted-foreground tracking-wide leading-relaxed max-w-md">
                             {bio}
                         </p>
+
+                        {!isExpanded && (
+                            <button
+                                onClick={() => setIsExpanded(true)}
+                                className="font-body text-xs tracking-[0.3em] uppercase text-accent hover:text-foreground border-b border-accent hover:border-foreground pb-1 transition-all duration-300 mt-2"
+                            >
+                                Know More
+                            </button>
+                        )}
                     </div>
+
+                    <AnimatePresence>
+                        {isExpanded && (
+                            <motion.div
+                                initial={{ opacity: 0, height: 0 }}
+                                animate={{ opacity: 1, height: "auto" }}
+                                exit={{ opacity: 0, height: 0 }}
+                                transition={{ duration: 0.5 }}
+                                className="overflow-hidden"
+                            >
+                                <div className="space-y-4 font-body text-sm md:text-base text-muted-foreground tracking-wide leading-relaxed pt-4 border-t border-border/50">
+                                    {/* Type guard to ensure fullBio is treated as an array if it exists */}
+                                    {Array.isArray(aboutData.fullBio) ? aboutData.fullBio.map((paragraph, idx) => (
+                                        <p key={idx}>{paragraph}</p>
+                                    )) : null}
+                                    <button
+                                        onClick={() => setIsExpanded(false)}
+                                        className="font-body text-xs tracking-[0.3em] uppercase text-muted-foreground hover:text-foreground pt-4 transition-colors"
+                                    >
+                                        Show Less
+                                    </button>
+                                </div>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
 
                     <div className="pt-8 grid grid-cols-2 sm:grid-cols-3 gap-x-8 gap-y-6">
                         {stats.map((stat, index) => (

@@ -1,6 +1,7 @@
 import { useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import gsap from "gsap";
+import heroImage from "@/assets/images/10.jpeg";
 
 const HeroSection = () => {
     const heroRef = useRef<HTMLDivElement>(null);
@@ -54,13 +55,12 @@ const HeroSection = () => {
     return (
         <section ref={heroRef} className="relative h-screen w-full overflow-hidden">
             {/* Background Image */}
-            {/* Background Image */}
             <div className="absolute inset-0">
                 <img
                     ref={imageRef}
-                    src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=2574&auto=format&fit=crop"
+                    src={heroImage}
                     alt="Ankith Madhav - Fashion Model on Runway"
-                    className="w-full h-full object-cover will-change-transform"
+                    className="w-full h-full object-cover object-top will-change-transform"
                     loading="eager"
                 />
                 <div className="absolute inset-0 bg-gradient-to-b from-primary/40 via-primary/20 to-background" />

@@ -6,7 +6,7 @@ import { X } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
 
-import portfolioData from "@/data/portfolio.json";
+import { portfolioData } from "@/data/portfolio";
 
 interface PortfolioItem {
     id: number;

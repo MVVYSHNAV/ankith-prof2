@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 
-import careerData from "@/data/career.json";
+import { careerData } from "@/data/career";
 
 const CampaignSection = () => {
     const sectionRef = useRef<HTMLElement>(null);
@@ -44,7 +44,7 @@ const CampaignSection = () => {
                             className="w-full h-full"
                         >
                             <img
-                                src="https://images.unsplash.com/photo-1496747611176-843222e1e57c?q=80&w=2400"
+                                src={highlightImage}
                                 alt="Ankith Madhav Career Highlight"
                                 className="w-full h-full object-cover grayscale"
                             />
