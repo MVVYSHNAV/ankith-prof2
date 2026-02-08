@@ -41,5 +41,107 @@
             "description": "Digital campaigns for various independent fashion brands.",
             "note": "Focus on sustainable fashion."
         }
+    ],
+    "videos": [
+        {
+            "id": "v1",
+            "url": "https://youtu.be/6zeeDepEkkc?si=EPu7p1IkfDO9mtUz",
+            "title": "Karimizhi Kuruviye | Meesha Madhavan"
+        },
+        {
+            "id": "v2",
+            "url": "https://youtu.be/qGfsj6QAiww?si=Y8qqrc2xcn-g_lb5",
+            "title": "Akakkannile Pranayam | Short Film"
+        },
+        {
+            "id": "v3",
+            "url": "https://youtu.be/SI1zP8Y1e1U?si=CpfKTQkHIczySLLD",
+            "title": "Modern Kitchen for Modern Minds | Sleek"
+        },
+        {
+            "id": "v4",
+            "url": "https://youtu.be/758kvNGkNr8?si=3EoCCj1knTc8vhXg",
+            "title": "Royal Enfield Bullet - Yeh Bullet Meri Jaan"
+        },
+        {
+            "id": "v5",
+            "url": "https://youtu.be/osVqk-YxHzQ?si=AG7PEdRwXYoBtuE3",
+            "title": "Tap to pay with Visa | PV Sindhu"
+        },
+        {
+            "id": "v6",
+            "url": "https://youtu.be/XdxubM5UNUg?si=MGlXfG6EO0PB4tv6",
+            "title": "#1SmartphoneBrandXiaomi"
+        },
+        {
+            "id": "v7",
+            "url": "https://youtu.be/6vtx8V5BGA4?si=XIC5Y0bWjFOlSwoY",
+            "title": "#DiwaliKaSafar | Samsonite"
+        },
+        {
+            "id": "v8",
+            "url": "https://youtu.be/7GJR-0jNgTM?si=VHc7z-Bn5T0fUd1_",
+            "title": "Haldiram's Taste ka Healthy Naam"
+        },
+        {
+            "id": "v9",
+            "url": "https://youtu.be/QJq0VesexP8?si=jaW3ForcLalNDCoB",
+            "title": "Berger home Shield"
+        },
+        {
+            "id": "v10",
+            "url": "https://youtu.be/fTHM7Uaxj9s?si=yDQvk-1plhblJmsN",
+            "title": "This wedding anniversary, surprise her with a diamond jewellery."
+        },
+        {
+            "id": "v11",
+            "url": "https://youtu.be/r76lqtj_olY?si=vj8pfLvxnZKu0uiy",
+            "title": "Surprise her with a beautiful diamond jewellery on her birthday"
+        },
+        {
+            "id": "v12",
+            "url": "https://youtu.be/-lcPHXrmKlw?si=XSZnmxsgqAvir1VO",
+            "title": "Mutual Funds ki jaankari ho toh Direct Plan ke zariye invest karna sahi hai."
+        },
+        {
+            "id": "v13",
+            "url": "https://youtu.be/5GPsXPpCrLw?si=DULrJYFt4Oi9zABK",
+            "title": "This Valentine's, express your love with Diamonds"
+        },
+        {
+            "id": "v14",
+            "url": "https://youtu.be/TwxAWY8y1vg?si=8OFiyR90RmflIBC_",
+            "title": "MTR 3 Minute Breakfast Khaya Kya?"
+        },
+        {
+            "id": "v15",
+            "url": "https://youtu.be/PDC9TvzvXE0?si=3otCPOq3zVqlasth",
+            "title": "Rishtey Cineplex : Romance"
+        },
+        {
+            "id": "v16",
+            "url": "https://youtu.be/lEp9evcYThQ?si=EJFPq2JH-BsLQa9K",
+            "title": "Medlife - Health Comes Home"
+        },
+        {
+            "id": "v17",
+            "url": "https://youtu.be/erHQHgDHIwc?si=lE8MG5OKCE_y4tER",
+            "title": "Say Bye Bye To Fraud-Issued in Public Interest"
+        },
+        {
+            "id": "v18",
+            "url": "https://youtu.be/qyXSER0izeg?si=425qE1cBcloF_Qo-",
+            "title": "Reliance Jewels Celebrates 10 Years of Special Moments"
+        },
+        {
+            "id": "v19",
+            "url": "https://youtu.be/gXyaSEsYdjU?si=_8X2-lciJmkjIfJp",
+            "title": "Cello Colour UP | TVC"
+        },
+        {
+            "id": "v20",
+            "url": "https://vimeo.com/305977265?fl=pl&fe=sh",
+            "title": "NEBULA - AVAAS - 2 MIN TAMIL"
+        }
     ]
 }

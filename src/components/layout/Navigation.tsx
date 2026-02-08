@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ModeToggle } from "@/components/mode-toggle";
+import ResumeSheet from "@/components/layout/ResumeSheet";
 
 const navItems = [
     { label: "About", href: "#about" },
@@ -13,6 +14,7 @@ const navItems = [
 const Navigation = () => {
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const [isResumeOpen, setIsResumeOpen] = useState(false);
 
     useEffect(() => {
         const handleScroll = () => setIsScrolled(window.scrollY > 50);
@@ -39,18 +41,27 @@ const Navigation = () => {
                     {/* Desktop Nav */}
                     <div className="hidden md:flex items-center gap-10">
                         {navItems.map((item) => (
-                            <a 
-                                key={item.label} 
-                                href={item.href} 
-                                className={`relative font-body text-xs tracking-[0.3em] uppercase transition-colors duration-300 ${isScrolled 
-                                    ? "text-primary-foreground/70 hover:text-primary-foreground" 
+                            <a
+                                key={item.label}
+                                href={item.href}
+                                className={`relative font-body text-xs tracking-[0.3em] uppercase transition-colors duration-300 ${isScrolled
+                                    ? "text-primary-foreground/70 hover:text-primary-foreground"
                                     : "text-foreground/70 hover:text-foreground"
-                                }`}
+                                    }`}
                             >
                                 {item.label}
                                 <span className={`absolute bottom-0 left-0 w-full h-px origin-bottom-right transition-transform duration-300 scale-x-0 ${isScrolled ? "bg-primary-foreground" : "bg-accent"}`} />
                             </a>
                         ))}
+                        <button
+                            onClick={() => setIsResumeOpen(true)}
+                            className={`font-body text-xs tracking-[0.3em] uppercase transition-colors duration-300 ${isScrolled
+                                ? "text-primary-foreground/70 hover:text-primary-foreground"
+                                : "text-foreground/70 hover:text-foreground"
+                                }`}
+                        >
+                            Resume
+                        </button>
                         <ModeToggle />
                     </div>
 
@@ -100,9 +111,24 @@ const Navigation = () => {
                                 {item.label}
                             </motion.a>
                         ))}
+                        <motion.button
+                            initial={{ opacity: 0, y: 30 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: 30 }}
+                            transition={{ delay: navItems.length * 0.1, duration: 0.4 }}
+                            onClick={() => {
+                                setIsMobileMenuOpen(false);
+                                setIsResumeOpen(true);
+                            }}
+                            className="font-display text-3xl tracking-[0.15em] uppercase text-foreground hover:text-accent transition-colors"
+                        >
+                            Resume
+                        </motion.button>
                     </motion.div>
                 )}
             </AnimatePresence>
+
+            <ResumeSheet isOpen={isResumeOpen} onClose={() => setIsResumeOpen(false)} />
         </>
     );
 };

@@ -1,0 +1,115 @@
+{
+    "personalDetails": {
+        "born": "April 27",
+        "height": "5'11\"",
+        "eyeColor": "Black",
+        "hairColor": "Black",
+        "languages": [
+            "Malayalam",
+            "English",
+            "Hindi",
+            "Tamil"
+        ]
+    },
+    "specialSkills": [
+        "Voice over - Done more than 500 commercial voice projects",
+        "Dancing",
+        "Singing",
+        "Swimming"
+    ],
+    "films": [
+        {
+            "year": "2020",
+            "title": "Rocketry",
+            "director": "R Madhavan",
+            "role": "Veer"
+        },
+        {
+            "year": "2018",
+            "title": "Solo",
+            "director": "Bijoy Nambiyar",
+            "role": "Sreekanth"
+        },
+        {
+            "year": "2017",
+            "title": "Namboothiri Yuvavu @ 43",
+            "director": "Mahesh Sharma",
+            "role": "Balu"
+        },
+        {
+            "year": "2016",
+            "title": "Ordinary",
+            "director": "Sugeet",
+            "role": "Post Master"
+        },
+        {
+            "year": "2015",
+            "title": "Karmayodha",
+            "director": "Major Ravi",
+            "role": "Yosuph Patel"
+        },
+        {
+            "year": "2014",
+            "title": "Chekavar",
+            "director": "Sajeevan",
+            "role": "Roy"
+        }
+    ],
+    "tv": [
+        {
+            "year": "2018",
+            "role": "Anchor",
+            "show": "D4Dance Junior Vs Seniors",
+            "type": "Dance Reality Show",
+            "channel": "Mazhavil Manorama Channel",
+            "link": "https://www.youtube.com/watch?v=RHqkHYxxP0Q"
+        }
+    ],
+    "theater": [
+        {
+            "year": "2018",
+            "play": "Vishwaroopam",
+            "director": "Bhaskaran",
+            "theater": "Saptaswara Theater",
+            "role": "Stephan"
+        }
+    ],
+    "education": [
+        "Bachelor of Engineering (BE)",
+        "MBA"
+    ],
+    "actingTraining": [
+        {
+            "school": "Brian Timony Acting School",
+            "location": "London",
+            "mentor": "Brian Timony"
+        }
+    ],
+    "commercials": [
+        "Asian Paints Sleek",
+        "Royal Enfield",
+        "Berger Home Solutions",
+        "Mutual Funds Sahi Hai",
+        "Ujjivan Bank",
+        "Visa Card",
+        "GJEPC - Diamond Council",
+        "Aegon Insurance",
+        "MTR Foods",
+        "Medlife",
+        "Cello",
+        "Rummy Culture",
+        "Haldiram",
+        "Avaas Builders",
+        "HDFC ERGO (2 Pepper Awards)",
+        "Shaadi.com",
+        "Verisign",
+        "Samsonite",
+        "MI Phone",
+        "Policy Bazaar",
+        "Kotak Mahindra",
+        "Rishtey Cineplex",
+        "Western Union Money Transfer",
+        "ExtraMarks App",
+        "Cake Box (International)"
+    ]
+}

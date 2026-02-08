@@ -5,23 +5,7 @@
     "stats": [
         {
             "label": "Height",
-            "value": "6'0\""
-        },
-        {
-            "label": "Chest",
-            "value": "40\""
-        },
-        {
-            "label": "Waist",
-            "value": "32\""
-        },
-        {
-            "label": "Hips",
-            "value": "38\""
-        },
-        {
-            "label": "Shoe",
-            "value": "9 UK"
+            "value": "5'11\""
         },
         {
             "label": "Hair",
@@ -29,15 +13,15 @@
         },
         {
             "label": "Eyes",
-            "value": "Brown"
+            "value": "Black"
         },
         {
             "label": "Location",
-            "value": "UK"
+            "value": "india"
         },
         {
             "label": "Languages",
-            "value": "En, Hi"
+            "value": "En, Hi, Mal, Ta"
         }
     ]
 }
