@@ -182,11 +182,11 @@ const ContactSection = () => {
 
                     <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
                         <span className="font-body text-[10px] tracking-[0.3em] uppercase text-primary-foreground/30 text-center sm:text-left">
-                            © 2025. All Rights Reserved to Ankith Madhav
+                            © 2026. All Rights Reserved to Ankith Madhav
                         </span>
-                        <span className="font-editorial text-sm italic text-primary-foreground/30">
+                        {/* <span className="font-editorial text-sm italic text-primary-foreground/30">
                             Available for Global Bookings
-                        </span>
+                        </span> */}
                     </div>
                 </div>
             </div>
