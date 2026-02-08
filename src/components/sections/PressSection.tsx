@@ -4,6 +4,12 @@ import { motion, useInView } from "framer-motion";
 import { useState } from "react";
 import filmographyData from "@/data/filmography.json";
 
+const getYoutubeId = (url: string) => {
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+    const match = url.match(regExp);
+    return (match && match[2].length === 11) ? match[2] : null;
+};
+
 const PressSection = () => {
     const sectionRef = useRef<HTMLElement>(null);
     const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
@@ -84,10 +90,24 @@ const PressSection = () => {
                         transition={{ duration: 0.8, delay: 0.4 }}
                         className="flex-1 w-full aspect-video bg-secondary/50 relative overflow-hidden group"
                     >
-                        {/* Placeholder for video/image */}
-                        <div className="absolute inset-0 flex items-center justify-center">
-                            <span className="font-body text-xs tracking-[0.2em] uppercase text-muted-foreground">Project Preview</span>
-                        </div>
+                        {/* Video or Image */}
+                        {/* @ts-ignore - videoUrl may not exist on all items yet */}
+                        {currentProject.videoUrl ? (
+                            <iframe
+                                width="100%"
+                                height="100%"
+                                // @ts-ignore
+                                src={`https://www.youtube.com/embed/${getYoutubeId(currentProject.videoUrl)}`}
+                                title={currentProject.title}
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowFullScreen
+                                className="absolute inset-0 w-full h-full object-cover"
+                            ></iframe>
+                        ) : (
+                            <div className="absolute inset-0 flex items-center justify-center">
+                                <span className="font-body text-xs tracking-[0.2em] uppercase text-muted-foreground">Project Preview</span>
+                            </div>
+                        )}
                     </motion.div>
                 </div>
             </div>
