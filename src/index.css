@@ -6,29 +6,29 @@
 
 @layer base {
   :root {
-    /* Primary: #0C2F1F -> HSL(153, 60%, 12%) */
-    --primary: 153 60% 12%; 
-    --primary-foreground: 0 0% 100%;
+    /* Primary: #043222 -> HSL(159, 85%, 11%) */
+    --primary: 159 85% 11%; 
+    --primary-foreground: 33 62% 91%;
 
-    /* Background: #F8FAF9 -> HSL(153, 15%, 98%) - Very subtle green tint */
-    --background: 153 15% 98%;
-    --foreground: 153 60% 10%; /* Deep green-black text */
+    /* Background: #f6e9d9 -> HSL(33, 62%, 91%) - Cream background */
+    --background: 33 62% 91%;
+    --foreground: 159 85% 11%; /* Use dark green primary for foreground text on cream */
 
-    /* Card: #F1F5F3 -> HSL(153, 10%, 95%) */
-    --card: 153 10% 95%;
-    --card-foreground: 153 60% 10%;
+    /* Card: Match slightly lighter shade of background or simple cream */
+    --card: 33 62% 93%;
+    --card-foreground: 159 85% 11%;
 
     /* Popover: Match Background */
-    --popover: 153 15% 98%;
-    --popover-foreground: 153 60% 10%;
+    --popover: 33 62% 91%;
+    --popover-foreground: 159 85% 11%;
 
-    /* Secondary: #E6EFEC -> HSL(153, 20%, 92%) */
-    --secondary: 153 20% 92%;
-    --secondary-foreground: 153 60% 12%;
+    /* Secondary: Muted cream/green mix */
+    --secondary: 159 20% 85%;
+    --secondary-foreground: 159 85% 11%;
 
-    /* Muted: #F0F4F2 -> HSL(153, 10%, 95%) */
-    --muted: 153 10% 95%;
-    --muted-foreground: 153 10% 40%;
+    /* Muted: Deeper cream/gray */
+    --muted: 33 20% 85%;
+    --muted-foreground: 33 10% 40%;
 
     /* Accent: Gold/Bronze #C5A065 -> HSL(38, 45%, 60%) - Kept for premium look */
     --accent: 38 45% 60%;

@@ -21,11 +21,19 @@ const { items: portfolioItems, categories } = portfolioData;
 const PortfolioSection = () => {
     const [activeFilter, setActiveFilter] = useState<string>("all");
     const [lightboxImage, setLightboxImage] = useState<PortfolioItem | null>(null);
+    const [visibleCount, setVisibleCount] = useState<number>(6);
     const gridRef = useRef<HTMLDivElement>(null);
 
     const filteredItems = activeFilter === "all"
         ? portfolioItems
         : portfolioItems.filter((item) => item.category === activeFilter);
+
+    const visibleItems = filteredItems.slice(0, visibleCount);
+
+    // Reset visible count when filter changes
+    useEffect(() => {
+        setVisibleCount(6);
+    }, [activeFilter]);
 
     // GSAP animation removed to prevent conflict with Framer Motion
     // Framer Motion handles both entrance and layout animations now
@@ -70,14 +78,14 @@ const PortfolioSection = () => {
                     className="columns-1 sm:columns-2 lg:columns-3 gap-4 space-y-4"
                 >
                     <AnimatePresence mode="popLayout">
-                        {filteredItems.map((item, index) => (
+                        {visibleItems.map((item, index) => (
                             <motion.div
                                 key={item.id}
                                 layout
                                 initial={{ opacity: 0, y: 20 }}
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true, margin: "-50px" }}
-                                transition={{ duration: 0.5, delay: 0.05 * index }}
+                                transition={{ duration: 0.5, delay: 0.05 * (index % 6) }}
                                 className="portfolio-item break-inside-avoid cursor-pointer group relative overflow-hidden"
                                 onClick={() => setLightboxImage(item)}
                             >
@@ -109,11 +117,16 @@ const PortfolioSection = () => {
                 </motion.div>
 
                 {/* Show More Button */}
-                {/* <div className="flex justify-center mt-16">
-                    <button className="font-body text-xs tracking-[0.3em] uppercase text-muted-foreground hover:text-foreground border-b border-border hover:border-foreground pb-2 transition-all duration-300">
-                        Show More
-                    </button>
-                </div> */}
+                {filteredItems.length > visibleCount && (
+                    <div className="flex justify-center mt-16">
+                        <button
+                            onClick={() => setVisibleCount(prev => prev + 6)}
+                            className="font-body text-xs tracking-[0.3em] uppercase text-muted-foreground hover:text-foreground border-b border-border hover:border-foreground pb-2 transition-all duration-300"
+                        >
+                            Show More
+                        </button>
+                    </div>
+                )}
             </div>
 
             {/* Lightbox */}
