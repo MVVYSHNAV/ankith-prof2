@@ -12,7 +12,7 @@
 
     /* Background: #f6e9d9 -> HSL(33, 62%, 91%) - Cream background */
     --background: 33 62% 91%;
-    --foreground: 159 85% 11%;
+    --foreground: 0 0% 0%;
     /* Use dark green primary for foreground text on cream */
 
     /* Card: Match slightly lighter shade of background or simple cream */

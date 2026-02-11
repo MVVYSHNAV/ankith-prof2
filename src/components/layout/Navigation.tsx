@@ -34,7 +34,7 @@ const Navigation = () => {
                     }`}
             >
                 <div className="flex items-center justify-between section-padding py-5">
-                    <a href="#" className={`font-display text-lg tracking-[0.2em] uppercase ${isScrolled ? "text-primary-foreground" : "text-foreground"}`}>
+                    <a href="#" className="font-display text-lg tracking-[0.2em] uppercase text-foreground">
                         Ankith
                     </a>
 
@@ -44,21 +44,15 @@ const Navigation = () => {
                             <a
                                 key={item.label}
                                 href={item.href}
-                                className={`relative font-body text-xs tracking-[0.3em] uppercase transition-colors duration-300 ${isScrolled
-                                    ? "text-primary-foreground/70 hover:text-primary-foreground"
-                                    : "text-foreground/70 hover:text-foreground"
-                                    }`}
+                                className="relative font-body text-xs tracking-[0.3em] uppercase transition-colors duration-300 text-foreground/70 hover:text-foreground"
                             >
                                 {item.label}
-                                <span className={`absolute bottom-0 left-0 w-full h-px origin-bottom-right transition-transform duration-300 scale-x-0 ${isScrolled ? "bg-primary-foreground" : "bg-accent"}`} />
+                                <span className="absolute bottom-0 left-0 w-full h-px origin-bottom-right transition-transform duration-300 scale-x-0 bg-accent" />
                             </a>
                         ))}
                         <button
                             onClick={() => setIsResumeOpen(true)}
-                            className={`font-body text-xs tracking-[0.3em] uppercase transition-colors duration-300 ${isScrolled
-                                ? "text-primary-foreground/70 hover:text-primary-foreground"
-                                : "text-foreground/70 hover:text-foreground"
-                                }`}
+                            className="font-body text-xs tracking-[0.3em] uppercase transition-colors duration-300 text-foreground/70 hover:text-foreground"
                         >
                             Resume
                         </button>
@@ -73,15 +67,15 @@ const Navigation = () => {
                     >
                         <motion.span
                             animate={isMobileMenuOpen ? { rotate: 45, y: 6 } : { rotate: 0, y: 0 }}
-                            className={`block w-6 h-px ${isScrolled ? "bg-primary-foreground" : "bg-foreground"}`}
+                            className="block w-6 h-px bg-foreground"
                         />
                         <motion.span
                             animate={isMobileMenuOpen ? { opacity: 0 } : { opacity: 1 }}
-                            className={`block w-6 h-px ${isScrolled ? "bg-primary-foreground" : "bg-foreground"}`}
+                            className="block w-6 h-px bg-foreground"
                         />
                         <motion.span
                             animate={isMobileMenuOpen ? { rotate: -45, y: -6 } : { rotate: 0, y: 0 }}
-                            className={`block w-6 h-px ${isScrolled ? "bg-primary-foreground" : "bg-foreground"}`}
+                            className="block w-6 h-px bg-foreground"
                         />
                     </button>
                 </div>
