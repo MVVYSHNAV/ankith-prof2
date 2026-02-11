@@ -42,7 +42,7 @@ const PortfolioSection = () => {
     }, [activeFilter]);
 
     // GSAP animation removed to prevent conflict with Framer Motion
-    // Framer Motion handles both entrance and layout animations now
+    // Framer Motion 
 
     return (
         <section id="portfolio" className="py-32 md:py-40 section-padding bg-primary">
