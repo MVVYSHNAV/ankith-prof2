@@ -45,16 +45,16 @@ const PortfolioSection = () => {
     // Framer Motion handles both entrance and layout animations now
 
     return (
-        <section id="portfolio" className="py-32 md:py-40 section-padding bg-secondary/30">
+        <section id="portfolio" className="py-32 md:py-40 section-padding bg-primary">
             <div className="max-w-7xl mx-auto">
                 {/* Header */}
                 <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8 mb-16">
                     <div className="w-full">
-                        <span className="font-body text-xs tracking-[0.4em] uppercase text-muted-foreground">
+                        <span className="font-body text-xs tracking-[0.4em] uppercase text-primary-foreground/50">
                             Portfolio
                         </span>
                         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mt-4">
-                            <h2 className="font-display text-4xl md:text-6xl lg:text-7xl font-light tracking-[0.05em] uppercase">
+                            <h2 className="font-display text-4xl md:text-6xl lg:text-7xl font-light tracking-[0.05em] uppercase text-primary-foreground">
                                 Capture
                             </h2>
                             <div className="flex flex-wrap gap-x-6 gap-y-2 pb-2">
@@ -63,12 +63,12 @@ const PortfolioSection = () => {
                                         key={cat.value}
                                         onClick={() => setActiveFilter(cat.value)}
                                         className={`font-editorial italic text-xl md:text-2xl transition-all duration-300 relative group ${activeFilter === cat.value
-                                            ? "text-primary opacity-100"
-                                            : "text-muted-foreground opacity-60 hover:opacity-100 hover:text-foreground"
+                                            ? "text-accent opacity-100"
+                                            : "text-primary-foreground/60 opacity-60 hover:opacity-100 hover:text-primary-foreground"
                                             }`}
                                     >
                                         {cat.label}
-                                        <span className={`absolute -bottom-1 left-0 w-full h-px bg-primary transition-transform duration-300 origin-left ${activeFilter === cat.value ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
+                                        <span className={`absolute -bottom-1 left-0 w-full h-px bg-accent transition-transform duration-300 origin-left ${activeFilter === cat.value ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
                                             }`} />
                                     </button>
                                 ))}
@@ -107,12 +107,12 @@ const PortfolioSection = () => {
                                     />
                                 </div>
                                 {/* Hover overlay */}
-                                <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/60 transition-all duration-500 flex items-end p-6">
+                                <div className="absolute inset-0 bg-background/0 group-hover:bg-background/80 transition-all duration-500 flex items-end p-6">
                                     <div className="translate-y-6 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
-                                        <span className="font-body text-[10px] tracking-[0.4em] uppercase text-primary-foreground/70">
+                                        <span className="font-body text-[10px] tracking-[0.4em] uppercase text-foreground/70">
                                             {item.category}
                                         </span>
-                                        <p className="font-editorial text-xl text-primary-foreground mt-1">
+                                        <p className="font-editorial text-xl text-foreground mt-1">
                                             {item.alt}
                                         </p>
                                     </div>
@@ -127,7 +127,7 @@ const PortfolioSection = () => {
                     <div className="flex justify-center mt-16">
                         <button
                             onClick={() => setVisibleCount(prev => prev + 6)}
-                            className="font-body text-xs tracking-[0.3em] uppercase text-muted-foreground hover:text-foreground border-b border-border hover:border-foreground pb-2 transition-all duration-300"
+                            className="font-body text-xs tracking-[0.3em] uppercase text-primary-foreground/70 hover:text-primary-foreground border-b border-primary-foreground/20 hover:border-accent pb-2 transition-all duration-300"
                         >
                             Show More
                         </button>
@@ -142,7 +142,7 @@ const PortfolioSection = () => {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        className="fixed inset-0 z-50 bg-primary/95 backdrop-blur-sm flex items-center justify-center p-6 md:p-12"
+                        className="fixed inset-0 z-50 bg-background/95 backdrop-blur-sm flex items-center justify-center p-6 md:p-12"
                         onClick={() => setLightboxImage(null)}
                     >
                         <motion.img
@@ -157,16 +157,16 @@ const PortfolioSection = () => {
                         />
                         <button
                             onClick={() => setLightboxImage(null)}
-                            className="absolute top-6 right-6 text-primary-foreground/70 hover:text-primary-foreground transition-colors"
+                            className="absolute top-6 right-6 text-foreground/70 hover:text-foreground transition-colors"
                             aria-label="Close lightbox"
                         >
                             <X size={28} strokeWidth={1} />
                         </button>
                         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 text-center">
-                            <span className="font-body text-[10px] tracking-[0.4em] uppercase text-primary-foreground/50">
+                            <span className="font-body text-[10px] tracking-[0.4em] uppercase text-foreground/50">
                                 {lightboxImage.category}
                             </span>
-                            <p className="font-editorial text-xl text-primary-foreground/80 mt-1">
+                            <p className="font-editorial text-xl text-foreground/80 mt-1">
                                 {lightboxImage.alt}
                             </p>
                         </div>

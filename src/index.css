@@ -176,7 +176,7 @@
   }
 
   .image-editorial {
-    @apply grayscale hover:grayscale-0 transition-all duration-700 ease-out;
+    @apply transition-all duration-700 ease-out;
   }
 
   .nav-link-editorial {
