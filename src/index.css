@@ -7,12 +7,13 @@
 @layer base {
   :root {
     /* Primary: #043222 -> HSL(159, 85%, 11%) */
-    --primary: 159 85% 11%; 
+    --primary: 159 85% 11%;
     --primary-foreground: 33 62% 91%;
 
     /* Background: #f6e9d9 -> HSL(33, 62%, 91%) - Cream background */
     --background: 33 62% 91%;
-    --foreground: 159 85% 11%; /* Use dark green primary for foreground text on cream */
+    --foreground: 159 85% 11%;
+    /* Use dark green primary for foreground text on cream */
 
     /* Card: Match slightly lighter shade of background or simple cream */
     --card: 33 62% 93%;
@@ -40,16 +41,20 @@
     /* Border/Input/Ring */
     --border: 153 20% 88%;
     --input: 153 20% 88%;
-    --ring: 153 60% 12%; /* Primary color for focus rings */
+    --ring: 153 60% 12%;
+    /* Primary color for focus rings */
 
     --radius: 0rem;
 
     /* Sidebar: #082015 -> HSL(153, 60%, 8%) - Slightly darker than primary */
     --sidebar-background: 153 60% 8%;
-    --sidebar-foreground: 153 10% 90%; /* Light text */
-    --sidebar-primary: 38 45% 60%; /* Gold highlight for active items */
+    --sidebar-foreground: 153 10% 90%;
+    /* Light text */
+    --sidebar-primary: 38 45% 60%;
+    /* Gold highlight for active items */
     --sidebar-primary-foreground: 153 60% 12%;
-    --sidebar-accent: 153 60% 15%; /* Lighter green for hover */
+    --sidebar-accent: 153 60% 15%;
+    /* Lighter green for hover */
     --sidebar-accent-foreground: 0 0% 100%;
     --sidebar-border: 153 60% 15%;
     --sidebar-ring: 38 45% 60%;
@@ -63,62 +68,48 @@
   }
 
   .dark {
-    /* Dark Mode Background: #05140D -> HSL(153, 60%, 5%) */
-    --background: 153 60% 5%;
-    --foreground: 153 10% 90%;
+    /* Dark Mode Background: Darkened version of Primary #043222 -> HSL(159, 85%, 5%) */
+    --background: 159 85% 5%;
+    --foreground: 33 62% 91%;
+    /* Cream foreground for contrast */
 
-    /* Card: #082015 -> HSL(153, 60%, 8%) */
-    --card: 153 60% 8%;
-    --card-foreground: 153 10% 90%;
+    /* Card: Slightly lighter dark green */
+    --card: 159 85% 7%;
+    --card-foreground: 33 62% 91%;
 
     /* Popover: Match Background */
-    --popover: 153 60% 5%;
-    --popover-foreground: 153 10% 90%;
+    --popover: 159 85% 5%;
+    --popover-foreground: 33 62% 91%;
 
-    /* Primary: #0C2F1F -> HSL(153, 60%, 12%) - kept as brand color, maybe lighter for dark mode? */
-    /* Let's use a slightly lighter version for dark mode primary elements if needed, 
-       but for brand consistency "Primary" usually stays the brand color. 
-       However, dark mode usually needs lighter accents. 
-       Let's use the Gold accent as the primary interactive color in dark mode, 
-       OR keep the Green but make it stand out. 
-       Actually, standard is to invert. 
-       Let's stick to the requested #0C2F1F as global primary, 
-       but for dark mode UI elements, we often need contrast. 
-       If background is #05140D (very dark green), #0C2F1F is visible but low contrast.
-       Let's make Primary Lighter in Dark Mode: #2D6B4E (HSL 153, 40%, 30%) 
-       OR Keep consistent brand. 
-       The prompt says "Set #0C2F1F as Primary brand color". 
-       I will set --primary to the brand color, but ensure foreground has contrast.
-       If background is dark, primary might need to be 153 50% 40% for visibility.
-    */
-    --primary: 153 50% 40%; /* Lighter green for visibility on dark bg */
-    --primary-foreground: 0 0% 100%;
+    /* Primary: Brand Color #043222 -> HSL(159, 85%, 11%) */
+    --primary: 159 85% 11%;
+    --primary-foreground: 33 62% 91%;
 
-    /* Secondary: #1A3D2F -> HSL(153, 40%, 17%) */
-    --secondary: 153 40% 17%;
-    --secondary-foreground: 153 10% 90%;
+    /* Secondary: Muted dark green */
+    --secondary: 159 40% 12%;
+    --secondary-foreground: 159 10% 90%;
 
-    /* Muted: #112920 -> HSL(153, 40%, 12%) */
-    --muted: 153 40% 12%;
-    --muted-foreground: 153 10% 60%;
+    /* Muted: Deeper dark green */
+    --muted: 159 40% 8%;
+    --muted-foreground: 159 10% 60%;
 
     --accent: 38 45% 60%;
-    --accent-foreground: 153 60% 5%;
+    --accent-foreground: 159 85% 5%;
 
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 153 40% 15%;
-    --input: 153 40% 15%;
-    --ring: 153 50% 40%;
+    --border: 159 40% 15%;
+    --input: 159 40% 15%;
+    --ring: 159 85% 11%;
 
-    --sidebar-background: 153 60% 5%;
-    --sidebar-foreground: 153 10% 90%;
+    --sidebar-background: 159 85% 4%;
+    --sidebar-foreground: 159 10% 90%;
     --sidebar-primary: 38 45% 60%;
-    --sidebar-primary-foreground: 153 60% 5%;
-    --sidebar-accent: 153 40% 12%;
-    --sidebar-accent-foreground: 153 10% 90%;
-    --sidebar-border: 153 40% 15%;
+    --sidebar-primary-foreground: 159 85% 5%;
+    --sidebar-accent: 159 40% 12%;
+    --sidebar-accent-foreground: 159 10% 90%;
+    --sidebar-border: 159 40% 15%;
     --sidebar-ring: 38 45% 60%;
   }
 }

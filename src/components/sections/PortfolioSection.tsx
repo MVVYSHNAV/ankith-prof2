@@ -21,7 +21,12 @@ const { items: portfolioItems, categories } = portfolioData;
 const PortfolioSection = () => {
     const [activeFilter, setActiveFilter] = useState<string>("all");
     const [lightboxImage, setLightboxImage] = useState<PortfolioItem | null>(null);
-    const [visibleCount, setVisibleCount] = useState<number>(6);
+    const [visibleCount, setVisibleCount] = useState<number>(() => {
+        if (typeof window !== 'undefined') {
+            return window.innerWidth < 640 ? 3 : 6;
+        }
+        return 6;
+    });
     const gridRef = useRef<HTMLDivElement>(null);
 
     const filteredItems = activeFilter === "all"
@@ -32,7 +37,8 @@ const PortfolioSection = () => {
 
     // Reset visible count when filter changes
     useEffect(() => {
-        setVisibleCount(6);
+        const initialCount = window.innerWidth < 640 ? 3 : 6;
+        setVisibleCount(initialCount);
     }, [activeFilter]);
 
     // GSAP animation removed to prevent conflict with Framer Motion

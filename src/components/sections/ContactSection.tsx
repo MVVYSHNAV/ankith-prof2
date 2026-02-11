@@ -29,7 +29,7 @@ const ContactSection = () => {
     };
 
     return (
-        <section id="contact" ref={sectionRef} className="py-32 md:py-40 section-padding bg-primary text-primary-foreground">
+        <section id="contact" ref={sectionRef} className="py-32 md:py-40 section-padding bg-primary dark:bg-background transition-colors duration-500 text-primary-foreground dark:text-foreground">
             <div className="max-w-7xl mx-auto">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 lg:gap-32">
                     {/* Left - Info */}
