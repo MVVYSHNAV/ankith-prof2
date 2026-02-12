@@ -118,6 +118,14 @@ const Navigation = () => {
                         >
                             Resume
                         </motion.button>
+                        <motion.div
+                            initial={{ opacity: 0, y: 30 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: 30 }}
+                            transition={{ delay: (navItems.length + 1) * 0.1, duration: 0.4 }}
+                        >
+                            <ModeToggle />
+                        </motion.div>
                     </motion.div>
                 )}
             </AnimatePresence>
