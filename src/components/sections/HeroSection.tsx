@@ -1,7 +1,7 @@
 import { useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import gsap from "gsap";
-import heroImage from "@/assets/images/10.jpeg";
+import heroImage from "@/assets/images/6.jpeg";
 
 const HeroSection = () => {
     const heroRef = useRef<HTMLDivElement>(null);
@@ -55,56 +55,82 @@ const HeroSection = () => {
     return (
         <section ref={heroRef} className="relative h-screen w-full overflow-hidden">
             {/* Background Image */}
-            <div className="absolute inset-0">
+            <div className="absolute top-[-7.5vh] left-0 w-full h-[115vh] overflow-hidden">
                 <img
                     ref={imageRef}
                     src={heroImage}
-                    alt="Ankith Madhav - Fashion Model on Runway"
-                    className="w-full h-full object-cover object-top will-change-transform"
+                    alt="Ankith Madhav - Fashion Model"
+                    className="w-full h-full object-cover object-[center_15%] will-change-transform"
                     loading="eager"
                 />
-                <div className="absolute inset-0 bg-gradient-to-b from-primary/40 via-primary/20 to-background" />
+                <div className="absolute inset-0 bg-gradient-to-b from-primary/30 via-transparent to-background/90" />
+                <div className="absolute inset-0 bg-black/10" />
             </div>
 
             {/* Content */}
-            <div className="relative z-10 h-full flex flex-col justify-end pb-20 md:pb-28 section-padding">
-                <div className="overflow-hidden">
-                    <h1 className="hero-line font-display text-6xl sm:text-7xl md:text-8xl lg:text-9xl xl:text-[10rem] font-light tracking-[0.08em] uppercase text-white leading-[0.9]">
-                        Ankith
-                    </h1>
-                </div>
-                <div className="overflow-hidden mt-2">
-                    <h1 className="hero-line font-display text-6xl sm:text-7xl md:text-8xl lg:text-9xl xl:text-[10rem] font-light tracking-[0.08em] uppercase text-white leading-[0.9]">
-                        Madhav
-                    </h1>
+            <div className="relative z-10 h-full flex flex-col justify-end pb-12 md:pb-24 lg:pb-32 section-padding">
+                <div className="flex flex-col lg:gap-2">
+                    <div className="overflow-hidden">
+                        <h1 className="hero-line font-display text-7xl sm:text-8xl md:text-9xl lg:text-[11rem] xl:text-[13rem] 2xl:text-[16rem] font-light tracking-[-0.02em] uppercase text-white leading-[0.85]">
+                            Ankith
+                        </h1>
+                    </div>
+                    <div className="overflow-hidden lg:pl-[20%] xl:pl-[25%]">
+                        <h1 className="hero-line font-display text-7xl sm:text-8xl md:text-9xl lg:text-[11rem] xl:text-[13rem] 2xl:text-[16rem] font-light tracking-[-0.02em] uppercase text-white leading-[0.85]">
+                            Madhav
+                        </h1>
+                    </div>
                 </div>
 
-                <div className="mt-8 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6">
-                    <div className="max-w-md">
-                        <p className="hero-subtitle font-editorial text-xl md:text-2xl text-foreground/90 italic tracking-wide mb-2">
+                <div className="mt-10 lg:mt-16 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-8">
+                    <div className="max-w-md lg:max-w-lg">
+                        <p className="hero-subtitle font-editorial text-2xl md:text-3xl lg:text-4xl text-white/90 italic tracking-tight mb-4 leading-tight">
                             "Man is genius when he is dreaming."
                         </p>
-                        <p className="hero-subtitle font-body text-sm tracking-[0.2em] uppercase text-foreground/70">
+                        <div className="h-px w-12 bg-accent/60 mb-4" />
+                        <p className="hero-subtitle font-body text-xs lg:text-sm tracking-[0.3em] uppercase text-white/60">
                             Fashion & Commercial Model
                         </p>
                     </div>
                     <a
                         href="#contact"
-                        className="hero-cta font-body text-xs tracking-[0.3em] uppercase text-foreground/80 hover:text-foreground border-b border-foreground/30 hover:border-foreground pb-2 transition-all duration-300 self-start sm:self-auto"
+                        className="hero-cta group relative inline-flex items-center gap-4 py-2"
                     >
-                        Contact Me
+                        <span className="font-body text-xs lg:text-sm tracking-[0.4em] uppercase text-white/80 group-hover:text-white transition-colors duration-500">
+                            Contact Me
+                        </span>
+                        <span className="w-8 lg:w-12 h-[1px] bg-white/30 group-hover:w-16 group-hover:bg-accent transition-all duration-500" />
                     </a>
                 </div>
 
                 {/* Scroll indicator */}
                 <motion.div
-                    className="hero-scroll absolute bottom-8 left-1/2 -translate-x-1/2"
+                    className="hero-scroll absolute bottom-8 left-1/2 -translate-x-1/2 lg:left-auto lg:right-12 lg:translate-x-0"
                     animate={{ y: [0, 10, 0] }}
                     transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
                 >
-                    <div className="w-px h-12 bg-white/50" />
+                    <div className="flex flex-col items-center gap-4">
+                        <span className="font-body text-[10px] tracking-[0.2em] uppercase text-white/40 vertical-text hidden lg:block">
+                            Scroll
+                        </span>
+                        <div className="w-px h-12 bg-white/20 relative overflow-hidden">
+                            <motion.div
+                                className="absolute top-0 left-0 w-full h-1/2 bg-accent"
+                                animate={{ top: ["-50%", "100%"] }}
+                                transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
+                            />
+                        </div>
+                    </div>
                 </motion.div>
             </div>
+
+            <style dangerouslySetInnerHTML={{
+                __html: `
+                .vertical-text {
+                    writing-mode: vertical-rl;
+                    text-orientation: mixed;
+                }
+            `}} />
         </section>
     );
 };
