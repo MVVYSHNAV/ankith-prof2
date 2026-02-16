@@ -81,7 +81,7 @@ const ContactSection = () => {
                             >
                                 <Instagram size={18} strokeWidth={1} className="text-accent" />
                                 <span className="font-body text-sm tracking-[0.15em] text-primary-foreground/70 group-hover:text-primary-foreground transition-colors">
-                                    @ankitmadhav
+                                    @ankithmadhav
                                 </span>
                             </a>
                         </div>

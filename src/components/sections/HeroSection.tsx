@@ -71,12 +71,12 @@ const HeroSection = () => {
             <div className="relative z-10 h-full flex flex-col justify-end pb-12 md:pb-24 lg:pb-32 section-padding">
                 <div className="flex flex-col lg:gap-2">
                     <div className="overflow-hidden">
-                        <h1 className="hero-line font-display text-7xl sm:text-8xl md:text-9xl lg:text-[11rem] xl:text-[13rem] 2xl:text-[16rem] font-light tracking-[-0.02em] uppercase text-white leading-[0.85]">
+                        <h1 className="hero-line font-display text-7xl sm:text-8xl md:text-9xl lg:text-[11rem] xl:text-[13rem] 2xl:text-[16rem] font-light tracking-[-0.02em] uppercase text-white leading-[0.85] pr-2">
                             Ankith
                         </h1>
                     </div>
-                    <div className="overflow-hidden lg:pl-[20%] xl:pl-[25%]">
-                        <h1 className="hero-line font-display text-7xl sm:text-8xl md:text-9xl lg:text-[11rem] xl:text-[13rem] 2xl:text-[16rem] font-light tracking-[-0.02em] uppercase text-white leading-[0.85]">
+                    <div className="overflow-hidden lg:pl-[10%] xl:pl-[12%]">
+                        <h1 className="hero-line font-display text-7xl sm:text-8xl md:text-9xl lg:text-[11rem] xl:text-[13rem] 2xl:text-[16rem] font-light tracking-[-0.02em] uppercase text-white leading-[0.85] pr-4">
                             Madhav
                         </h1>
                     </div>
