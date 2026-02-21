@@ -24,7 +24,7 @@ const AboutSection = () => {
                         <img
                             src={image}
                             alt="Ankith Madhav Portrait"
-                            className="w-full aspect-[3/4] object-cover grayscale hover:grayscale-0 transition-all duration-700"
+                            className="w-full aspect-[3/4] object-cover transition-all duration-700"
                         />
                     </motion.div>
                     <div className="absolute top-10 -left-10 w-full h-full border border-foreground/10 -z-10 hidden md:block" />

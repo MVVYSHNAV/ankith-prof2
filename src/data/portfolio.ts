@@ -32,6 +32,13 @@ export const portfolioData = {
     ],
     "items": [
         {
+            "id": 2,
+            "src": img2,
+            "alt": "Ankith Madhav - Milan Fashion Week FW24",
+            "category": "ramp",
+            "aspect": "tall"
+        },
+        {
             "id": 1,
             "src": img1,
             "alt": "Ankith Madhav - Vogue Beauty Editorial",
@@ -39,10 +46,24 @@ export const portfolioData = {
             "aspect": "square"
         },
         {
-            "id": 2,
-            "src": img2,
-            "alt": "Ankith Madhav - Milan Fashion Week FW24",
+            "id": 7,
+            "src": img7,
+            "alt": "Ankith Madhav - Fine Art Portrait Series",
+            "category": "fashion",
+            "aspect": "tall"
+        },
+        {
+            "id": 6,
+            "src": img6,
+            "alt": "Ankith Madhav - Runway Finale Look",
             "category": "ramp",
+            "aspect": "wide"
+        },
+        {
+            "id": 5,
+            "src": img5,
+            "alt": "Ankith Madhav - Street Style Editorial",
+            "category": "fashion",
             "aspect": "tall"
         },
         {
@@ -57,27 +78,6 @@ export const portfolioData = {
             "src": img4,
             "alt": "Ankith Madhav - Dior Haute Couture",
             "category": "campaigns",
-            "aspect": "tall"
-        },
-        {
-            "id": 5,
-            "src": img5,
-            "alt": "Ankith Madhav - Street Style Editorial",
-            "category": "fashion",
-            "aspect": "tall"
-        },
-        {
-            "id": 6,
-            "src": img6,
-            "alt": "Ankith Madhav - Runway Finale Look",
-            "category": "ramp",
-            "aspect": "wide"
-        },
-        {
-            "id": 7,
-            "src": img7,
-            "alt": "Ankith Madhav - Fine Art Portrait Series",
-            "category": "fashion",
             "aspect": "tall"
         },
         {
