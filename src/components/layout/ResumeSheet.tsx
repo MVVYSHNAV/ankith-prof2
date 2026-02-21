@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import resumeData from "@/data/resume.json";
-import { Download, X } from "lucide-react";
+import { X } from "lucide-react";
 
 interface ResumeSheetProps {
     isOpen: boolean;
@@ -71,14 +71,6 @@ const ResumeSheet = ({ isOpen, onClose }: ResumeSheetProps) => {
                                             Resume <span className="font-editorial italic normal-case tracking-wide">& Credits</span>
                                         </h2>
                                     </div>
-                                    <a
-                                        href="/Ankith_Resume.pdf"
-                                        download
-                                        className="w-fit group flex items-center gap-3 px-6 py-3 bg-foreground text-background font-body text-xs tracking-widest uppercase hover:bg-accent hover:text-foreground transition-all duration-300"
-                                    >
-                                        <Download className="w-4 h-4 group-hover:-translate-y-1 transition-transform duration-300" />
-                                        Download Resume
-                                    </a>
                                 </div>
 
                                 {/* Personal Stats Grid */}
