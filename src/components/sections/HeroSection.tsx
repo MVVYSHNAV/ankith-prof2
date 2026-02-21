@@ -89,7 +89,7 @@ const HeroSection = () => {
                         </p>
                         <div className="h-px w-12 bg-accent/60 mb-4" />
                         <p className="hero-subtitle font-body text-xs lg:text-sm tracking-[0.3em] uppercase text-white/60">
-                            Fashion & Commercial Model
+                            Actor
                         </p>
                     </div>
                     <a
