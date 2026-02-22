@@ -11,11 +11,14 @@
         },
         {
             "id": 2,
-            "title": "Rocketry",
+            "title": "Rocketry: The Nambi Effect",
             "role": "Veer",
             "duration": "2020",
             "description": "Directed by R Madhavan",
-            "note": "Feature Film"
+            "note": "Feature Film",
+            "streamingUrl": "https://www.primevideo.com/detail/Rocketry---The-Nambi-Effect/0H1J8J3YQ0FTX16XWIULG1GZ6K",
+            "streamingProvider": "prime",
+            "thumbnailUrl": "https://m.media-amazon.com/images/M/MV5BODkyMDUwNWUtOWMxNC00YWZlLWE4MjAtNDZjYTgyN2VmOGJhXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg"
         },
         {
             "id": 3,
@@ -23,39 +26,32 @@
             "role": "Sreekanth",
             "duration": "2018",
             "description": "Directed by Bijoy Nambiyar",
-            "note": "Feature Film"
+            "note": "Feature Film",
+            "streamingUrl": "https://www.sunnxt.com/malayalam-movie-solo-2017/detail/72261",
+            "streamingProvider": "sunnxt",
+            "thumbnailUrl": "https://m.media-amazon.com/images/M/MV5BOGRhNTUyOTQtNTk2YS00YTQ2LTgyN2YtNjNlYzA0N2VmZDc5XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg"
         },
         {
-            "id": 4,
-            "title": "Namboothiri Yuvavu @ 43",
-            "role": "Balu",
-            "duration": "2017",
-            "description": "Directed by Mahesh Sharma",
-            "note": "Feature Film"
+            "id": 8,
+            "title": "Kannur Squad",
+            "role": "Actor",
+            "duration": "2023",
+            "description": "Directed by Roby Varghese Raj",
+            "note": "Feature Film",
+            "streamingUrl": "https://www.hotstar.com/in/movies/kannur-squad/1260156780",
+            "streamingProvider": "hotstar",
+            "thumbnailUrl": "https://m.media-amazon.com/images/M/MV5BZTE4Y2NiYTQtODM1OC00NTQ4LTllOTItMzQwYWExOTRlNzhkXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg"
         },
         {
-            "id": 5,
-            "title": "Ordinary",
-            "role": "Post Master",
-            "duration": "2016",
-            "description": "Directed by Sugeet",
-            "note": "Feature Film"
-        },
-        {
-            "id": 6,
-            "title": "Karmayodha",
-            "role": "Yosuph Patel",
-            "duration": "2015",
-            "description": "Directed by Major Ravi",
-            "note": "Feature Film"
-        },
-        {
-            "id": 7,
-            "title": "Chekavar",
-            "role": "Roy",
-            "duration": "2014",
-            "description": "Directed by Sajeevan",
-            "note": "Feature Film"
+            "id": 9,
+            "title": "Poacher",
+            "role": "Actor",
+            "duration": "2024",
+            "description": "Directed by Richie Mehta",
+            "note": "Feature Film / Series",
+            "streamingUrl": "https://www.primevideo.com/detail/Poacher/0IEFW7LFDJ48SF6LPXYAN6S6US",
+            "streamingProvider": "prime",
+            "thumbnailUrl": "https://m.media-amazon.com/images/M/MV5BYjYwNjBjNWYtNGQyZS00YmE4LWFlMTktMDdjOGUyNTg3MDg2XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg"
         }
     ],
     "videos": [
