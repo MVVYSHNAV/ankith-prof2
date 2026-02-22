@@ -9,7 +9,7 @@ export const careerData = {
         "Digital & Social Media Campaigns"
     ],
     "timeline": {
-        "startYear": "2000",
+        "startYear": "2010",
         "endYear": "Present"
     },
     "highlightImage": img9
