@@ -56,16 +56,6 @@
     ],
     "videos": [
         {
-            "id": "v1",
-            "url": "https://youtu.be/6zeeDepEkkc?si=EPu7p1IkfDO9mtUz",
-            "title": "Karimizhi Kuruviye | Meesha Madhavan"
-        },
-        {
-            "id": "v2",
-            "url": "https://youtu.be/qGfsj6QAiww?si=Y8qqrc2xcn-g_lb5",
-            "title": "Akakkannile Pranayam | Short Film"
-        },
-        {
             "id": "v3",
             "url": "https://youtu.be/SI1zP8Y1e1U?si=CpfKTQkHIczySLLD",
             "title": "Modern Kitchen for Modern Minds | Sleek"

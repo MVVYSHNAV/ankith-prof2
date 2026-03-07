@@ -37,9 +37,9 @@ const AboutSection = () => {
                             About
                         </span>
                         <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-light tracking-[0.05em] uppercase mt-4 leading-tight">
-                            Bold <br />
+                            <br />
                             <span className="font-editorial italic normal-case tracking-wide">
-                                Charisma
+                                The Panache Factor
                             </span>
                         </h2>
                     </div>

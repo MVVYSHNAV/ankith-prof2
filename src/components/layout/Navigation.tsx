@@ -5,9 +5,7 @@ import ResumeSheet from "@/components/layout/ResumeSheet";
 
 const navItems = [
     { label: "About", href: "#about" },
-    { label: "Career", href: "#career" },
     { label: "Filmography", href: "#filmography" },
-    { label: "Portfolio", href: "#portfolio" },
     { label: "Contact", href: "#contact" },
 ];
 

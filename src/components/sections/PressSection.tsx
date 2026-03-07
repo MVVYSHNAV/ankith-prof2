@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, AnimatePresence } from "framer-motion";
+import { Play, X, ChevronLeft, ChevronRight } from "lucide-react";
 import filmographyData from "@/data/filmography.json";
 
 /* ─── Video helpers ─── */
@@ -233,200 +234,320 @@ const StreamingCard = ({
 /* ─── Main section ─── */
 const PressSection = () => {
     const sectionRef = useRef<HTMLElement>(null);
+    const scrollContainerRef = useRef<HTMLDivElement>(null);
     const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
 
-    const [currentIndex, setCurrentIndex] = useState(0);
     const [selectedVideo, setSelectedVideo] = useState<{ id: string; url: string; title?: string } | null>(null);
+    const [currentIndex, setCurrentIndex] = useState(0);
 
     // @ts-ignore
     const projects = filmographyData.projects;
     // @ts-ignore
     const videos: any[] = filmographyData.videos || [];
-    const currentProject = projects[currentIndex];
 
-    const nextProject = () => setCurrentIndex((p) => (p + 1) % projects.length);
-    const prevProject = () => setCurrentIndex((p) => (p - 1 + projects.length) % projects.length);
+    // Explicitly separate Showreel and Films
+    const showreelProject = projects.find((p: any) => p.title.toLowerCase().includes("showreel")) || projects[0];
+    const filmProjects = projects.filter((p: any) => p !== showreelProject);
+
+    const currentFilm = filmProjects[currentIndex];
+
+    const nextProject = () => setCurrentIndex((p) => (p + 1) % filmProjects.length);
+    const prevProject = () => setCurrentIndex((p) => (p - 1 + filmProjects.length) % filmProjects.length);
 
     return (
-        <section id="filmography" ref={sectionRef} className="py-24 md:py-32 lg:py-40 section-padding bg-background">
-            <div className="max-w-7xl mx-auto">
+        <>
+            <section id="filmography" ref={sectionRef} className="py-24 md:py-32 lg:py-40 section-padding bg-primary text-primary-foreground">
+                <div className="max-w-7xl mx-auto">
 
-                {/* ── Header ── */}
-                <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={isInView ? { opacity: 1, y: 0 } : {}}
-                    transition={{ duration: 0.8 }}
-                    className="mb-12 md:mb-16 lg:mb-24"
-                >
-                    <span className="font-body text-xs tracking-[0.4em] uppercase text-muted-foreground">
-                        Filmography
-                    </span>
-                    <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-light tracking-[0.05em] uppercase mt-4">
-                        Featured <span className="font-editorial italic normal-case tracking-wide">Project</span>
-                    </h2>
-                </motion.div>
-
-                {/* ── Featured project ── */}
-                <div className="flex flex-col lg:flex-row gap-8 lg:gap-16 xl:gap-20 items-start">
-
-                    {/* Left: Project info */}
-                    <motion.div
-                        key={currentProject.id}
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={isInView ? { opacity: 1, x: 0 } : {}}
-                        transition={{ duration: 0.8, delay: 0.2 }}
-                        className="w-full lg:flex-1 space-y-5 md:space-y-7"
-                    >
-                        <div className="space-y-2">
-                            <h3 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl uppercase leading-none break-words">
-                                {currentProject.title}
-                            </h3>
-                            <div className="flex flex-wrap items-center gap-3 sm:gap-5 text-muted-foreground mt-3">
-                                <span className="font-body text-xs sm:text-sm tracking-[0.2em] uppercase">{currentProject.role}</span>
-                                <span className="w-1 h-1 bg-muted-foreground rounded-full" />
-                                <span className="font-body text-xs sm:text-sm tracking-[0.2em] uppercase">{currentProject.duration}</span>
-                            </div>
-                        </div>
-
-                        <div className="space-y-3 max-w-md">
-                            <p className="font-editorial text-base sm:text-lg md:text-xl lg:text-2xl italic leading-relaxed text-foreground/80">
-                                {currentProject.description}
-                            </p>
-                            <p className="font-body text-sm text-muted-foreground leading-relaxed">
-                                {currentProject.note}
-                            </p>
-                        </div>
-
-                        {/* Streaming badge below description */}
-                        {/* @ts-ignore */}
-                        {currentProject.streamingUrl && currentProject.streamingProvider && (
-                            <StreamingBadge
-                                // @ts-ignore
-                                provider={currentProject.streamingProvider as StreamingProvider}
-                                // @ts-ignore
-                                url={currentProject.streamingUrl}
-                            />
-                        )}
-
-                        {/* Prev / Next */}
-                        <div className="pt-5 flex items-center justify-between border-t border-border">
-                            <span className="font-body text-xs tracking-[0.2em] text-muted-foreground">
-                                {(currentIndex + 1).toString().padStart(2, "0")} / {projects.length.toString().padStart(2, "0")}
-                            </span>
-                            <div className="flex gap-6">
-                                <button
-                                    onClick={prevProject}
-                                    className="font-body text-xs tracking-[0.3em] uppercase hover:text-accent transition-colors py-1"
-                                >
-                                    Prev
-                                </button>
-                                <button
-                                    onClick={nextProject}
-                                    className="font-body text-xs tracking-[0.3em] uppercase hover:text-accent transition-colors py-1"
-                                >
-                                    Next
-                                </button>
-                            </div>
-                        </div>
-                    </motion.div>
-
-                    {/* Right: YouTube video OR streaming poster card — always aspect-video (16/9) */}
-                    <motion.div
-                        key={`media-${currentProject.id}`}
-                        initial={{ opacity: 0, scale: 0.97 }}
-                        animate={isInView ? { opacity: 1, scale: 1 } : {}}
-                        transition={{ duration: 0.8, delay: 0.4 }}
-                        className="w-full lg:flex-1 aspect-video relative overflow-hidden rounded-xl border border-border/30 bg-secondary/20"
-                    >
-                        {/* @ts-ignore */}
-                        {currentProject.videoUrl ? (
-                            <iframe
-                                width="100%"
-                                height="100%"
-                                // @ts-ignore
-                                src={`https://www.youtube.com/embed/${getYoutubeId(currentProject.videoUrl)}`}
-                                title={currentProject.title}
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                allowFullScreen
-                                className="absolute inset-0 w-full h-full"
-                            />
-                        ) : /* @ts-ignore */ currentProject.streamingUrl ? (
-                            <StreamingCard
-                                title={currentProject.title}
-                                // @ts-ignore
-                                provider={currentProject.streamingProvider as StreamingProvider}
-                                // @ts-ignore
-                                url={currentProject.streamingUrl}
-                                // @ts-ignore
-                                thumbnailUrl={currentProject.thumbnailUrl}
-                            />
-                        ) : null}
-                    </motion.div>
-                </div>
-
-                {/* ── Video gallery (horizontal scroll) ── */}
-                {videos.length > 0 && (
+                    {/* ── Header ── */}
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true, margin: "-50px" }}
-                        transition={{ duration: 0.8, delay: 0.2 }}
-                        className="mt-20 md:mt-28 lg:mt-32"
+                        animate={isInView ? { opacity: 1, y: 0 } : {}}
+                        transition={{ duration: 0.8 }}
+                        className="mb-12 md:mb-16 lg:mb-24"
                     >
-                        <h3 className="font-display text-xl sm:text-2xl md:text-3xl font-light tracking-[0.05em] uppercase mb-8 md:mb-12 text-center">
-                            More <span className="font-editorial italic normal-case tracking-wide">Performances</span>
-                        </h3>
-
-                        <div className="flex overflow-x-auto gap-4 sm:gap-6 pb-6 snap-x snap-mandatory scrollbar-hide -mx-4 px-4 sm:-mx-6 sm:px-6 md:mx-0 md:px-0">
-                            {videos.map((video: any, index: number) => (
-                                <motion.div
-                                    key={video.id}
-                                    initial={{ opacity: 0, x: 20 }}
-                                    whileInView={{ opacity: 1, x: 0 }}
-                                    viewport={{ once: true }}
-                                    transition={{ duration: 0.5, delay: index * 0.08 }}
-                                    className="min-w-[78vw] sm:min-w-[340px] md:min-w-[380px] snap-center shrink-0 aspect-video bg-secondary/30 relative group cursor-pointer overflow-hidden border border-border/50 hover:border-foreground/20 rounded-lg transition-all duration-300"
-                                    onClick={() => setSelectedVideo(video)}
-                                >
-                                    {(() => {
-                                        const details = getVideoDetails(video.url);
-                                        return details ? (
-                                            <img
-                                                src={details.thumbnail}
-                                                alt={video.title}
-                                                className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500"
-                                                onError={(e) => {
-                                                    if (details.type === "youtube") {
-                                                        (e.target as HTMLImageElement).style.display = "none";
-                                                    }
-                                                }}
-                                            />
-                                        ) : (
-                                            <div className="w-full h-full bg-secondary flex items-center justify-center">
-                                                <span className="text-muted-foreground text-xs">Video</span>
-                                            </div>
-                                        );
-                                    })()}
-
-                                    {/* Play overlay */}
-                                    <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/40 transition-colors duration-300">
-                                        <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-background/90 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                                            <div className="w-0 h-0 border-t-[5px] sm:border-t-[6px] border-t-transparent border-l-[9px] sm:border-l-[10px] border-l-foreground border-b-[5px] sm:border-b-[6px] border-b-transparent ml-1" />
-                                        </div>
-                                    </div>
-
-                                    {/* Title */}
-                                    <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4 bg-gradient-to-t from-black/80 to-transparent">
-                                        <p className="font-body text-[10px] sm:text-xs tracking-wide text-white line-clamp-1">
-                                            {video.title}
-                                        </p>
-                                    </div>
-                                </motion.div>
-                            ))}
-                        </div>
+                        <span className="font-body text-xs tracking-[0.4em] uppercase text-primary-foreground/60">
+                            Filmography
+                        </span>
                     </motion.div>
-                )}
-            </div>
+
+                    {/* ── Featured Showreel ── */}
+                    <div className="mb-12 md:mb-16">
+                        <h3 className="font-display text-3xl md:text-4xl lg:text-5xl font-light uppercase tracking-[0.04em] text-primary-foreground leading-none mb-8 sm:mb-12 md:mb-16">
+                            Showreel
+                        </h3>
+                        <div className="flex flex-col lg:flex-row gap-8 lg:gap-16 items-center">
+                            {/* Left: Info */}
+                            <motion.div
+                                initial={{ opacity: 0, x: -20 }}
+                                animate={isInView ? { opacity: 1, x: 0 } : {}}
+                                transition={{ duration: 0.8, delay: 0.2 }}
+                                className="w-full lg:w-1/3 space-y-5"
+                            >
+                                <h4 className="font-display text-2xl sm:text-3xl md:text-4xl uppercase leading-tight">
+                                    {showreelProject.title}
+                                </h4>
+                                <div className="space-y-3">
+                                    <p className="font-editorial text-lg italic text-primary-foreground/90 leading-relaxed">
+                                        {showreelProject.description}
+                                    </p>
+                                    <p className="font-body text-sm text-primary-foreground/60 leading-relaxed">
+                                        {showreelProject.note}
+                                    </p>
+                                </div>
+                            </motion.div>
+
+                            {/* Right: Video Player */}
+                            <motion.div
+                                initial={{ opacity: 0, scale: 0.97 }}
+                                animate={isInView ? { opacity: 1, scale: 1 } : {}}
+                                transition={{ duration: 0.8, delay: 0.4 }}
+                                className="w-full lg:w-2/3 aspect-video relative overflow-hidden rounded-xl border border-primary-foreground/20 bg-primary-foreground/5"
+                            >
+                                <iframe
+                                    width="100%"
+                                    height="100%"
+                                    src={`https://www.youtube.com/embed/${getYoutubeId(showreelProject.videoUrl)}`}
+                                    title={showreelProject.title}
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    allowFullScreen
+                                    className="absolute inset-0 w-full h-full"
+                                />
+                            </motion.div>
+                        </div>
+                    </div>
+
+                    {/* ── Film Credits (Modern Card Swap) ── */}
+                    <div className="mb-12 md:mb-16">
+                        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8 mb-12 md:mb-16">
+                            <h3 className="font-display text-3xl md:text-4xl lg:text-5xl font-light uppercase tracking-[0.04em] text-primary-foreground leading-none">
+                                Film Credits
+                            </h3>
+                            <div className="flex gap-8 items-center">
+                                <span className="font-body text-[10px] tracking-widest text-primary-foreground/40 hidden sm:block">
+                                    SWIPE OR USE NAV
+                                </span>
+                                <div className="flex gap-6">
+                                    <button onClick={prevProject} className="font-body text-[10px] tracking-[0.3em] uppercase hover:text-white transition-colors text-primary-foreground/40">Prev</button>
+                                    <button onClick={nextProject} className="font-body text-[10px] tracking-[0.3em] uppercase hover:text-white transition-colors text-primary-foreground/40">Next</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="relative h-[500px] md:h-[600px] lg:h-[650px] w-full flex items-center justify-center perspective-[1200px]">
+                            <AnimatePresence initial={false}>
+                                {filmProjects.map((project: any, index: number) => {
+                                    const isCurrent = index === currentIndex;
+                                    const isNext = index === (currentIndex + 1) % filmProjects.length;
+
+                                    if (!isCurrent && !isNext) return null;
+
+                                    return (
+                                        <motion.div
+                                            key={project.id}
+                                            style={{ zIndex: isCurrent ? 20 : 10 }}
+                                            initial={{ opacity: 0, scale: 0.8, x: 100, rotateY: 20 }}
+                                            animate={{
+                                                opacity: isCurrent ? 1 : 0.4,
+                                                scale: isCurrent ? 1 : 0.92,
+                                                x: isCurrent ? 0 : 50,
+                                                rotateY: isCurrent ? 0 : -12,
+                                                z: isCurrent ? 0 : -150
+                                            }}
+                                            exit={{
+                                                opacity: 0,
+                                                scale: 0.7,
+                                                x: -300,
+                                                rotateY: -45,
+                                                transition: { duration: 0.5, ease: "easeIn" }
+                                            }}
+                                            transition={{
+                                                type: "spring",
+                                                stiffness: 200,
+                                                damping: 25
+                                            }}
+                                            drag="x"
+                                            dragConstraints={{ left: 0, right: 0 }}
+                                            onDragEnd={(_, info) => {
+                                                if (info.offset.x < -100) nextProject();
+                                                if (info.offset.x > 100) prevProject();
+                                            }}
+                                            className="absolute w-full max-w-5xl h-full cursor-grab active:cursor-grabbing"
+                                        >
+                                            <div className="w-full h-full relative group overflow-hidden rounded-2xl md:rounded-3xl border border-primary-foreground/10 bg-black shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)]">
+                                                <img
+                                                    src={project.thumbnailUrl}
+                                                    alt={project.title}
+                                                    className="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-80 transition-opacity duration-1000"
+                                                />
+
+                                                {/* Vignette Overlay */}
+                                                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
+                                                <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-transparent to-transparent hidden md:block" />
+
+                                                {/* Content - Responsive Padding */}
+                                                <div className="absolute inset-0 flex flex-col justify-end p-6 sm:p-10 md:p-14 lg:p-16">
+                                                    <motion.div
+                                                        initial={{ opacity: 0, x: -30 }}
+                                                        animate={{ opacity: 1, x: 0 }}
+                                                        transition={{ delay: 0.3 }}
+                                                        className="max-w-3xl"
+                                                    >
+                                                        <div className="flex items-center gap-4 mb-3 md:mb-5">
+                                                            <div className="flex items-center gap-2">
+                                                                <span className="w-1.5 h-1.5 rounded-full bg-white/40 animate-pulse" />
+                                                                <span className="text-[10px] tracking-[0.3em] font-body uppercase text-white/50">
+                                                                    {project.role}
+                                                                </span>
+                                                            </div>
+                                                            <span className="text-[10px] tracking-[0.3em] font-body uppercase text-white/20">•</span>
+                                                            <span className="text-[10px] tracking-[0.3em] font-body uppercase text-white/50">
+                                                                {project.duration}
+                                                            </span>
+                                                        </div>
+
+                                                        <h4 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl uppercase text-white mb-2 sm:mb-4 leading-[0.85] tracking-tight">
+                                                            {project.title}
+                                                        </h4>
+
+                                                        <p className="font-editorial text-lg sm:text-xl md:text-2xl italic text-white/70 leading-relaxed mb-6 line-clamp-3 md:line-clamp-none">
+                                                            {project.description}
+                                                        </p>
+
+                                                        {project.note && (
+                                                            <p className="font-body text-[10px] sm:text-xs tracking-[0.25em] uppercase text-white/30 mb-8 sm:mb-12">
+                                                                {project.note}
+                                                            </p>
+                                                        )}
+
+                                                        <div className="flex flex-wrap items-center gap-8 sm:gap-12">
+                                                            {project.streamingUrl && (
+                                                                <a
+                                                                    href={project.streamingUrl}
+                                                                    target="_blank"
+                                                                    className="flex items-center gap-5 group/btn"
+                                                                >
+                                                                    <div className="w-12 h-12 md:w-14 md:h-14 rounded-full border border-white/20 flex items-center justify-center bg-white/5 group-hover/btn:bg-white group-hover/btn:text-black transition-all duration-500 group-hover/btn:scale-110">
+                                                                        <Play size={18} fill="currentColor" />
+                                                                    </div>
+                                                                    <div className="flex flex-col">
+                                                                        <span className="text-[8px] tracking-[0.4em] uppercase text-white/30 mb-1.5">Watch Official</span>
+                                                                        <span className="font-body text-[10px] tracking-[0.3em] uppercase text-white group-hover/btn:translate-x-1 transition-transform">Stream Now</span>
+                                                                    </div>
+                                                                </a>
+                                                            )}
+
+                                                            {project.streamingProvider && (
+                                                                <div className="hidden sm:flex flex-col border-l border-white/10 pl-8">
+                                                                    <span className="text-[8px] tracking-[0.4em] uppercase text-white/30 mb-2">Available On</span>
+                                                                    <span className="font-body text-[10px] tracking-[0.3em] uppercase text-white/60">{project.streamingProvider}</span>
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                    </motion.div>
+                                                </div>
+
+                                                {/* Visual Counter */}
+                                                <div className="absolute top-10 right-10 hidden md:flex items-center gap-4">
+                                                    <span className="font-body text-[10px] tracking-[0.4em] text-white/30">
+                                                        {(index + 1).toString().padStart(2, '0')}
+                                                    </span>
+                                                    <div className="h-px w-12 bg-white/10" />
+                                                    <span className="font-body text-[10px] tracking-[0.4em] text-white/60">
+                                                        {filmProjects.length.toString().padStart(2, '0')}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </motion.div>
+                                    );
+                                })}
+                            </AnimatePresence>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* ── Video gallery (More Performances) ── */}
+            {videos.length > 0 && (
+                <section className="py-8 md:py-12 section-padding bg-background text-foreground">
+                    <div className="max-w-7xl mx-auto">
+                        <motion.div
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true, margin: "-50px" }}
+                            transition={{ duration: 0.8, delay: 0.2 }}
+                        >
+                            <h3 className="font-display text-3xl md:text-4xl lg:text-5xl font-light uppercase tracking-[0.04em] text-primary-foreground mb-8 sm:mb-12 md:mb-16">
+                                Random <span className="font-editorial italic normal-case tracking-wide">Adds</span>
+                            </h3>
+
+                            <div className="group/scroll relative">
+                                <div
+                                    ref={scrollContainerRef}
+                                    className="flex overflow-x-auto gap-4 sm:gap-6 pb-6 snap-x snap-mandatory scrollbar-hide -mx-4 px-4 sm:-mx-6 sm:px-6 md:mx-0 md:px-0 scroll-smooth"
+                                >
+                                    {videos.map((video: any, index: number) => (
+                                        <motion.div
+                                            key={video.id}
+                                            initial={{ opacity: 0, x: 20 }}
+                                            whileInView={{ opacity: 1, x: 0 }}
+                                            viewport={{ once: true }}
+                                            transition={{ duration: 0.5, delay: index * 0.08 }}
+                                            className="min-w-[78vw] sm:min-w-[340px] md:min-w-[380px] snap-center shrink-0 aspect-video bg-secondary/30 relative group cursor-pointer overflow-hidden border border-border/50 hover:border-foreground/20 rounded-lg transition-all duration-300"
+                                            onClick={() => setSelectedVideo(video)}
+                                        >
+                                            {(() => {
+                                                const details = getVideoDetails(video.url);
+                                                return details ? (
+                                                    <img
+                                                        src={details.thumbnail}
+                                                        alt={video.title}
+                                                        className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500"
+                                                        onError={(e) => {
+                                                            if (details.type === "youtube") {
+                                                                (e.target as HTMLImageElement).style.display = "none";
+                                                            }
+                                                        }}
+                                                    />
+                                                ) : (
+                                                    <div className="w-full h-full bg-secondary flex items-center justify-center">
+                                                        <span className="text-muted-foreground text-xs">Video</span>
+                                                    </div>
+                                                );
+                                            })()}
+
+                                            <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/40 transition-colors duration-300">
+                                                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-background/90 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                                                    <div className="w-0 h-0 border-t-[5px] sm:border-t-[6px] border-t-transparent border-l-[9px] sm:border-l-[10px] border-l-foreground border-b-[5px] sm:border-b-[6px] border-b-transparent ml-1" />
+                                                </div>
+                                            </div>
+
+                                            <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4 bg-gradient-to-t from-black/80 to-transparent">
+                                                <p className="font-body text-[10px] sm:text-xs tracking-wide text-white line-clamp-1">
+                                                    {video.title}
+                                                </p>
+                                            </div>
+                                        </motion.div>
+                                    ))}
+                                </div>
+
+                                {/* Floating Right Navigation Only */}
+                                <button
+                                    onClick={() => {
+                                        if (scrollContainerRef.current) {
+                                            scrollContainerRef.current.scrollBy({ left: 400, behavior: 'smooth' });
+                                        }
+                                    }}
+                                    className="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-background/40 backdrop-blur-md border border-white/10 flex items-center justify-center text-foreground opacity-0 group-hover/scroll:opacity-100 transition-opacity duration-300 hidden md:flex hover:bg-background/60"
+                                    aria-label="Scroll Right"
+                                >
+                                    <ChevronRight size={24} strokeWidth={1.5} />
+                                </button>
+                            </div>
+                        </motion.div>
+                    </div>
+                </section>
+            )}
 
             {/* ── Video lightbox ── */}
             {selectedVideo && (
@@ -463,7 +584,7 @@ const PressSection = () => {
                     </div>
                 </div>
             )}
-        </section>
+        </>
     );
 };
 

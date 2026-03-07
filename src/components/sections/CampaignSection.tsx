@@ -29,9 +29,9 @@ const CampaignSection = () => {
                             transition={{ duration: 0.8, delay: 0.4 }}
                             className="mt-6 flex flex-col gap-2 items-center"
                         >
-                            <p className="font-editorial italic text-2xl md:text-3xl">
+                            {/* <p className="font-editorial italic text-2xl md:text-3xl">
                                 {timeline.startYear} — {timeline.endYear}
-                            </p>
+                            </p> */}
                         </motion.div>
                     </div>
 
@@ -53,7 +53,7 @@ const CampaignSection = () => {
                     </div>
 
                     {/* Scrolling ticker */}
-                    <div className="bg-foreground text-background py-6 overflow-hidden whitespace-nowrap">
+                    {/* <div className="bg-foreground text-background py-6 overflow-hidden whitespace-nowrap">
                         <motion.div
                             animate={{ x: ["0%", "-50%"] }}
                             transition={{ repeat: Infinity, duration: 30, ease: "linear" }}
@@ -69,7 +69,7 @@ const CampaignSection = () => {
                                 </div>
                             ))}
                         </motion.div>
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </section>
