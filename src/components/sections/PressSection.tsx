@@ -247,7 +247,13 @@ const PressSection = () => {
 
     // Explicitly separate Showreel and Films
     const showreelProject = projects.find((p: any) => p.title.toLowerCase().includes("showreel")) || projects[0];
-    const filmProjects = projects.filter((p: any) => p !== showreelProject);
+    const filmProjects = projects
+        .filter((p: any) => p !== showreelProject)
+        .sort((a: any, b: any) => {
+            const valA = a.importants !== undefined ? a.importants : Infinity;
+            const valB = b.importants !== undefined ? b.importants : Infinity;
+            return valA - valB;
+        });
 
     const currentFilm = filmProjects[currentIndex];
 

@@ -11,6 +11,7 @@
         },
         {
             "id": 2,
+            "importants": 3,
             "title": "Rocketry: The Nambi Effect",
             "role": "Veer",
             "duration": "2020",
@@ -22,6 +23,7 @@
         },
         {
             "id": 3,
+            "importants": 4,
             "title": "Solo",
             "role": "Sreekanth",
             "duration": "2018",
@@ -33,6 +35,7 @@
         },
         {
             "id": 8,
+            "importants": 1,
             "title": "Kannur Squad",
             "role": "Actor",
             "duration": "2023",
@@ -44,6 +47,7 @@
         },
         {
             "id": 9,
+            "importants": 2,
             "title": "Poacher",
             "role": "Actor",
             "duration": "2024",
