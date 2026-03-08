@@ -16,7 +16,7 @@ const AboutSection = () => {
     const { image, quote, bio } = aboutData;
 
     return (
-        <section id="about" ref={containerRef} className="py-32 md:py-40 section-padding">
+        <section id="about" ref={containerRef} className="py-32 md:py-40 section-padding bg-primary text-white transition-colors duration-500">
             <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-16 md:gap-32">
                 {/* Image */}
                 <div className="w-full md:w-1/2 relative">
@@ -27,16 +27,16 @@ const AboutSection = () => {
                             className="w-full aspect-[3/4] object-cover transition-all duration-700"
                         />
                     </motion.div>
-                    <div className="absolute top-10 -left-10 w-full h-full border border-foreground/10 -z-10 hidden md:block" />
+                    <div className="absolute top-10 -left-10 w-full h-full border border-white/10 -z-10 hidden md:block" />
                 </div>
 
                 {/* Content */}
                 <div className="w-full md:w-1/2 space-y-8">
                     <div>
-                        <span className="font-body text-xs tracking-[0.4em] uppercase text-muted-foreground">
+                        <span className="font-body text-xs tracking-[0.4em] uppercase text-white/70">
                             About
                         </span>
-                        <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-light tracking-[0.05em] uppercase mt-4 leading-tight">
+                        <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-light tracking-[0.05em] uppercase mt-4 leading-tight text-white">
                             <br />
                             <span className="font-editorial italic normal-case tracking-wide">
                                 The Panache Factor
@@ -44,18 +44,18 @@ const AboutSection = () => {
                         </h2>
                     </div>
 
-                    <div className="space-y-6 font-editorial text-2xl md:text-2xl text-foreground/80 leading-relaxed group">
+                    <div className="space-y-6 font-editorial text-2xl md:text-2xl text-white leading-relaxed group">
                         <p>
                             {quote}
                         </p>
-                        <p className="font-body text-lg md:text-lg text-muted-foreground tracking-wide leading-relaxed max-w-xl">
+                        <p className="font-body text-lg md:text-lg text-white/80 tracking-wide leading-relaxed max-w-xl">
                             {bio}
                         </p>
 
                         {!isExpanded && (
                             <button
                                 onClick={() => setIsExpanded(true)}
-                                className="font-body text-base tracking-[0.3em] uppercase text-accent hover:text-foreground border-b border-accent hover:border-foreground pb-1 transition-all duration-300 mt-2"
+                                className="font-body text-base tracking-[0.3em] uppercase text-accent hover:text-white border-b border-accent hover:border-white pb-1 transition-all duration-300 mt-2"
                             >
                                 Know More
                             </button>
@@ -71,14 +71,14 @@ const AboutSection = () => {
                                 transition={{ duration: 0.5 }}
                                 className="overflow-hidden"
                             >
-                                <div className="space-y-4 font-body text-lg md:text-lg text-muted-foreground tracking-wide leading-relaxed pt-4 border-t border-border/50">
+                                <div className="space-y-4 font-body text-lg md:text-lg text-white/80 tracking-wide leading-relaxed pt-4 border-t border-white/10">
                                     {/* Type guard to ensure fullBio is treated as an array if it exists */}
                                     {Array.isArray(aboutData.fullBio) ? aboutData.fullBio.map((paragraph, idx) => (
                                         <p key={idx}>{paragraph}</p>
                                     )) : null}
                                     <button
                                         onClick={() => setIsExpanded(false)}
-                                        className="font-body text-sm tracking-[0.3em] uppercase text-muted-foreground hover:text-foreground pt-4 transition-colors"
+                                        className="font-body text-sm tracking-[0.3em] uppercase text-white/40 hover:text-white pt-4 transition-colors"
                                     >
                                         Show Less
                                     </button>
@@ -87,13 +87,13 @@ const AboutSection = () => {
                         )}
                     </AnimatePresence>
 
-                    <div className="pt-8 grid grid-cols-2 sm:grid-cols-3 gap-x-8 gap-y-6 border-t border-border/50 mt-8">
+                    <div className="pt-8 grid grid-cols-2 sm:grid-cols-3 gap-x-8 gap-y-6 border-t border-white/10 mt-8">
                         {Object.entries(resumeData.personalDetails).map(([key, value]) => (
                             <div key={key} className="space-y-1">
-                                <span className="block font-display text-xl mb-1">
+                                <span className="block font-display text-xl mb-1 text-white">
                                     {Array.isArray(value) ? value.join(", ") : value}
                                 </span>
-                                <span className="font-body text-[10px] tracking-[0.2em] uppercase text-muted-foreground">
+                                <span className="font-body text-[10px] tracking-[0.2em] uppercase text-white/60">
                                     {key.replace(/([A-Z])/g, ' $1').trim()}
                                 </span>
                             </div>
