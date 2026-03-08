@@ -44,18 +44,18 @@ const AboutSection = () => {
                         </h2>
                     </div>
 
-                    <div className="space-y-6 font-editorial text-lg md:text-xl text-foreground/80 leading-relaxed group">
+                    <div className="space-y-6 font-editorial text-2xl md:text-2xl text-foreground/80 leading-relaxed group">
                         <p>
                             {quote}
                         </p>
-                        <p className="font-body text-sm md:text-base text-muted-foreground tracking-wide leading-relaxed max-w-md">
+                        <p className="font-body text-lg md:text-lg text-muted-foreground tracking-wide leading-relaxed max-w-xl">
                             {bio}
                         </p>
 
                         {!isExpanded && (
                             <button
                                 onClick={() => setIsExpanded(true)}
-                                className="font-body text-xs tracking-[0.3em] uppercase text-accent hover:text-foreground border-b border-accent hover:border-foreground pb-1 transition-all duration-300 mt-2"
+                                className="font-body text-base tracking-[0.3em] uppercase text-accent hover:text-foreground border-b border-accent hover:border-foreground pb-1 transition-all duration-300 mt-2"
                             >
                                 Know More
                             </button>
@@ -71,14 +71,14 @@ const AboutSection = () => {
                                 transition={{ duration: 0.5 }}
                                 className="overflow-hidden"
                             >
-                                <div className="space-y-4 font-body text-sm md:text-base text-muted-foreground tracking-wide leading-relaxed pt-4 border-t border-border/50">
+                                <div className="space-y-4 font-body text-lg md:text-lg text-muted-foreground tracking-wide leading-relaxed pt-4 border-t border-border/50">
                                     {/* Type guard to ensure fullBio is treated as an array if it exists */}
                                     {Array.isArray(aboutData.fullBio) ? aboutData.fullBio.map((paragraph, idx) => (
                                         <p key={idx}>{paragraph}</p>
                                     )) : null}
                                     <button
                                         onClick={() => setIsExpanded(false)}
-                                        className="font-body text-xs tracking-[0.3em] uppercase text-muted-foreground hover:text-foreground pt-4 transition-colors"
+                                        className="font-body text-sm tracking-[0.3em] uppercase text-muted-foreground hover:text-foreground pt-4 transition-colors"
                                     >
                                         Show Less
                                     </button>

@@ -31,10 +31,15 @@ const Navigation = () => {
                     : "bg-transparent text-foreground"
                     }`}
             >
-                <div className="flex items-center justify-between section-padding py-5">
-                    <a href="#" className="font-display text-lg tracking-[0.2em] uppercase text-foreground">
+                <div className="flex items-center justify-between section-padding py-5 px-6">
+                    <motion.a
+                        href="#"
+                        animate={{ opacity: isMobileMenuOpen ? 0 : 1 }}
+                        transition={{ duration: 0.3 }}
+                        className="font-display text-lg tracking-[0.2em] uppercase text-foreground"
+                    >
                         Ankith
-                    </a>
+                    </motion.a>
 
                     {/* Desktop Nav */}
                     <div className="hidden md:flex items-center gap-10">
@@ -60,7 +65,7 @@ const Navigation = () => {
                     {/* Mobile Menu Button */}
                     <button
                         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                        className="md:hidden flex flex-col gap-1.5 p-2"
+                        className="md:hidden flex flex-col gap-1.5 p-2 z-50"
                         aria-label="Toggle menu"
                     >
                         <motion.span
@@ -83,47 +88,92 @@ const Navigation = () => {
             <AnimatePresence>
                 {isMobileMenuOpen && (
                     <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 0.3 }}
-                        className="fixed inset-0 z-40 bg-background flex flex-col items-center justify-center gap-12"
+                        initial={{ x: "100%" }}
+                        animate={{ x: 0 }}
+                        exit={{ x: "100%" }}
+                        transition={{ duration: 0.6, ease: [0.33, 1, 0.68, 1] }}
+                        className="fixed inset-0 z-40 bg-background flex flex-col overflow-hidden"
                     >
-                        {navItems.map((item, i) => (
-                            <motion.a
-                                key={item.label}
-                                href={item.href}
-                                initial={{ opacity: 0, y: 30 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                exit={{ opacity: 0, y: 30 }}
-                                transition={{ delay: i * 0.1, duration: 0.4 }}
-                                onClick={() => setIsMobileMenuOpen(false)}
-                                className="font-display text-3xl tracking-[0.15em] uppercase text-foreground hover:text-accent transition-colors"
-                            >
-                                {item.label}
-                            </motion.a>
-                        ))}
-                        <motion.button
-                            initial={{ opacity: 0, y: 30 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: 30 }}
-                            transition={{ delay: navItems.length * 0.1, duration: 0.4 }}
-                            onClick={() => {
-                                setIsMobileMenuOpen(false);
-                                setIsResumeOpen(true);
-                            }}
-                            className="font-display text-3xl tracking-[0.15em] uppercase text-foreground hover:text-accent transition-colors"
-                        >
-                            Resume
-                        </motion.button>
+                        {/* Decorative Background Text */}
                         <motion.div
-                            initial={{ opacity: 0, y: 30 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: 30 }}
-                            transition={{ delay: (navItems.length + 1) * 0.1, duration: 0.4 }}
+                            initial={{ opacity: 0, x: 100, rotate: -90 }}
+                            animate={{ opacity: 0.05, x: "25%", rotate: -90 }}
+                            transition={{ duration: 1.2, delay: 0.2 }}
+                            className="absolute top-1/2 -right-20 pointer-events-none select-none"
                         >
-                            <ModeToggle />
+                            <span className="font-editorial italic text-[20vh] tracking-tighter uppercase whitespace-nowrap">
+                                Ankith
+                            </span>
                         </motion.div>
+
+                        {/* Mobile Menu Body */}
+                        <div className="flex-1 flex flex-col justify-center section-padding space-y-12 relative z-10">
+                            <motion.div
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.3 }}
+                            >
+                                <span className="font-body text-[10px] tracking-[0.4em] uppercase text-muted-foreground mb-10 block opacity-50">
+                                    Menu
+                                </span>
+                                <div className="flex flex-col gap-10">
+                                    {navItems.map((item, i) => (
+                                        <motion.a
+                                            key={item.label}
+                                            href={item.href}
+                                            initial={{ opacity: 0, y: 20 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            transition={{ delay: 0.4 + i * 0.1, duration: 0.6, ease: [0.33, 1, 0.68, 1] }}
+                                            onClick={() => setIsMobileMenuOpen(false)}
+                                            className="group flex items-baseline gap-6"
+                                        >
+                                            <span className="font-display text-5xl tracking-tight uppercase text-foreground hover:text-accent transition-colors duration-300">
+                                                {item.label}
+                                            </span>
+                                        </motion.a>
+                                    ))}
+                                    <motion.button
+                                        initial={{ opacity: 0, y: 20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ delay: 0.4 + navItems.length * 0.1, duration: 0.6, ease: [0.33, 1, 0.68, 1] }}
+                                        onClick={() => {
+                                            setIsMobileMenuOpen(false);
+                                            setIsResumeOpen(true);
+                                        }}
+                                        className="text-left group flex items-baseline gap-6"
+                                    >
+                                        <span className="font-display text-5xl tracking-tight uppercase text-foreground hover:text-accent transition-colors duration-300">
+                                            Resume
+                                        </span>
+                                    </motion.button>
+                                </div>
+                            </motion.div>
+                        </div>
+
+                        {/* Mobile Menu Footer */}
+                        <div className="section-padding py-12 border-t border-foreground/5 bg-foreground/[0.02] relative z-10">
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.8 }}
+                                className="flex items-center justify-between"
+                            >
+                                <div className="space-y-3">
+                                    <span className="block font-body text-[10px] tracking-[0.3em] uppercase text-muted-foreground opacity-50">
+                                        Appearance
+                                    </span>
+                                    <ModeToggle />
+                                </div>
+                                <div className="flex flex-col items-end gap-3 text-right">
+                                    <span className="font-body text-[8px] tracking-[0.4em] uppercase text-muted-foreground opacity-40">
+                                        Ankith Madhav
+                                    </span>
+                                    <span className="font-editorial italic text-xs text-muted-foreground">
+                                        The Panache Factor
+                                    </span>
+                                </div>
+                            </motion.div>
+                        </div>
                     </motion.div>
                 )}
             </AnimatePresence>

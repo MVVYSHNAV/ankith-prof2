@@ -1,36 +1,44 @@
 import { MoonStar, SunMedium } from "lucide-react"
 import { useTheme } from "@/components/theme-provider"
-import { Button } from "@/components/ui/button"
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+import { motion } from "framer-motion"
+import { cn } from "@/lib/utils"
 
 export function ModeToggle() {
-    const { setTheme } = useTheme()
+    const { theme, setTheme } = useTheme()
+
+    const options = [
+        { id: "light", icon: SunMedium, label: "Light" },
+        { id: "dark", icon: MoonStar, label: "Dark" },
+    ]
 
     return (
-        <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon">
-                    <SunMedium className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-                    <MoonStar className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-                    <span className="sr-only">Toggle theme</span>
-                </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={() => setTheme("light")}>
-                    Light
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setTheme("dark")}>
-                    Dark
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setTheme("system")}>
-                    System
-                </DropdownMenuItem>
-            </DropdownMenuContent>
-        </DropdownMenu>
+        <div className="flex items-center p-1 rounded-full bg-foreground/5 border border-foreground/10 backdrop-blur-md w-fit">
+            {options.map((option) => {
+                const Icon = option.icon
+                const isActive = theme === option.id
+
+                return (
+                    <button
+                        key={option.id}
+                        onClick={() => setTheme(option.id as any)}
+                        className={cn(
+                            "relative p-2 rounded-full transition-colors duration-300 group",
+                            isActive ? "text-foreground" : "text-muted-foreground hover:text-foreground"
+                        )}
+                        title={option.label}
+                    >
+                        {isActive && (
+                            <motion.div
+                                layoutId="active-theme-bg"
+                                className="absolute inset-0 bg-background rounded-full shadow-sm z-0"
+                                transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                            />
+                        )}
+                        <Icon className="h-4 w-4 relative z-10 transition-transform duration-300 group-hover:scale-110" />
+                        <span className="sr-only">{option.label}</span>
+                    </button>
+                )
+            })}
+        </div>
     )
 }

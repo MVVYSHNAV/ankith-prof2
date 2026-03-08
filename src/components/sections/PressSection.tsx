@@ -256,7 +256,7 @@ const PressSection = () => {
 
     return (
         <>
-            <section id="filmography" ref={sectionRef} className="py-24 md:py-32 lg:py-40 section-padding bg-primary text-primary-foreground">
+            <section id="filmography" ref={sectionRef} className="py-24 md:py-32 lg:py-40 section-padding bg-background text-foreground transition-colors duration-500">
                 <div className="max-w-7xl mx-auto">
 
                     {/* ── Header ── */}
@@ -266,14 +266,14 @@ const PressSection = () => {
                         transition={{ duration: 0.8 }}
                         className="mb-12 md:mb-16 lg:mb-24"
                     >
-                        <span className="font-body text-xs tracking-[0.4em] uppercase text-primary-foreground/60">
+                        <span className="font-body text-xs tracking-[0.4em] uppercase text-muted-foreground">
                             Filmography
                         </span>
                     </motion.div>
 
                     {/* ── Featured Showreel ── */}
                     <div className="mb-12 md:mb-16">
-                        <h3 className="font-display text-3xl md:text-4xl lg:text-5xl font-light uppercase tracking-[0.04em] text-primary-foreground leading-none mb-8 sm:mb-12 md:mb-16">
+                        <h3 className="font-display text-3xl md:text-4xl lg:text-5xl font-light uppercase tracking-[0.04em] text-foreground leading-none mb-8 sm:mb-12 md:mb-16">
                             Showreel
                         </h3>
                         <div className="flex flex-col lg:flex-row gap-8 lg:gap-16 items-center">
@@ -288,10 +288,10 @@ const PressSection = () => {
                                     {showreelProject.title}
                                 </h4>
                                 <div className="space-y-3">
-                                    <p className="font-editorial text-lg italic text-primary-foreground/90 leading-relaxed">
+                                    <p className="font-editorial text-lg italic text-foreground/90 leading-relaxed">
                                         {showreelProject.description}
                                     </p>
-                                    <p className="font-body text-sm text-primary-foreground/60 leading-relaxed">
+                                    <p className="font-body text-sm text-muted-foreground leading-relaxed">
                                         {showreelProject.note}
                                     </p>
                                 </div>
@@ -302,7 +302,7 @@ const PressSection = () => {
                                 initial={{ opacity: 0, scale: 0.97 }}
                                 animate={isInView ? { opacity: 1, scale: 1 } : {}}
                                 transition={{ duration: 0.8, delay: 0.4 }}
-                                className="w-full lg:w-2/3 aspect-video relative overflow-hidden rounded-xl border border-primary-foreground/20 bg-primary-foreground/5"
+                                className="w-full lg:w-2/3 aspect-video relative overflow-hidden rounded-xl border border-foreground/10 bg-muted/30"
                             >
                                 <iframe
                                     width="100%"
@@ -320,16 +320,16 @@ const PressSection = () => {
                     {/* ── Film Credits (Modern Card Swap) ── */}
                     <div className="mb-12 md:mb-16">
                         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8 mb-12 md:mb-16">
-                            <h3 className="font-display text-3xl md:text-4xl lg:text-5xl font-light uppercase tracking-[0.04em] text-primary-foreground leading-none">
+                            <h3 className="font-display text-3xl md:text-4xl lg:text-5xl font-light uppercase tracking-[0.04em] text-foreground leading-none">
                                 Film Credits
                             </h3>
                             <div className="flex gap-8 items-center">
-                                <span className="font-body text-[10px] tracking-widest text-primary-foreground/40 hidden sm:block">
+                                <span className="font-body text-[10px] tracking-widest text-muted-foreground hidden sm:block">
                                     SWIPE OR USE NAV
                                 </span>
                                 <div className="flex gap-6">
-                                    <button onClick={prevProject} className="font-body text-[10px] tracking-[0.3em] uppercase hover:text-white transition-colors text-primary-foreground/40">Prev</button>
-                                    <button onClick={nextProject} className="font-body text-[10px] tracking-[0.3em] uppercase hover:text-white transition-colors text-primary-foreground/40">Next</button>
+                                    <button onClick={prevProject} className="font-body text-[10px] tracking-[0.3em] uppercase hover:text-accent transition-colors text-muted-foreground">Prev</button>
+                                    <button onClick={nextProject} className="font-body text-[10px] tracking-[0.3em] uppercase hover:text-accent transition-colors text-muted-foreground">Next</button>
                                 </div>
                             </div>
                         </div>
@@ -374,7 +374,7 @@ const PressSection = () => {
                                             }}
                                             className="absolute w-full max-w-5xl h-full cursor-grab active:cursor-grabbing"
                                         >
-                                            <div className="w-full h-full relative group overflow-hidden rounded-2xl md:rounded-3xl border border-primary-foreground/10 bg-black shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)]">
+                                            <div className="w-full h-full relative group overflow-hidden rounded-2xl md:rounded-3xl border border-foreground/10 bg-black shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)]">
                                                 <img
                                                     src={project.thumbnailUrl}
                                                     alt={project.title}
@@ -477,8 +477,8 @@ const PressSection = () => {
                             viewport={{ once: true, margin: "-50px" }}
                             transition={{ duration: 0.8, delay: 0.2 }}
                         >
-                            <h3 className="font-display text-3xl md:text-4xl lg:text-5xl font-light uppercase tracking-[0.04em] text-primary-foreground mb-8 sm:mb-12 md:mb-16">
-                                Random <span className="font-editorial italic normal-case tracking-wide">Adds</span>
+                            <h3 className="font-display text-3xl md:text-4xl lg:text-5xl font-light uppercase tracking-[0.04em] text-foreground mb-8 sm:mb-12 md:mb-16">
+                                Random <span className="font-editorial italic normal-case tracking-wide text-foreground">Adds</span>
                             </h3>
 
                             <div className="group/scroll relative">
