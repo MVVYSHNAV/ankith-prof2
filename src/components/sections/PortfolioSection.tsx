@@ -80,13 +80,13 @@ const GalleryCard = ({ item, index, onOpen }: GalleryCardProps) => (
    Main component
    ───────────────────────────────────────────── */
 const portfolioItems = portfolioData.items as PortfolioItem[];
-const MOBILE_PAGE = 3;
+const INITIAL_VISIBLE_COUNT = 6;
 
 const PortfolioSection = () => {
     const [lightboxImage, setLightboxImage] = useState<PortfolioItem | null>(null);
-    const [mobileVisible, setMobileVisible] = useState(MOBILE_PAGE);
+    const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE_COUNT);
 
-    const showMore = useCallback(() => setMobileVisible((v) => v + MOBILE_PAGE), []);
+    const showMore = useCallback(() => setVisibleCount((v) => v + INITIAL_VISIBLE_COUNT), []);
     const openLightbox = useCallback((item: PortfolioItem) => setLightboxImage(item), []);
     const closeLightbox = useCallback(() => setLightboxImage(null), []);
 
@@ -130,14 +130,14 @@ const PortfolioSection = () => {
                     </h3>
                     <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 sm:gap-5">
                         {portfolioItems.map((item, index) => (
-                            <div key={item.id} className={index >= mobileVisible ? "hidden sm:block" : "block"}>
+                            <div key={item.id} className={index >= visibleCount ? "hidden" : "block"}>
                                 <GalleryCard item={item} index={index} onOpen={openLightbox} />
                             </div>
                         ))}
                     </div>
 
-                    {mobileVisible < portfolioItems.length && (
-                        <div className="flex justify-center mt-12 sm:hidden">
+                    {visibleCount < portfolioItems.length && (
+                        <div className="flex justify-center mt-12">
                             <button onClick={showMore} className="font-body text-[10px] tracking-[0.4em] uppercase text-primary-foreground/50 hover:text-white border-b border-primary-foreground/20 hover:border-white transition-all pb-1">
                                 Load More
                             </button>

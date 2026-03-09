@@ -60,6 +60,21 @@
     ],
     "videos": [
         {
+            "id": "v-kalyan",
+            "url": "https://www.youtube.com/watch?v=6o9cGHSPmyU",
+            "title": "Kalyan Jewellers | Ankith Madhav"
+        },
+        {
+            "id": "v-oxygen",
+            "url": "https://www.youtube.com/watch?v=pJiSWc0M1Yw",
+            "title": "Oxygen Digital Shop | Ankith Madhav"
+        },
+        {
+            "id": "v-malabar",
+            "url": "https://www.youtube.com/watch?v=Jj1KzbhIDMg",
+            "title": "Malabar Gold and Diamonds | Ankith Madhav"
+        },
+        {
             "id": "v3",
             "url": "https://youtu.be/SI1zP8Y1e1U?si=CpfKTQkHIczySLLD",
             "title": "Modern Kitchen for Modern Minds | Sleek"

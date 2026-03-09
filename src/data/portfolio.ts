@@ -6,6 +6,14 @@ import img5 from '@/assets/images/5.jpeg';
 import img6 from '@/assets/images/6.jpeg';
 import img7 from '@/assets/images/7.jpeg';
 import img8 from '@/assets/images/8.jpeg';
+import img9 from '@/assets/images/9.jpeg';
+import img10 from '@/assets/images/10.jpeg';
+import img11 from '@/assets/images/11.jpeg';
+import img12 from '@/assets/images/12.png';
+import img13 from '@/assets/images/13.jpeg';
+import img14 from '@/assets/images/14.jpeg';
+import img15 from '@/assets/images/15.jpeg';
+import img16 from '@/assets/images/16.jpeg';
 
 export const portfolioData = {
     "categories": [
@@ -86,6 +94,62 @@ export const portfolioData = {
             "alt": "Ankith Madhav - Urban Campaign",
             "category": "campaigns",
             "aspect": "wide"
+        },
+        {
+            "id": 9,
+            "src": img9,
+            "alt": "Ankith Madhav - High Fashion Editorial",
+            "category": "fashion",
+            "aspect": "tall"
+        },
+        {
+            "id": 10,
+            "src": img10,
+            "alt": "Ankith Madhav - Runway Motion",
+            "category": "ramp",
+            "aspect": "square"
+        },
+        {
+            "id": 11,
+            "src": img11,
+            "alt": "Ankith Madhav - Luxury Brand Campaign",
+            "category": "campaigns",
+            "aspect": "tall"
+        },
+        {
+            "id": 12,
+            "src": img12,
+            "alt": "Ankith Madhav - Commercial Print",
+            "category": "adverts",
+            "aspect": "square"
+        },
+        {
+            "id": 13,
+            "src": img13,
+            "alt": "Ankith Madhav - Designer Showreel",
+            "category": "ramp",
+            "aspect": "tall"
+        },
+        {
+            "id": 14,
+            "src": img14,
+            "alt": "Ankith Madhav - Editorial Portrait",
+            "category": "fashion",
+            "aspect": "wide"
+        },
+        {
+            "id": 15,
+            "src": img15,
+            "alt": "Ankith Madhav - Global Campaign",
+            "category": "campaigns",
+            "aspect": "tall"
+        },
+        {
+            "id": 16,
+            "src": img16,
+            "alt": "Ankith Madhav - Behind the Scenes",
+            "category": "fashion",
+            "aspect": "square"
         }
     ]
 };
