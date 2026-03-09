@@ -1,11 +1,19 @@
 import { useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import gsap from "gsap";
-import heroImage from "@/assets/images/6.jpeg";
+import { useProfile } from "@/hooks/useSupabase";
+import heroImageDefault from "@/assets/images/6.jpeg";
 
 const HeroSection = () => {
     const heroRef = useRef<HTMLDivElement>(null);
     const imageRef = useRef<HTMLImageElement>(null);
+    const { data: profile } = useProfile();
+
+    const heroTitle = profile?.hero_title || "Ankith";
+    const heroSubtitle = profile?.hero_subtitle || "Madhav";
+    const heroQuote = profile?.title_italic || '"Man is genius when he is dreaming."';
+    const heroImage = profile?.hero_image_url || heroImageDefault;
+    const heroRole = profile?.bio || "Actor";
 
     useEffect(() => {
         if (!imageRef.current) return;
@@ -50,7 +58,7 @@ const HeroSection = () => {
                 duration: 0.6,
                 ease: "power3.out",
             }, "-=0.2");
-    }, []);
+    }, [profile]); // Re-run if profile data changes
 
     return (
         <section ref={heroRef} className="relative h-screen w-full overflow-hidden">
@@ -59,7 +67,7 @@ const HeroSection = () => {
                 <img
                     ref={imageRef}
                     src={heroImage}
-                    alt="Ankith Madhav - Fashion Model"
+                    alt={`${heroTitle} ${heroSubtitle} - Hero`}
                     className="w-full h-full object-cover object-[center_15%] will-change-transform"
                     loading="eager"
                 />
@@ -72,12 +80,12 @@ const HeroSection = () => {
                 <div className="flex flex-col lg:gap-2">
                     <div className="overflow-hidden">
                         <h1 className="hero-line font-display text-7xl sm:text-8xl md:text-9xl lg:text-[11rem] xl:text-[13rem] 2xl:text-[16rem] font-light tracking-[-0.02em] uppercase text-white leading-[0.85] pr-2">
-                            Ankith
+                            {heroTitle}
                         </h1>
                     </div>
                     <div className="overflow-hidden lg:pl-[10%] xl:pl-[12%]">
                         <h1 className="hero-line font-display text-7xl sm:text-8xl md:text-9xl lg:text-[11rem] xl:text-[13rem] 2xl:text-[16rem] font-light tracking-[-0.02em] uppercase text-white leading-[0.85] pr-4">
-                            Madhav
+                            {heroSubtitle}
                         </h1>
                     </div>
                 </div>
@@ -85,11 +93,11 @@ const HeroSection = () => {
                 <div className="mt-10 lg:mt-16 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-8">
                     <div className="max-w-md lg:max-w-lg">
                         <p className="hero-subtitle font-editorial text-2xl md:text-3xl lg:text-4xl text-white/90 italic tracking-tight mb-4 leading-tight">
-                            "Man is genius when he is dreaming."
+                            {heroQuote}
                         </p>
                         <div className="h-px w-12 bg-accent/60 mb-4" />
                         <p className="hero-subtitle font-body text-xs lg:text-sm tracking-[0.3em] uppercase text-white/60">
-                            Actor
+                            {heroRole}
                         </p>
                     </div>
                     <a

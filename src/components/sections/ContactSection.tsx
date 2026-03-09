@@ -1,31 +1,53 @@
 import { useState, useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { Instagram, Mail, ArrowUpRight, ExternalLink } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { useProfile } from "@/hooks/useSupabase";
+import { toast } from "sonner";
 
 const ContactSection = () => {
     const sectionRef = useRef<HTMLElement>(null);
     const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
+    const { data: profile } = useProfile();
     const [formData, setFormData] = useState({
         name: "",
         email: "",
         subject: "",
         message: "",
     });
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const [isSubmitted, setIsSubmitted] = useState(false);
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const email = profile?.email || "unnikrishnan27@gmail.com";
+    const instagram = profile?.linkedin || "https://www.instagram.com/ankithmadhav/"; // Using linkedin field for instagram if generic social fields are limited
+    const github = profile?.github || "https://en.wikipedia.org/wiki/Ankith_Madhav";
+    const quote = profile?.bio === "Actor & Model" ? "I always want the audience to outguess me, and then I double-cross them." : profile?.bio;
+
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setIsSubmitting(true);
 
-        const { name, email, subject, message } = formData;
-        const mailtoLink = `mailto:unnikrishnan27@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(
-            `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`
-        )}`;
+        try {
+            const { error } = await supabase
+                .from('contact_messages')
+                .insert([{
+                    name: formData.name,
+                    email: formData.email,
+                    message: `Subject: ${formData.subject}\n\n${formData.message}`
+                }] as any);
 
-        window.location.href = mailtoLink;
+            if (error) throw error;
 
-        setIsSubmitted(true);
-        setTimeout(() => setIsSubmitted(false), 3000);
-        setFormData({ name: "", email: "", subject: "", message: "" });
+            setIsSubmitted(true);
+            toast.success("Message sent successfully!");
+            setFormData({ name: "", email: "", subject: "", message: "" });
+            setTimeout(() => setIsSubmitted(false), 3000);
+        } catch (error) {
+            console.error("Error sending message:", error);
+            toast.error("Failed to send message. Please try again.");
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     return (
@@ -52,20 +74,20 @@ const ContactSection = () => {
 
                             <div className="mt-16 space-y-8">
                                 <a
-                                    href="mailto:unnikrishnan27@gmail.com"
+                                    href={`mailto:${email}`}
                                     className="flex items-center gap-4 group w-fit"
                                 >
                                     <div className="w-10 h-10 rounded-full border border-primary-foreground/10 flex items-center justify-center group-hover:border-accent group-hover:bg-accent/5 transition-all duration-300">
                                         <Mail size={18} strokeWidth={1} className="text-accent" />
                                     </div>
                                     <span className="font-body text-sm tracking-[0.15em] text-primary-foreground/70 group-hover:text-primary-foreground transition-colors">
-                                        unnikrishnan27@gmail.com
+                                        {email}
                                     </span>
                                 </a>
 
                                 <div className="flex items-center gap-6 pt-4">
                                     <a
-                                        href="https://www.instagram.com/ankithmadhav/"
+                                        href={instagram}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className="w-12 h-12 rounded-full border border-primary-foreground/10 flex items-center justify-center text-primary-foreground/60 hover:text-accent hover:border-accent hover:bg-accent/5 transition-all duration-500 hover:scale-110"
@@ -74,7 +96,7 @@ const ContactSection = () => {
                                         <Instagram size={20} strokeWidth={1.5} />
                                     </a>
                                     <a
-                                        href="https://en.wikipedia.org/wiki/Ankith_Madhav"
+                                        href={github}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className="w-12 h-12 rounded-full border border-primary-foreground/10 flex items-center justify-center text-primary-foreground/60 hover:text-accent hover:border-accent hover:bg-accent/5 transition-all duration-500 hover:scale-110"
@@ -87,7 +109,7 @@ const ContactSection = () => {
                                         </div>
                                     </a>
                                     <a
-                                        href="https://m.imdb.com/name/nm6840845/"
+                                        href={profile?.linkedin || "https://m.imdb.com/name/nm6840845/"}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className="w-12 h-12 rounded-full border border-primary-foreground/10 flex items-center justify-center text-primary-foreground/60 hover:text-accent hover:border-accent hover:bg-accent/5 transition-all duration-500 hover:scale-110"
@@ -107,7 +129,7 @@ const ContactSection = () => {
                                     Quote
                                 </span>
                                 <span className="font-editorial text-lg text-primary-foreground/60 italic">
-                                    "I always want the audience to outguess me, and then I double-cross them."
+                                    {quote}
                                 </span>
                             </div>
                         </motion.div>
@@ -181,9 +203,10 @@ const ContactSection = () => {
 
                                 <button
                                     type="submit"
-                                    className="group flex items-center gap-3 font-body text-xs tracking-[0.3em] uppercase text-primary-foreground/70 hover:text-primary-foreground border-b border-primary-foreground/30 hover:border-accent pb-2 transition-all duration-300 mt-4"
+                                    disabled={isSubmitting}
+                                    className="group flex items-center gap-3 font-body text-xs tracking-[0.3em] uppercase text-primary-foreground/70 hover:text-primary-foreground border-b border-primary-foreground/30 hover:border-accent pb-2 transition-all duration-300 mt-4 disabled:opacity-50"
                                 >
-                                    {isSubmitted ? "Message Sent" : "Send Message"}
+                                    {isSubmitting ? "Sending..." : (isSubmitted ? "Message Sent" : "Send Message")}
                                     <ArrowUpRight
                                         size={14}
                                         strokeWidth={1.5}

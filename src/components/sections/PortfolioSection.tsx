@@ -1,13 +1,14 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X } from "lucide-react";
+import { X, Loader2 } from "lucide-react";
 import { portfolioData } from "@/data/portfolio";
+import { useProjects } from "@/hooks/useSupabase";
 
 /* ─────────────────────────────────────────────
    Types
    ───────────────────────────────────────────── */
 interface PortfolioItem {
-    id: number;
+    id: string | number;
     src: string;
     alt: string;
     category: string;
@@ -63,7 +64,7 @@ const GalleryCard = ({ item, index, onOpen }: GalleryCardProps) => (
         className="break-inside-avoid mb-4 sm:mb-5 cursor-pointer group relative overflow-hidden rounded-xl sm:rounded-2xl"
         onClick={() => onOpen(item)}
     >
-        <div className={`overflow-hidden ${ASPECT_CLASSES[item.aspect]}`}>
+        <div className={`overflow-hidden ${ASPECT_CLASSES[item.aspect] || "aspect-video"}`}>
             <img
                 src={item.src}
                 alt={item.alt}
@@ -79,11 +80,28 @@ const GalleryCard = ({ item, index, onOpen }: GalleryCardProps) => (
 /* ─────────────────────────────────────────────
    Main component
    ───────────────────────────────────────────── */
-const portfolioItems = portfolioData.items as PortfolioItem[];
-
 const PortfolioSection = () => {
     const [lightboxImage, setLightboxImage] = useState<PortfolioItem | null>(null);
     const [visibleCount, setVisibleCount] = useState(6);
+    const { data: dbProjects, isLoading } = useProjects();
+
+    const portfolioItems = useMemo(() => {
+        const staticItems = portfolioData.items as PortfolioItem[];
+        // Filter DB projects for 'Portfolio' category only
+        if (!dbProjects || dbProjects.length === 0) return staticItems;
+
+        const filteredDbItems = dbProjects
+            .filter(p => p.category === 'Portfolio')
+            .map(p => ({
+                id: p.id,
+                src: p.image_url || "/placeholder.svg",
+                alt: p.title || "Portfolio Capture",
+                category: "Modeling",
+                aspect: "tall"
+            })) as PortfolioItem[];
+
+        return filteredDbItems.length > 0 ? filteredDbItems : staticItems;
+    }, [dbProjects]);
 
     useEffect(() => {
         const isMobile = window.matchMedia("(max-width: 640px)").matches;
@@ -133,15 +151,23 @@ const PortfolioSection = () => {
                 {/* ── Photography ── */}
                 <div>
                     <h3 className="font-body text-[10px] tracking-[0.3em] uppercase text-primary-foreground/50 mb-8 border-l border-primary-foreground/30 pl-4">
-                        Photography
+                        Photography & Projects
                     </h3>
-                    <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 sm:gap-5">
-                        {portfolioItems.map((item, index) => (
-                            <div key={item.id} className={index >= visibleCount ? "hidden" : "block"}>
-                                <GalleryCard item={item} index={index} onOpen={openLightbox} />
-                            </div>
-                        ))}
-                    </div>
+
+                    {isLoading ? (
+                        <div className="flex flex-col items-center justify-center py-20 space-y-4">
+                            <Loader2 className="w-8 h-8 text-accent animate-spin" strokeWidth={1} />
+                            <span className="font-body text-[10px] tracking-[0.4em] uppercase text-primary-foreground/40">Loading Masterpieces...</span>
+                        </div>
+                    ) : (
+                        <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 sm:gap-5">
+                            {portfolioItems.map((item, index) => (
+                                <div key={item.id} className={index >= visibleCount ? "hidden" : "block"}>
+                                    <GalleryCard item={item} index={index} onOpen={openLightbox} />
+                                </div>
+                            ))}
+                        </div>
+                    )}
 
                     {visibleCount < portfolioItems.length && (
                         <div className="flex justify-center mt-12">

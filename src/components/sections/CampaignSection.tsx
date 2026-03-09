@@ -1,13 +1,14 @@
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
-
-import { careerData } from "@/data/career";
+import { useProfile } from "@/hooks/useSupabase";
+import { careerData as staticCareerData } from "@/data/career";
 
 const CampaignSection = () => {
     const sectionRef = useRef<HTMLElement>(null);
     const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
+    const { data: profile } = useProfile();
 
-    const { careers, highlightImage } = careerData;
+    const highlightImage = profile?.career_highlight_image || staticCareerData.highlightImage;
 
     return (
         <section id="career" ref={sectionRef} className="py-24 md:py-40 bg-background text-foreground overflow-hidden">

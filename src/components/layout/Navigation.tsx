@@ -7,6 +7,7 @@ const navItems = [
     { label: "About", href: "#about" },
     { label: "Filmography", href: "#filmography" },
     { label: "Contact", href: "#contact" },
+    { label: "CMS", href: "/dashboard" },
 ];
 
 const Navigation = () => {

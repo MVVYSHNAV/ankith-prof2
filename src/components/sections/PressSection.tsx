@@ -1,20 +1,24 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useMemo } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { Play, X, ChevronLeft, ChevronRight } from "lucide-react";
+import { useProjects } from "@/hooks/useSupabase";
 import filmographyData from "@/data/filmography.json";
 
 /* ─── Video helpers ─── */
 const getYoutubeId = (url: string) => {
+    if (!url) return null;
     const match = url.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/);
     return (match && match[2].length === 11) ? match[2] : null;
 };
 
 const getVimeoId = (url: string) => {
+    if (!url) return null;
     const match = url.match(/vimeo\.com\/([0-9]+)/);
     return match ? match[1] : null;
 };
 
 const getVideoDetails = (url: string) => {
+    if (!url) return null;
     const youtubeId = getYoutubeId(url);
     const vimeoId = getVimeoId(url);
     if (youtubeId) return {
@@ -33,9 +37,9 @@ const getVideoDetails = (url: string) => {
 };
 
 /* ─── Streaming provider config ─── */
-type StreamingProvider = "prime" | "sunnxt" | "hotstar";
+type StreamingProvider = "prime" | "sunnxt" | "hotstar" | string;
 
-const providerConfig: Record<StreamingProvider, {
+const providerConfig: Record<string, {
     label: string;
     accentColor: string;
     badgeBg: string;
@@ -53,10 +57,8 @@ const providerConfig: Record<StreamingProvider, {
             /* Amazon Prime Video word-mark icon — blue arrow smile */
             <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
                 <rect width="64" height="64" rx="12" fill="#1A1A2E" />
-                {/* "prime video" text stand-in with arrow */}
                 <text x="32" y="28" textAnchor="middle" fontSize="11" fontWeight="800" fill="#00A8E1" fontFamily="Arial, sans-serif" letterSpacing="1">prime</text>
                 <text x="32" y="42" textAnchor="middle" fontSize="8" fontWeight="400" fill="#ffffff" fontFamily="Arial, sans-serif" letterSpacing="2">video</text>
-                {/* Smile arrow */}
                 <path d="M18 50 Q32 58 46 50" stroke="#FF9900" strokeWidth="2.5" fill="none" strokeLinecap="round" />
                 <path d="M43 48 L46 50 L43 52" stroke="#FF9900" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
@@ -71,7 +73,6 @@ const providerConfig: Record<StreamingProvider, {
         logo: (
             <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
                 <rect width="64" height="64" rx="12" fill="#FF6B00" />
-                {/* Sun rays */}
                 <circle cx="32" cy="27" r="9" fill="#FFD700" />
                 <g stroke="#FFD700" strokeWidth="2.5" strokeLinecap="round">
                     <line x1="32" y1="10" x2="32" y2="14" />
@@ -102,7 +103,6 @@ const providerConfig: Record<StreamingProvider, {
                     </linearGradient>
                 </defs>
                 <rect width="64" height="64" rx="12" fill="url(#hs2)" />
-                {/* Hotstar star */}
                 <polygon
                     points="32,8 36.9,22.8 52,22.8 39.6,31.7 44.5,46.5 32,37.6 19.5,46.5 24.4,31.7 12,22.8 27.1,22.8"
                     fill="#FFD700"
@@ -115,8 +115,8 @@ const providerConfig: Record<StreamingProvider, {
 
 
 /* ─── Inline badge (below description) ─── */
-const StreamingBadge = ({ provider, url }: { provider: StreamingProvider; url: string }) => {
-    const cfg = providerConfig[provider];
+const StreamingBadge = ({ provider, url }: { provider: string; url: string }) => {
+    const cfg = providerConfig[provider.toLowerCase()];
     if (!cfg) return null;
     return (
         <a
@@ -144,12 +144,11 @@ const StreamingCard = ({
     thumbnailUrl,
 }: {
     title: string;
-    provider: StreamingProvider;
+    provider: string;
     url: string;
     thumbnailUrl?: string;
 }) => {
-    const cfg = providerConfig[provider];
-    if (!cfg) return null;
+    const cfg = providerConfig[provider.toLowerCase()] || providerConfig['prime'];
 
     return (
         <a
@@ -236,29 +235,78 @@ const PressSection = () => {
     const sectionRef = useRef<HTMLElement>(null);
     const scrollContainerRef = useRef<HTMLDivElement>(null);
     const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
+    const { data: dbProjects } = useProjects();
 
     const [selectedVideo, setSelectedVideo] = useState<{ id: string; url: string; title?: string } | null>(null);
     const [currentIndex, setCurrentIndex] = useState(0);
 
-    // @ts-ignore
-    const projects = filmographyData.projects;
-    // @ts-ignore
-    const videos: any[] = filmographyData.videos || [];
+    const { showreelProject, filmProjects, videos } = useMemo(() => {
+        const hasDbProjects = dbProjects && dbProjects.length > 0;
 
-    // Explicitly separate Showreel and Films
-    const showreelProject = projects.find((p: any) => p.title.toLowerCase().includes("showreel")) || projects[0];
-    const filmProjects = projects
-        .filter((p: any) => p !== showreelProject)
-        .sort((a: any, b: any) => {
-            const valA = a.importants !== undefined ? a.importants : Infinity;
-            const valB = b.importants !== undefined ? b.importants : Infinity;
-            return valA - valB;
-        });
+        if (!hasDbProjects) {
+            const projects = filmographyData.projects;
+            const videos = (filmographyData.videos || []).map(v => ({
+                id: v.id,
+                title: v.title,
+                url: v.url
+            }));
 
-    const currentFilm = filmProjects[currentIndex];
+            const showreel = projects.find((p: any) => p.title.toLowerCase().includes("showreel")) || projects[0];
+            const films = projects
+                .filter((p: any) => p !== showreel)
+                .map((p: any) => ({
+                    id: p.id.toString(),
+                    title: p.title,
+                    role: p.role,
+                    duration: p.duration,
+                    description: p.description,
+                    note: p.note,
+                    thumbnailUrl: p.thumbnailUrl,
+                    streamingUrl: p.streamingUrl,
+                    streamingProvider: p.streamingProvider
+                }));
 
-    const nextProject = () => setCurrentIndex((p) => (p + 1) % filmProjects.length);
-    const prevProject = () => setCurrentIndex((p) => (p - 1 + filmProjects.length) % filmProjects.length);
+            return { showreelProject: showreel, filmProjects: films, videos };
+        }
+
+        const showreel = dbProjects.find(p => p.category === 'Showreel') || {
+            title: "Actor AnkithMadhav's Feature Films Showreel.",
+            description: "This showreel gives a glimpse into the versatile actor AnkithMadhav's commendable works in multi language Feature Films.",
+            note: "A compilation of performances across various genres and languages.",
+            video_url: "https://youtu.be/8y_6zaauhf0?si=xsWCR8Gle5VKv4jH"
+        };
+
+        const films = dbProjects
+            .filter(p => p.category === 'Filmography')
+            .map(p => ({
+                id: p.id,
+                title: p.title,
+                role: p.role || "Actor",
+                duration: p.duration || "",
+                description: p.description || "",
+                note: p.note || "",
+                thumbnailUrl: p.image_url,
+                streamingUrl: p.streaming_url,
+                streamingProvider: p.streaming_provider
+            }));
+
+        const ads = dbProjects
+            .filter(p => p.category === 'Ad')
+            .map(p => ({
+                id: p.id,
+                title: p.title,
+                url: p.video_url || ""
+            }));
+
+        return {
+            showreelProject: showreel,
+            filmProjects: films.length > 0 ? films : (filmographyData.projects.slice(1) as any),
+            videos: ads.length > 0 ? ads : filmographyData.videos
+        };
+    }, [dbProjects]);
+
+    const nextProject = () => setCurrentIndex((p) => (p + 1) % (filmProjects.length || 1));
+    const prevProject = () => setCurrentIndex((p) => (p - 1 + (filmProjects.length || 1)) % (filmProjects.length || 1));
 
     return (
         <>
@@ -313,7 +361,7 @@ const PressSection = () => {
                                 <iframe
                                     width="100%"
                                     height="100%"
-                                    src={`https://www.youtube.com/embed/${getYoutubeId(showreelProject.videoUrl)}`}
+                                    src={`https://www.youtube.com/embed/${getYoutubeId((showreelProject as any).video_url || (showreelProject as any).videoUrl)}`}
                                     title={showreelProject.title}
                                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                     allowFullScreen

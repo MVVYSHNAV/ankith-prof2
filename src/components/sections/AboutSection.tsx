@@ -1,19 +1,26 @@
 import { useState, useRef } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
-
-import { aboutData } from "@/data/about";
+import { useProfile } from "@/hooks/useSupabase";
+import { aboutData as staticAboutData } from "@/data/about";
 import resumeData from "@/data/resume.json";
 
 const AboutSection = () => {
     const containerRef = useRef<HTMLDivElement>(null);
     const [isExpanded, setIsExpanded] = useState(false);
+    const { data: profile } = useProfile();
+
     const { scrollYProgress } = useScroll({
         target: containerRef,
         offset: ["start end", "end start"],
     });
 
     const y = useTransform(scrollYProgress, [0, 1], [100, -100]);
-    const { image, quote, bio } = aboutData;
+
+    const image = profile?.avatar_url || staticAboutData.image;
+    const quote = profile?.about_bio || staticAboutData.bio;
+    const highlightTitle = profile?.about_quote || "The Panache Factor";
+    const fullBioStr = profile?.about_full_bio;
+    const fullBio = fullBioStr ? fullBioStr.split('\n\n').filter(p => p.trim()) : staticAboutData.fullBio;
 
     return (
         <section id="about" ref={containerRef} className="py-32 md:py-40 section-padding bg-primary text-white transition-colors duration-500">
@@ -39,17 +46,14 @@ const AboutSection = () => {
                         <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-light tracking-[0.05em] uppercase mt-4 leading-tight text-white">
                             <br />
                             <span className="font-editorial italic normal-case tracking-wide">
-                                The Panache Factor
+                                {highlightTitle}
                             </span>
                         </h2>
                     </div>
 
                     <div className="space-y-6 font-editorial text-2xl md:text-2xl text-white leading-relaxed group">
-                        <p>
-                            {quote}
-                        </p>
                         <p className="font-body text-lg md:text-lg text-white/80 tracking-wide leading-relaxed max-w-xl">
-                            {bio}
+                            {quote}
                         </p>
 
                         {!isExpanded && (
@@ -72,10 +76,9 @@ const AboutSection = () => {
                                 className="overflow-hidden"
                             >
                                 <div className="space-y-4 font-body text-lg md:text-lg text-white/80 tracking-wide leading-relaxed pt-4 border-t border-white/10">
-                                    {/* Type guard to ensure fullBio is treated as an array if it exists */}
-                                    {Array.isArray(aboutData.fullBio) ? aboutData.fullBio.map((paragraph, idx) => (
+                                    {fullBio.map((paragraph, idx) => (
                                         <p key={idx}>{paragraph}</p>
-                                    )) : null}
+                                    ))}
                                     <button
                                         onClick={() => setIsExpanded(false)}
                                         className="font-body text-sm tracking-[0.3em] uppercase text-white/40 hover:text-white pt-4 transition-colors"
@@ -88,13 +91,19 @@ const AboutSection = () => {
                     </AnimatePresence>
 
                     <div className="pt-8 grid grid-cols-2 sm:grid-cols-3 gap-x-8 gap-y-6 border-t border-white/10 mt-8">
-                        {Object.entries(resumeData.personalDetails).map(([key, value]) => (
-                            <div key={key} className="space-y-1">
+                        {[
+                            { label: "Born", value: profile?.born || resumeData.personalDetails.born },
+                            { label: "Height", value: profile?.height || resumeData.personalDetails.height },
+                            { label: "Eye Color", value: profile?.eye_color || resumeData.personalDetails.eyeColor },
+                            { label: "Hair Color", value: profile?.hair_color || resumeData.personalDetails.hairColor },
+                            { label: "Languages", value: profile?.languages || resumeData.personalDetails.languages.join(", ") },
+                        ].map((stat, idx) => (
+                            <div key={idx} className="space-y-1">
                                 <span className="block font-display text-xl mb-1 text-white">
-                                    {Array.isArray(value) ? value.join(", ") : value}
+                                    {stat.value}
                                 </span>
                                 <span className="font-body text-[10px] tracking-[0.2em] uppercase text-white/60">
-                                    {key.replace(/([A-Z])/g, ' $1').trim()}
+                                    {stat.label}
                                 </span>
                             </div>
                         ))}
