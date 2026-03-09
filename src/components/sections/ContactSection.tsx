@@ -50,63 +50,56 @@ const ContactSection = () => {
                                 </span>
                             </h2>
 
-                            <div className="mt-16 space-y-6">
+                            <div className="mt-16 space-y-8">
                                 <a
                                     href="mailto:unnikrishnan27@gmail.com"
-                                    className="flex items-center gap-4 group"
+                                    className="flex items-center gap-4 group w-fit"
                                 >
-                                    <Mail size={18} strokeWidth={1} className="text-accent" />
+                                    <div className="w-10 h-10 rounded-full border border-primary-foreground/10 flex items-center justify-center group-hover:border-accent group-hover:bg-accent/5 transition-all duration-300">
+                                        <Mail size={18} strokeWidth={1} className="text-accent" />
+                                    </div>
                                     <span className="font-body text-sm tracking-[0.15em] text-primary-foreground/70 group-hover:text-primary-foreground transition-colors">
                                         unnikrishnan27@gmail.com
                                     </span>
                                 </a>
-                                <a
-                                    href="https://www.instagram.com/ankithmadhav/"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="flex items-center gap-4 group"
-                                >
-                                    <Instagram size={18} strokeWidth={1} className="text-accent" />
-                                    <span className="font-body text-sm tracking-[0.15em] text-primary-foreground/70 group-hover:text-primary-foreground transition-colors">
-                                        @ankithmadhav
-                                    </span>
-                                </a>
-                                <a
-                                    href="https://en.wikipedia.org/wiki/Ankith_Madhav"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="flex items-center gap-4 group"
-                                >
-                                    <div className="w-[18px] h-[18px] flex items-center justify-center text-accent">
-                                        <svg viewBox="0 0 24 24" fill="currentColor" className="w-full h-full">
-                                            <path d="M12.09 5.262l3.35 13.402h-2.115l-1.98-7.502l-1.98 7.502H7.25l3.35-13.402h2.235h-1.735l-1.936 7.502l-1.935-7.502H5.159l3.35 13.402h2.115L12.604 11.26l1.98 7.502h2.115l3.35-13.402h-2.235l-2.025 8.932-2.025-8.932h-2.398z" />
-                                        </svg>
-                                    </div>
-                                    <div className="flex items-center gap-2">
-                                        <span className="font-body text-sm tracking-[0.15em] text-primary-foreground/70 group-hover:text-primary-foreground transition-colors">
-                                            Wikipedia
-                                        </span>
-                                        <ExternalLink size={12} className="text-primary-foreground/30 group-hover:text-accent transition-colors" />
-                                    </div>
-                                </a>
-                                <a
-                                    href="https://m.imdb.com/name/nm6840845/"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="flex items-center gap-4 group"
-                                >
-                                    <div className="w-[18px] h-[18px] flex items-center justify-center text-accent">
-                                        <svg viewBox="0 0 24 24" fill="currentColor" className="w-full h-full">
-                                            <path d="M22.5 3H1.5C.672 3 0 3.672 0 4.5v15c0 .828.672 1.5 1.5 1.5h21c.828 0 1.5-.672 1.5-1.5v-15c0-.828-.672-1.5-1.5-1.5zM6.685 15.68h-1.5v-6h1.5v6zm3.743-6h1.5v6h-1.5v-4.5h-.743v4.5h-1.5v-6h1.5v1.5h.743v-1.5zm6.75 6h-3.75v-6h1.5v4.5h2.25v1.5zm3.75-1.5c0 .828-.672 1.5-1.5 1.5h-1.125v-6H19.5c.828 0 1.5.672 1.5 1.5v3z" />
-                                        </svg>
-                                    </div>
-                                    <div className="flex items-center gap-2">
-                                        <span className="font-body text-sm tracking-[0.15em] text-primary-foreground/70 group-hover:text-primary-foreground transition-colors">
-                                            IMDb Profile
-                                        </span>
-                                        <ExternalLink size={12} className="text-primary-foreground/30 group-hover:text-accent transition-colors" />
-                                    </div>
-                                </a>
+
+                                <div className="flex items-center gap-6 pt-4">
+                                    <a
+                                        href="https://www.instagram.com/ankithmadhav/"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="w-12 h-12 rounded-full border border-primary-foreground/10 flex items-center justify-center text-primary-foreground/60 hover:text-accent hover:border-accent hover:bg-accent/5 transition-all duration-500 hover:scale-110"
+                                        title="Instagram"
+                                    >
+                                        <Instagram size={20} strokeWidth={1.5} />
+                                    </a>
+                                    <a
+                                        href="https://en.wikipedia.org/wiki/Ankith_Madhav"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="w-12 h-12 rounded-full border border-primary-foreground/10 flex items-center justify-center text-primary-foreground/60 hover:text-accent hover:border-accent hover:bg-accent/5 transition-all duration-500 hover:scale-110"
+                                        title="Wikipedia"
+                                    >
+                                        <div className="w-5 h-5 flex items-center justify-center">
+                                            <svg viewBox="0 0 24 24" fill="currentColor" className="w-full h-full">
+                                                <path d="M12.09 5.262l3.35 13.402h-2.115l-1.98-7.502l-1.98 7.502H7.25l3.35-13.402h2.235h-1.735l-1.936 7.502l-1.935-7.502H5.159l3.35 13.402h2.115L12.604 11.26l1.98 7.502h2.115l3.35-13.402h-2.235l-2.025 8.932-2.025-8.932h-2.398z" />
+                                            </svg>
+                                        </div>
+                                    </a>
+                                    <a
+                                        href="https://m.imdb.com/name/nm6840845/"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="w-12 h-12 rounded-full border border-primary-foreground/10 flex items-center justify-center text-primary-foreground/60 hover:text-accent hover:border-accent hover:bg-accent/5 transition-all duration-500 hover:scale-110"
+                                        title="IMDb Profile"
+                                    >
+                                        <div className="w-5 h-5 flex items-center justify-center">
+                                            <svg viewBox="0 0 24 24" fill="currentColor" className="w-full h-full">
+                                                <path d="M22.5 3H1.5C.672 3 0 3.672 0 4.5v15c0 .828.672 1.5 1.5 1.5h21c.828 0 1.5-.672 1.5-1.5v-15c0-.828-.672-1.5-1.5-1.5zM6.685 15.68h-1.5v-6h1.5v6zm3.743-6h1.5v6-1.5v-4.5h-.743v4.5h-1.5v-6h1.5v1.5h.743v-1.5zm6.75 6h-3.75v-6h1.5v4.5h2.25v1.5zm3.75-1.5c0 .828-.672 1.5-1.5 1.5h-1.125v-6H19.5c.828 0 1.5.672 1.5 1.5v3z" />
+                                            </svg>
+                                        </div>
+                                    </a>
+                                </div>
                             </div>
 
                             <div className="mt-16">

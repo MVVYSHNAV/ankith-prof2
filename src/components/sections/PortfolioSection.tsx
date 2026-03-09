@@ -80,13 +80,20 @@ const GalleryCard = ({ item, index, onOpen }: GalleryCardProps) => (
    Main component
    ───────────────────────────────────────────── */
 const portfolioItems = portfolioData.items as PortfolioItem[];
-const INITIAL_VISIBLE_COUNT = 6;
 
 const PortfolioSection = () => {
     const [lightboxImage, setLightboxImage] = useState<PortfolioItem | null>(null);
-    const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE_COUNT);
+    const [visibleCount, setVisibleCount] = useState(6);
 
-    const showMore = useCallback(() => setVisibleCount((v) => v + INITIAL_VISIBLE_COUNT), []);
+    useEffect(() => {
+        const isMobile = window.matchMedia("(max-width: 640px)").matches;
+        if (isMobile) setVisibleCount(3);
+    }, []);
+
+    const showMore = useCallback(() => {
+        const increment = window.matchMedia("(max-width: 640px)").matches ? 3 : 6;
+        setVisibleCount((v) => v + increment);
+    }, []);
     const openLightbox = useCallback((item: PortfolioItem) => setLightboxImage(item), []);
     const closeLightbox = useCallback(() => setLightboxImage(null), []);
 
