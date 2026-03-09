@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import { motion, useInView } from "framer-motion";
-import { Instagram, Mail, ArrowUpRight } from "lucide-react";
+import { Instagram, Mail, ArrowUpRight, ExternalLink } from "lucide-react";
 
 const ContactSection = () => {
     const sectionRef = useRef<HTMLElement>(null);
@@ -70,6 +70,42 @@ const ContactSection = () => {
                                     <span className="font-body text-sm tracking-[0.15em] text-primary-foreground/70 group-hover:text-primary-foreground transition-colors">
                                         @ankithmadhav
                                     </span>
+                                </a>
+                                <a
+                                    href="https://en.wikipedia.org/wiki/Ankith_Madhav"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="flex items-center gap-4 group"
+                                >
+                                    <div className="w-[18px] h-[18px] flex items-center justify-center text-accent">
+                                        <svg viewBox="0 0 24 24" fill="currentColor" className="w-full h-full">
+                                            <path d="M12.09 5.262l3.35 13.402h-2.115l-1.98-7.502l-1.98 7.502H7.25l3.35-13.402h2.235h-1.735l-1.936 7.502l-1.935-7.502H5.159l3.35 13.402h2.115L12.604 11.26l1.98 7.502h2.115l3.35-13.402h-2.235l-2.025 8.932-2.025-8.932h-2.398z" />
+                                        </svg>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        <span className="font-body text-sm tracking-[0.15em] text-primary-foreground/70 group-hover:text-primary-foreground transition-colors">
+                                            Wikipedia
+                                        </span>
+                                        <ExternalLink size={12} className="text-primary-foreground/30 group-hover:text-accent transition-colors" />
+                                    </div>
+                                </a>
+                                <a
+                                    href="https://m.imdb.com/name/nm6840845/"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="flex items-center gap-4 group"
+                                >
+                                    <div className="w-[18px] h-[18px] flex items-center justify-center text-accent">
+                                        <svg viewBox="0 0 24 24" fill="currentColor" className="w-full h-full">
+                                            <path d="M22.5 3H1.5C.672 3 0 3.672 0 4.5v15c0 .828.672 1.5 1.5 1.5h21c.828 0 1.5-.672 1.5-1.5v-15c0-.828-.672-1.5-1.5-1.5zM6.685 15.68h-1.5v-6h1.5v6zm3.743-6h1.5v6h-1.5v-4.5h-.743v4.5h-1.5v-6h1.5v1.5h.743v-1.5zm6.75 6h-3.75v-6h1.5v4.5h2.25v1.5zm3.75-1.5c0 .828-.672 1.5-1.5 1.5h-1.125v-6H19.5c.828 0 1.5.672 1.5 1.5v3z" />
+                                        </svg>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        <span className="font-body text-sm tracking-[0.15em] text-primary-foreground/70 group-hover:text-primary-foreground transition-colors">
+                                            IMDb Profile
+                                        </span>
+                                        <ExternalLink size={12} className="text-primary-foreground/30 group-hover:text-accent transition-colors" />
+                                    </div>
                                 </a>
                             </div>
 
