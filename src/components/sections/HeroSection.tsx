@@ -32,33 +32,37 @@ const HeroSection = () => {
     useEffect(() => {
         if (!heroRef.current) return;
 
-        const tl = gsap.timeline({ delay: 0.3 });
+        const ctx = gsap.context(() => {
+            const tl = gsap.timeline({ delay: 0.5 });
 
-        tl.from(".hero-line", {
-            y: 120,
-            opacity: 0,
-            duration: 1.2,
-            ease: "power4.out",
-            stagger: 0.15,
-        })
-            .from(".hero-subtitle", {
-                y: 30,
+            tl.from(".hero-line", {
+                y: 100,
                 opacity: 0,
-                duration: 0.8,
-                ease: "power3.out",
-            }, "-=0.4")
-            .from(".hero-cta", {
-                y: 20,
-                opacity: 0,
-                duration: 0.6,
-                ease: "power3.out",
-            }, "-=0.3")
-            .from(".hero-scroll", {
-                opacity: 0,
-                duration: 0.6,
-                ease: "power3.out",
-            }, "-=0.2");
-    }, [profile]); // Re-run if profile data changes
+                duration: 1.2,
+                ease: "power4.out",
+                stagger: 0.15,
+            })
+                .from(".hero-subtitle", {
+                    y: 20,
+                    opacity: 0,
+                    duration: 0.8,
+                    ease: "power3.out",
+                }, "-=0.4")
+                .from(".hero-cta", {
+                    y: 20,
+                    opacity: 0,
+                    duration: 0.6,
+                    ease: "power3.out",
+                }, "-=0.3")
+                .from(".hero-scroll", {
+                    opacity: 0,
+                    duration: 0.6,
+                    ease: "power3.out",
+                }, "-=0.2");
+        }, heroRef);
+
+        return () => ctx.revert();
+    }, [profile?.id]); // Re-run only if profile truly changes (id check)
 
     return (
         <section ref={heroRef} className="relative h-screen w-full overflow-hidden">
@@ -79,9 +83,9 @@ const HeroSection = () => {
             <div className="relative z-10 h-full flex flex-col justify-end pb-12 md:pb-24 lg:pb-32 section-padding">
                 <div className="flex flex-col lg:gap-2">
                     <div className="overflow-hidden">
-                        <h1 className="hero-line font-display text-7xl sm:text-8xl md:text-9xl lg:text-[11rem] xl:text-[13rem] 2xl:text-[16rem] font-light tracking-[-0.02em] uppercase text-white leading-[0.85] pr-2">
+                        {/* <h1 className="hero-line font-display text-7xl sm:text-8xl md:text-9xl lg:text-[11rem] xl:text-[13rem] 2xl:text-[16rem] font-light tracking-[-0.02em] uppercase text-white leading-[0.85] pr-2">
                             {heroTitle}
-                        </h1>
+                        </h1> */}
                     </div>
                     <div className="overflow-hidden lg:pl-[10%] xl:pl-[12%]">
                         <h1 className="hero-line font-display text-7xl sm:text-8xl md:text-9xl lg:text-[11rem] xl:text-[13rem] 2xl:text-[16rem] font-light tracking-[-0.02em] uppercase text-white leading-[0.85] pr-4">
@@ -96,9 +100,9 @@ const HeroSection = () => {
                             {heroQuote}
                         </p>
                         <div className="h-px w-12 bg-accent/60 mb-4" />
-                        <p className="hero-subtitle font-body text-xs lg:text-sm tracking-[0.3em] uppercase text-white/60">
+                        {/* <p className="hero-subtitle font-body text-xs lg:text-sm tracking-[0.3em] uppercase text-white/60">
                             {heroRole}
-                        </p>
+                        </p> */}
                     </div>
                     <a
                         href="#contact"
