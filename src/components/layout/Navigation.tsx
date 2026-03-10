@@ -165,9 +165,12 @@ const Navigation = () => {
                                     <ModeToggle />
                                 </div>
                                 <div className="flex flex-col items-end gap-3 text-right">
-                                    <span className="font-body text-[8px] tracking-[0.4em] uppercase text-muted-foreground opacity-40">
+                                    <a
+                                        href="/khullja-sim-sim"
+                                        className="block font-body text-[10px] tracking-[0.3em] uppercase text-muted-foreground opacity-40 hover:opacity-100 transition-opacity"
+                                    >
                                         Ankith Madhav
-                                    </span>
+                                    </a>
                                     <span className="font-editorial italic text-xs text-muted-foreground">
                                         The Panache Factor
                                     </span>

@@ -32,11 +32,14 @@ const Dashboard = () => {
                     <div>
                         <Link to="/" className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors mb-4 group w-fit">
                             <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
-                            <span className="font-body text-xs tracking-[0.2em] uppercase">Back to Site</span>
+                            <span className="font-body text-xs tracking-[0.2em] uppercase">Return to Site</span>
                         </Link>
                         <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-light tracking-tight uppercase">
-                            Admin <span className="font-editorial italic normal-case">Dashboard</span>
+                            The Panache <span className="font-editorial italic normal-case text-accent">Vault</span>
                         </h1>
+                        <p className="font-body text-[10px] tracking-[0.4em] uppercase opacity-40 mt-2">
+                            Curating the Legacy of Ankith Madhav
+                        </p>
                     </div>
                     <button
                         onClick={() => signOut()}
@@ -50,7 +53,7 @@ const Dashboard = () => {
                 <Tabs defaultValue="projects" className="space-y-8">
                     <TabsList className="bg-muted/50 border border-border p-1">
                         <TabsTrigger value="projects" className="flex items-center gap-2">
-                            <Star size={16} />
+                            <Star size={16} className="text-accent" />
                             <span>Productions</span>
                         </TabsTrigger>
                         <TabsTrigger value="captures" className="flex items-center gap-2">

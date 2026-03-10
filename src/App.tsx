@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
+import KhulljaSimSim from "./pages/KhulljaSimSim";
 import NotFound from "./pages/NotFound";
 import { AuthProvider } from "./contexts/AuthContext";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
@@ -25,8 +26,9 @@ const App = () => (
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/login" element={<Login />} />
+              <Route path="/khullja-sim-sim" element={<KhulljaSimSim />} />
               <Route
-                path="/dashboard"
+                path="/panache"
                 element={
                   <ProtectedRoute>
                     <Dashboard />
