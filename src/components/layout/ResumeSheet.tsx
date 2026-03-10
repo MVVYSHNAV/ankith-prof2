@@ -1,7 +1,10 @@
 import { useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import resumeData from "@/data/resume.json";
-import { X } from "lucide-react";
+import { X, Loader2 } from "lucide-react";
+import {
+    useResumeFilms, useResumeTv, useResumeTheater,
+    useResumeEducation, useResumeTraining, useResumeCommercials
+} from "@/hooks/useSupabase";
 
 interface ResumeSheetProps {
     isOpen: boolean;
@@ -9,25 +12,23 @@ interface ResumeSheetProps {
 }
 
 const ResumeSheet = ({ isOpen, onClose }: ResumeSheetProps) => {
-    // Prevent body scroll when sheet is open
+    const { data: films, isLoading: filmsLoading } = useResumeFilms();
+    const { data: tvShows, isLoading: tvLoading } = useResumeTv();
+    const { data: theater, isLoading: theaterLoading } = useResumeTheater();
+    const { data: education, isLoading: eduLoading } = useResumeEducation();
+    const { data: training, isLoading: trainingLoading } = useResumeTraining();
+    const { data: commercials, isLoading: commercialsLoading } = useResumeCommercials();
+
+    const isLoading = filmsLoading || tvLoading || theaterLoading || eduLoading || trainingLoading || commercialsLoading;
+
     useEffect(() => {
-        if (isOpen) {
-            document.body.style.overflow = "hidden";
-        } else {
-            document.body.style.overflow = "unset";
-        }
-        return () => {
-            document.body.style.overflow = "unset";
-        };
+        document.body.style.overflow = isOpen ? "hidden" : "unset";
+        return () => { document.body.style.overflow = "unset"; };
     }, [isOpen]);
 
     const itemVariants = {
         hidden: { opacity: 0, y: 20 },
-        visible: {
-            opacity: 1,
-            y: 0,
-            transition: { duration: 0.5 }
-        }
+        visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
     };
 
     return (
@@ -73,170 +74,136 @@ const ResumeSheet = ({ isOpen, onClose }: ResumeSheetProps) => {
                                     </div>
                                 </div>
 
-                                {/* Personal Stats Grid */}
-                                <div className="grid grid-cols-2 gap-x-8 gap-y-6 p-6 bg-secondary/20 border border-border/30">
-                                    {Object.entries(resumeData.personalDetails).map(([key, value]) => (
-                                        <div key={key} className="space-y-1">
-                                            <span className="block font-body text-[10px] tracking-[0.2em] uppercase text-muted-foreground">
-                                                {key.replace(/([A-Z])/g, ' $1').trim()}
-                                            </span>
-                                            <span className="block font-display text-base tracking-wide">
-                                                {Array.isArray(value) ? value.join(", ") : value}
-                                            </span>
-                                        </div>
-                                    ))}
-                                </div>
-
-                                {/* Content Columns */}
-                                <div className="space-y-12">
-                                    {/* Films */}
-                                    <motion.div
-                                        initial="hidden"
-                                        whileInView="visible"
-                                        viewport={{ once: true }}
-                                        variants={itemVariants}
-                                        className="space-y-8"
-                                    >
-                                        <h3 className="font-editorial text-3xl italic border-l-2 border-accent pl-6">Feature Films</h3>
-                                        <div className="grid gap-4">
-                                            {resumeData.films.map((film, index) => (
-                                                <div key={index} className="group flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-4 bg-secondary/10 hover:bg-secondary/30 border border-transparent hover:border-border/50 transition-all duration-300">
-                                                    <div className="space-y-0.5">
-                                                        <h4 className="font-display text-lg tracking-wide">{film.title}</h4>
-                                                        <p className="font-body text-[10px] text-muted-foreground tracking-wider uppercase">Dir. {film.director}</p>
-                                                    </div>
-                                                    <div className="flex items-center gap-4">
-                                                        <span className="font-editorial italic text-base text-accent">{film.role}</span>
-                                                        <span className="font-body text-xs font-bold opacity-30">{film.year}</span>
-                                                    </div>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </motion.div>
-
-                                    {/* TV & Theater */}
-                                    <div className="grid md:grid-cols-2 gap-12">
-                                        <motion.div
-                                            initial="hidden"
-                                            whileInView="visible"
-                                            viewport={{ once: true }}
-                                            variants={itemVariants}
-                                            className="space-y-8"
-                                        >
-                                            <h3 className="font-editorial text-2xl italic border-l-2 border-accent pl-6">Television</h3>
-                                            <div className="space-y-6">
-                                                {resumeData.tv.map((show, index) => (
-                                                    <div key={index} className="space-y-1 group">
-                                                        <div className="flex justify-between items-baseline">
-                                                            <h4 className="font-display text-lg">{show.show}</h4>
-                                                            <span className="text-xs text-muted-foreground">{show.year}</span>
-                                                        </div>
-                                                        <p className="text-sm text-foreground/80">{show.role} <span className="text-muted-foreground mx-2">•</span> {show.channel}</p>
-                                                        {show.link && (
-                                                            <a href={show.link} target="_blank" rel="noopener noreferrer" className="inline-block text-[10px] uppercase tracking-wider text-accent hover:underline mt-1">Watch Snippet</a>
-                                                        )}
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        </motion.div>
-
-                                        <motion.div
-                                            initial="hidden"
-                                            whileInView="visible"
-                                            viewport={{ once: true }}
-                                            variants={itemVariants}
-                                            className="space-y-8"
-                                        >
-                                            <h3 className="font-editorial text-2xl italic border-l-2 border-accent pl-6">Theater</h3>
-                                            <div className="space-y-6">
-                                                {resumeData.theater.map((play, index) => (
-                                                    <div key={index} className="space-y-1">
-                                                        <div className="flex justify-between items-baseline">
-                                                            <h4 className="font-display text-lg">{play.play}</h4>
-                                                            <span className="text-xs text-muted-foreground">{play.year}</span>
-                                                        </div>
-                                                        <p className="text-sm text-foreground/80">{play.role} <span className="text-muted-foreground mx-2">•</span> {play.theater}</p>
-                                                        <p className="text-xs text-muted-foreground font-light">Dir. {play.director}</p>
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        </motion.div>
+                                {isLoading ? (
+                                    <div className="flex flex-col items-center justify-center py-20 gap-4">
+                                        <Loader2 className="animate-spin w-8 h-8 text-accent" />
+                                        <span className="font-body text-xs tracking-widest uppercase text-muted-foreground">Loading Resume...</span>
                                     </div>
-
-                                    {/* Skills & Education */}
-                                    <div className="grid md:grid-cols-2 gap-12">
-                                        <motion.div
-                                            initial="hidden"
-                                            whileInView="visible"
-                                            viewport={{ once: true }}
-                                            variants={itemVariants}
-                                            className="p-8 bg-foreground text-background"
-                                        >
-                                            <h3 className="font-display text-lg uppercase tracking-widest mb-6">Special Skills</h3>
-                                            <ul className="space-y-3">
-                                                {resumeData.specialSkills.map((skill, index) => (
-                                                    <li key={index} className="font-body text-sm tracking-wide flex items-start gap-3 opacity-90">
-                                                        <span className="w-1.5 h-1.5 bg-accent rounded-full mt-1.5 shrink-0" />
-                                                        {skill}
-                                                    </li>
-                                                ))}
-                                            </ul>
-                                        </motion.div>
-
-                                        <motion.div
-                                            initial="hidden"
-                                            whileInView="visible"
-                                            viewport={{ once: true }}
-                                            variants={itemVariants}
-                                            className="space-y-8"
-                                        >
-                                            <h3 className="font-editorial text-2xl italic border-l-2 border-accent pl-6">Education</h3>
-                                            <div className="space-y-4">
-                                                <div>
-                                                    <h4 className="font-display text-xs tracking-widest uppercase mb-2 text-muted-foreground">Academic</h4>
-                                                    <ul className="space-y-1">
-                                                        {resumeData.education.map((edu, index) => (
-                                                            <li key={index} className="font-body text-sm">{edu}</li>
-                                                        ))}
-                                                    </ul>
-                                                </div>
-                                                <div className="pt-4 border-t border-border/50">
-                                                    <h4 className="font-display text-xs tracking-widest uppercase mb-2 text-muted-foreground">Training</h4>
-                                                    {resumeData.actingTraining.map((train, index) => (
-                                                        <div key={index}>
-                                                            <p className="font-display text-sm">{train.school}</p>
-                                                            <p className="text-xs text-muted-foreground">{train.mentor} • {train.location}</p>
+                                ) : (
+                                    <div className="space-y-12">
+                                        {/* Feature Films */}
+                                        {films && films.length > 0 && (
+                                            <motion.div
+                                                initial="hidden" whileInView="visible" viewport={{ once: true }}
+                                                variants={itemVariants} className="space-y-8"
+                                            >
+                                                <h3 className="font-editorial text-3xl italic border-l-2 border-accent pl-6">Feature Films</h3>
+                                                <div className="grid gap-4">
+                                                    {films.map((film) => (
+                                                        <div key={film.id} className="group flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-4 bg-secondary/10 hover:bg-secondary/30 border border-transparent hover:border-border/50 transition-all duration-300">
+                                                            <div className="space-y-0.5">
+                                                                <h4 className="font-display text-lg tracking-wide">{film.title}</h4>
+                                                                {film.director && <p className="font-body text-[10px] text-muted-foreground tracking-wider uppercase">Dir. {film.director}</p>}
+                                                            </div>
+                                                            <div className="flex items-center gap-4">
+                                                                {film.role && <span className="font-editorial italic text-base text-accent">{film.role}</span>}
+                                                                {film.year && <span className="font-body text-xs font-bold opacity-30">{film.year}</span>}
+                                                            </div>
                                                         </div>
                                                     ))}
                                                 </div>
-                                            </div>
-                                        </motion.div>
-                                    </div>
+                                            </motion.div>
+                                        )}
 
-                                    {/* Commercials */}
-                                    <motion.div
-                                        initial="hidden"
-                                        whileInView="visible"
-                                        viewport={{ once: true }}
-                                        variants={itemVariants}
-                                        className="space-y-6 pb-12"
-                                    >
-                                        <div className="flex items-baseline justify-between border-b border-border/50 pb-4">
-                                            <h3 className="font-editorial text-2xl italic">Commercials</h3>
-                                            <span className="text-[10px] text-muted-foreground font-body tracking-wider uppercase">Selected Brands from 500+ Projects</span>
-                                        </div>
-                                        <div className="flex flex-wrap gap-2">
-                                            {resumeData.commercials.map((ad, index) => (
-                                                <span
-                                                    key={index}
-                                                    className="px-3 py-1.5 bg-secondary/30 border border-border/50 text-[10px] tracking-wide hover:bg-accent hover:text-white transition-colors cursor-default uppercase"
-                                                >
-                                                    {ad}
-                                                </span>
-                                            ))}
-                                        </div>
-                                    </motion.div>
-                                </div>
+                                        {/* TV & Theater */}
+                                        {((tvShows && tvShows.length > 0) || (theater && theater.length > 0)) && (
+                                            <div className="grid md:grid-cols-2 gap-12">
+                                                {tvShows && tvShows.length > 0 && (
+                                                    <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={itemVariants} className="space-y-8">
+                                                        <h3 className="font-editorial text-2xl italic border-l-2 border-accent pl-6">Television</h3>
+                                                        <div className="space-y-6">
+                                                            {tvShows.map((show) => (
+                                                                <div key={show.id} className="space-y-1 group">
+                                                                    <div className="flex justify-between items-baseline">
+                                                                        <h4 className="font-display text-lg">{show.show}</h4>
+                                                                        {show.year && <span className="text-xs text-muted-foreground">{show.year}</span>}
+                                                                    </div>
+                                                                    <p className="text-sm text-foreground/80">
+                                                                        {show.role}{show.channel && <><span className="text-muted-foreground mx-2">•</span>{show.channel}</>}
+                                                                    </p>
+                                                                    {show.link && (
+                                                                        <a href={show.link} target="_blank" rel="noopener noreferrer" className="inline-block text-[10px] uppercase tracking-wider text-accent hover:underline mt-1">Watch Snippet</a>
+                                                                    )}
+                                                                </div>
+                                                            ))}
+                                                        </div>
+                                                    </motion.div>
+                                                )}
+
+                                                {theater && theater.length > 0 && (
+                                                    <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={itemVariants} className="space-y-8">
+                                                        <h3 className="font-editorial text-2xl italic border-l-2 border-accent pl-6">Theater</h3>
+                                                        <div className="space-y-6">
+                                                            {theater.map((play) => (
+                                                                <div key={play.id} className="space-y-1">
+                                                                    <div className="flex justify-between items-baseline">
+                                                                        <h4 className="font-display text-lg">{play.play}</h4>
+                                                                        {play.year && <span className="text-xs text-muted-foreground">{play.year}</span>}
+                                                                    </div>
+                                                                    <p className="text-sm text-foreground/80">
+                                                                        {play.role}{play.theater && <><span className="text-muted-foreground mx-2">•</span>{play.theater}</>}
+                                                                    </p>
+                                                                    {play.director && <p className="text-xs text-muted-foreground font-light">Dir. {play.director}</p>}
+                                                                </div>
+                                                            ))}
+                                                        </div>
+                                                    </motion.div>
+                                                )}
+                                            </div>
+                                        )}
+
+                                        {/* Skills & Education */}
+                                        {((education && education.length > 0) || (training && training.length > 0)) && (
+                                            <div className="grid md:grid-cols-2 gap-12">
+                                                {education && education.length > 0 && (
+                                                    <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={itemVariants} className="space-y-8">
+                                                        <h3 className="font-editorial text-2xl italic border-l-2 border-accent pl-6">Education</h3>
+                                                        <ul className="space-y-2">
+                                                            {education.map((edu) => (
+                                                                <li key={edu.id} className="font-body text-sm">{edu.degree}</li>
+                                                            ))}
+                                                        </ul>
+                                                    </motion.div>
+                                                )}
+
+                                                {training && training.length > 0 && (
+                                                    <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={itemVariants} className="space-y-8">
+                                                        <h3 className="font-editorial text-2xl italic border-l-2 border-accent pl-6">Acting Training</h3>
+                                                        <div className="space-y-4">
+                                                            {training.map((t) => (
+                                                                <div key={t.id}>
+                                                                    <p className="font-display text-sm">{t.school}</p>
+                                                                    {(t.mentor || t.location) && (
+                                                                        <p className="text-xs text-muted-foreground">
+                                                                            {[t.mentor, t.location].filter(Boolean).join(" • ")}
+                                                                        </p>
+                                                                    )}
+                                                                </div>
+                                                            ))}
+                                                        </div>
+                                                    </motion.div>
+                                                )}
+                                            </div>
+                                        )}
+
+                                        {/* Commercials */}
+                                        {commercials && commercials.length > 0 && (
+                                            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={itemVariants} className="space-y-6 pb-12">
+                                                <div className="flex items-baseline justify-between border-b border-border/50 pb-4">
+                                                    <h3 className="font-editorial text-2xl italic">Commercials</h3>
+                                                    <span className="text-[10px] text-muted-foreground font-body tracking-wider uppercase">Selected Brands from 500+ Projects</span>
+                                                </div>
+                                                <div className="flex flex-wrap gap-2">
+                                                    {commercials.map((c) => (
+                                                        <span key={c.id} className="px-3 py-1.5 bg-secondary/30 border border-border/50 text-[10px] tracking-wide hover:bg-accent hover:text-white transition-colors cursor-default uppercase">
+                                                            {c.brand}
+                                                        </span>
+                                                    ))}
+                                                </div>
+                                            </motion.div>
+                                        )}
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </motion.div>

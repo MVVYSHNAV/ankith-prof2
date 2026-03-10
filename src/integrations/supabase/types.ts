@@ -187,6 +187,177 @@ export type Database = {
                 }
                 Relationships: []
             }
+            resume_films: {
+                Row: {
+                    id: string
+                    title: string
+                    director: string | null
+                    role: string | null
+                    year: string | null
+                    image_url: string | null
+                    display_order: number | null
+                    created_at: string
+                }
+                Insert: {
+                    id?: string
+                    title: string
+                    director?: string | null
+                    role?: string | null
+                    year?: string | null
+                    display_order?: number | null
+                    created_at?: string
+                }
+                Update: {
+                    id?: string
+                    title?: string
+                    director?: string | null
+                    role?: string | null
+                    year?: string | null
+                    display_order?: number | null
+                    created_at?: string
+                }
+                Relationships: []
+            }
+            resume_tv: {
+                Row: {
+                    id: string
+                    show: string
+                    role: string | null
+                    type: string | null
+                    channel: string | null
+                    year: string | null
+                    link: string | null
+                    image_url: string | null
+                    display_order: number | null
+                    created_at: string
+                }
+                Insert: {
+                    id?: string
+                    show: string
+                    role?: string | null
+                    type?: string | null
+                    channel?: string | null
+                    year?: string | null
+                    link?: string | null
+                    display_order?: number | null
+                    created_at?: string
+                }
+                Update: {
+                    id?: string
+                    show?: string
+                    role?: string | null
+                    type?: string | null
+                    channel?: string | null
+                    year?: string | null
+                    link?: string | null
+                    display_order?: number | null
+                    created_at?: string
+                }
+                Relationships: []
+            }
+            resume_theater: {
+                Row: {
+                    id: string
+                    play: string
+                    director: string | null
+                    theater: string | null
+                    role: string | null
+                    year: string | null
+                    display_order: number | null
+                    created_at: string
+                }
+                Insert: {
+                    id?: string
+                    play: string
+                    director?: string | null
+                    theater?: string | null
+                    role?: string | null
+                    year?: string | null
+                    display_order?: number | null
+                    created_at?: string
+                }
+                Update: {
+                    id?: string
+                    play?: string
+                    director?: string | null
+                    theater?: string | null
+                    role?: string | null
+                    year?: string | null
+                    display_order?: number | null
+                    created_at?: string
+                }
+                Relationships: []
+            }
+            resume_education: {
+                Row: {
+                    id: string
+                    degree: string
+                    display_order: number | null
+                    created_at: string
+                }
+                Insert: {
+                    id?: string
+                    degree: string
+                    display_order?: number | null
+                    created_at?: string
+                }
+                Update: {
+                    id?: string
+                    degree?: string
+                    display_order?: number | null
+                    created_at?: string
+                }
+                Relationships: []
+            }
+            resume_training: {
+                Row: {
+                    id: string
+                    school: string
+                    mentor: string | null
+                    location: string | null
+                    image_url: string | null
+                    display_order: number | null
+                    created_at: string
+                }
+                Insert: {
+                    id?: string
+                    school: string
+                    mentor?: string | null
+                    location?: string | null
+                    display_order?: number | null
+                    created_at?: string
+                }
+                Update: {
+                    id?: string
+                    school?: string
+                    mentor?: string | null
+                    location?: string | null
+                    display_order?: number | null
+                    created_at?: string
+                }
+                Relationships: []
+            }
+            resume_commercials: {
+                Row: {
+                    id: string
+                    brand: string
+                    display_order: number | null
+                    created_at: string
+                }
+                Insert: {
+                    id?: string
+                    brand: string
+                    display_order?: number | null
+                    created_at?: string
+                }
+                Update: {
+                    id?: string
+                    brand?: string
+                    display_order?: number | null
+                    created_at?: string
+                }
+                Relationships: []
+            }
         }
         Views: {
             [_ in never]: never

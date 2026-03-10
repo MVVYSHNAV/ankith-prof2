@@ -1,8 +1,6 @@
 import { useState, useRef } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { useProfile } from "@/hooks/useSupabase";
-import { aboutData as staticAboutData } from "@/data/about";
-import resumeData from "@/data/resume.json";
 
 const AboutSection = () => {
     const containerRef = useRef<HTMLDivElement>(null);
@@ -16,11 +14,10 @@ const AboutSection = () => {
 
     const y = useTransform(scrollYProgress, [0, 1], [100, -100]);
 
-    const image = profile?.avatar_url || staticAboutData.image;
-    const quote = profile?.about_bio || staticAboutData.bio;
+    const image = profile?.avatar_url || "";
+    const quote = profile?.about_bio || "";
     const highlightTitle = profile?.about_quote || "The Panache Factor";
-    const fullBioStr = profile?.about_full_bio;
-    const fullBio = fullBioStr ? fullBioStr.split('\n\n').filter(p => p.trim()) : staticAboutData.fullBio;
+    const fullBio = (profile?.about_full_bio || "").split('\n\n').filter(p => p.trim());
 
     return (
         <section id="about" ref={containerRef} className="py-32 md:py-40 section-padding bg-primary text-white transition-colors duration-500">
@@ -92,11 +89,11 @@ const AboutSection = () => {
 
                     <div className="pt-8 grid grid-cols-2 sm:grid-cols-3 gap-x-8 gap-y-6 border-t border-white/10 mt-8">
                         {[
-                            { label: "Born", value: profile?.born || resumeData.personalDetails.born },
-                            { label: "Height", value: profile?.height || resumeData.personalDetails.height },
-                            { label: "Eye Color", value: profile?.eye_color || resumeData.personalDetails.eyeColor },
-                            { label: "Hair Color", value: profile?.hair_color || resumeData.personalDetails.hairColor },
-                            { label: "Languages", value: profile?.languages || resumeData.personalDetails.languages.join(", ") },
+                            { label: "Born", value: profile?.born || "" },
+                            { label: "Height", value: profile?.height || "" },
+                            { label: "Eye Color", value: profile?.eye_color || "" },
+                            { label: "Hair Color", value: profile?.hair_color || "" },
+                            { label: "Languages", value: profile?.languages || "" },
                         ].map((stat, idx) => (
                             <div key={idx} className="space-y-1">
                                 <span className="block font-display text-xl mb-1 text-white">

@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Loader2 } from "lucide-react";
-import { portfolioData } from "@/data/portfolio";
 import { useProjects } from "@/hooks/useSupabase";
 
 /* ─────────────────────────────────────────────
@@ -82,15 +81,13 @@ const GalleryCard = ({ item, index, onOpen }: GalleryCardProps) => (
    ───────────────────────────────────────────── */
 const PortfolioSection = () => {
     const [lightboxImage, setLightboxImage] = useState<PortfolioItem | null>(null);
-    const [visibleCount, setVisibleCount] = useState(6);
+    const [visibleCount, setVisibleCount] = useState(3);
     const { data: dbProjects, isLoading } = useProjects();
 
     const portfolioItems = useMemo(() => {
-        const staticItems = portfolioData.items as PortfolioItem[];
-        // Filter DB projects for 'Portfolio' category only
-        if (!dbProjects || dbProjects.length === 0) return staticItems;
+        if (!dbProjects) return [];
 
-        const filteredDbItems = dbProjects
+        return dbProjects
             .filter(p => p.category === 'Portfolio')
             .map(p => ({
                 id: p.id,
@@ -99,19 +96,17 @@ const PortfolioSection = () => {
                 category: "Modeling",
                 aspect: "tall"
             })) as PortfolioItem[];
-
-        return filteredDbItems.length > 0 ? filteredDbItems : staticItems;
     }, [dbProjects]);
-
-    useEffect(() => {
-        const isMobile = window.matchMedia("(max-width: 640px)").matches;
-        if (isMobile) setVisibleCount(3);
-    }, []);
 
     const showMore = useCallback(() => {
         const increment = window.matchMedia("(max-width: 640px)").matches ? 3 : 6;
         setVisibleCount((v) => v + increment);
     }, []);
+
+    const showLess = useCallback(() => {
+        setVisibleCount(3);
+    }, []);
+
     const openLightbox = useCallback((item: PortfolioItem) => setLightboxImage(item), []);
     const closeLightbox = useCallback(() => setLightboxImage(null), []);
 
@@ -151,7 +146,7 @@ const PortfolioSection = () => {
                 {/* ── Photography ── */}
                 <div>
                     <h3 className="font-body text-[10px] tracking-[0.3em] uppercase text-primary-foreground/50 mb-8 border-l border-primary-foreground/30 pl-4">
-                        Photography & Projects
+                        Photography
                     </h3>
 
                     {isLoading ? (
@@ -169,13 +164,18 @@ const PortfolioSection = () => {
                         </div>
                     )}
 
-                    {visibleCount < portfolioItems.length && (
-                        <div className="flex justify-center mt-12">
+                    <div className="flex justify-center mt-12 gap-8">
+                        {visibleCount < portfolioItems.length && (
                             <button onClick={showMore} className="font-body text-[10px] tracking-[0.4em] uppercase text-primary-foreground/50 hover:text-white border-b border-primary-foreground/20 hover:border-white transition-all pb-1">
                                 Load More
                             </button>
-                        </div>
-                    )}
+                        )}
+                        {visibleCount > 3 && (
+                            <button onClick={showLess} className="font-body text-[10px] tracking-[0.4em] uppercase text-primary-foreground/50 hover:text-white border-b border-primary-foreground/20 hover:border-white transition-all pb-1">
+                                Show Less
+                            </button>
+                        )}
+                    </div>
                 </div>
             </div>
 

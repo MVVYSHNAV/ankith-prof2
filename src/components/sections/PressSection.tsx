@@ -2,7 +2,6 @@ import { useRef, useState, useMemo } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { Play, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { useProjects } from "@/hooks/useSupabase";
-import filmographyData from "@/data/filmography.json";
 
 /* ─── Video helpers ─── */
 const getYoutubeId = (url: string) => {
@@ -241,42 +240,14 @@ const PressSection = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
 
     const { showreelProject, filmProjects, videos } = useMemo(() => {
-        const hasDbProjects = dbProjects && dbProjects.length > 0;
-
-        if (!hasDbProjects) {
-            const projects = filmographyData.projects;
-            const videos = (filmographyData.videos || []).map(v => ({
-                id: v.id,
-                title: v.title,
-                url: v.url
-            }));
-
-            const showreel = projects.find((p: any) => p.title.toLowerCase().includes("showreel")) || projects[0];
-            const films = projects
-                .filter((p: any) => p !== showreel)
-                .map((p: any) => ({
-                    id: p.id.toString(),
-                    title: p.title,
-                    role: p.role,
-                    duration: p.duration,
-                    description: p.description,
-                    note: p.note,
-                    thumbnailUrl: p.thumbnailUrl,
-                    streamingUrl: p.streamingUrl,
-                    streamingProvider: p.streamingProvider
-                }));
-
-            return { showreelProject: showreel, filmProjects: films, videos };
-        }
-
-        const showreel = dbProjects.find(p => p.category === 'Showreel') || {
+        const showreel = (dbProjects || []).find(p => p.category === 'Showreel') || {
             title: "Actor AnkithMadhav's Feature Films Showreel.",
             description: "This showreel gives a glimpse into the versatile actor AnkithMadhav's commendable works in multi language Feature Films.",
             note: "A compilation of performances across various genres and languages.",
             video_url: "https://youtu.be/8y_6zaauhf0?si=xsWCR8Gle5VKv4jH"
         };
 
-        const films = dbProjects
+        const films = (dbProjects || [])
             .filter(p => p.category === 'Filmography')
             .map(p => ({
                 id: p.id,
@@ -290,7 +261,7 @@ const PressSection = () => {
                 streamingProvider: p.streaming_provider
             }));
 
-        const ads = dbProjects
+        const ads = (dbProjects || [])
             .filter(p => p.category === 'Ad')
             .map(p => ({
                 id: p.id,
@@ -298,11 +269,7 @@ const PressSection = () => {
                 url: p.video_url || ""
             }));
 
-        return {
-            showreelProject: showreel,
-            filmProjects: films.length > 0 ? films : (filmographyData.projects.slice(1) as any),
-            videos: ads.length > 0 ? ads : filmographyData.videos
-        };
+        return { showreelProject: showreel, filmProjects: films, videos: ads };
     }, [dbProjects]);
 
     const nextProject = () => setCurrentIndex((p) => (p + 1) % (filmProjects.length || 1));

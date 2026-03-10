@@ -11,7 +11,8 @@ import {
     Award,
     Star,
     Camera,
-    LogOut
+    LogOut,
+    FileText
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -19,6 +20,7 @@ import ProjectManager from "@/components/dashboard/ProjectManager";
 import SkillManager from "@/components/dashboard/SkillManager";
 import ProfileManager from "@/components/dashboard/ProfileManager";
 import MessageList from "@/components/dashboard/MessageList";
+import ResumeManager from "@/components/dashboard/ResumeManager";
 
 const Dashboard = () => {
     const { signOut } = useAuth();
@@ -67,6 +69,10 @@ const Dashboard = () => {
                             <MessageSquare size={16} />
                             <span>Messages</span>
                         </TabsTrigger>
+                        <TabsTrigger value="resume" className="flex items-center gap-2">
+                            <FileText size={16} />
+                            <span>Resume</span>
+                        </TabsTrigger>
                     </TabsList>
 
                     <TabsContent value="projects" className="mt-0">
@@ -87,6 +93,10 @@ const Dashboard = () => {
 
                     <TabsContent value="messages" className="mt-0">
                         <MessageList />
+                    </TabsContent>
+
+                    <TabsContent value="resume" className="mt-0">
+                        <ResumeManager />
                     </TabsContent>
                 </Tabs>
             </div>

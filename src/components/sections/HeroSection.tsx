@@ -2,7 +2,7 @@ import { useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import gsap from "gsap";
 import { useProfile } from "@/hooks/useSupabase";
-import heroImageDefault from "@/assets/images/6.jpeg";
+// import heroImageDefault from "@/assets/images/6.jpeg";
 
 const HeroSection = () => {
     const heroRef = useRef<HTMLDivElement>(null);
@@ -12,7 +12,7 @@ const HeroSection = () => {
     const heroTitle = profile?.hero_title || "Ankith";
     const heroSubtitle = profile?.hero_subtitle || "Madhav";
     const heroQuote = profile?.title_italic || '"Man is genius when he is dreaming."';
-    const heroImage = profile?.hero_image_url || heroImageDefault;
+    const heroImage = profile?.hero_image_url
     const heroRole = profile?.bio || "Actor";
 
     useEffect(() => {
