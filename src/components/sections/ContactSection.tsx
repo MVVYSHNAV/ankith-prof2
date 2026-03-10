@@ -124,14 +124,14 @@ const ContactSection = () => {
                                 </div>
                             </div>
 
-                            <div className="mt-16">
+                            {/* <div className="mt-16">
                                 <span className="font-body text-[10px] tracking-[0.4em] uppercase text-primary-foreground/40 block mb-4">
                                     Quote
                                 </span>
                                 <span className="font-editorial text-lg text-primary-foreground/60 italic">
                                     {quote}
                                 </span>
-                            </div>
+                            </div> */}
                         </motion.div>
 
                         {/* Right - Form */}
