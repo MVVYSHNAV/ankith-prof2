@@ -24,3 +24,6 @@ dist-ssr
 *.sw?
 
 /prd.md
+.env
+.env.local
+.env.*

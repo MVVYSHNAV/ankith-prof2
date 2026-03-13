@@ -2,6 +2,7 @@ import { useRef, useState, useMemo } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { Play, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { useProjects } from "@/hooks/useSupabase";
+import OptimizedImage from "@/components/ui/OptimizedImage";
 
 /* ─── Video helpers ─── */
 const getYoutubeId = (url: string) => {
@@ -159,13 +160,11 @@ const StreamingCard = ({
             {/* ── Left: Portrait poster strip (40% of width) ── */}
             <div className="relative w-[42%] shrink-0 overflow-hidden">
                 {thumbnailUrl ? (
-                    <img
+                    <OptimizedImage
                         src={thumbnailUrl}
                         alt={`${title} poster`}
-                        className="absolute inset-0 w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
-                        onError={(e) => {
-                            (e.target as HTMLImageElement).style.display = "none";
-                        }}
+                        className="object-top transition-transform duration-500 group-hover:scale-105"
+                        containerClassName="absolute inset-0"
                     />
                 ) : (
                     <div className="absolute inset-0 bg-secondary/60" />
@@ -396,10 +395,11 @@ const PressSection = () => {
                                             className="absolute w-full max-w-5xl h-full cursor-grab active:cursor-grabbing"
                                         >
                                             <div className="w-full h-full relative group overflow-hidden rounded-2xl md:rounded-3xl border border-foreground/10 bg-black shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)]">
-                                                <img
+                                                <OptimizedImage
                                                     src={project.thumbnailUrl}
                                                     alt={project.title}
-                                                    className="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-80 transition-opacity duration-1000"
+                                                    className="opacity-50 group-hover:opacity-80 transition-opacity duration-1000"
+                                                    containerClassName="absolute inset-0"
                                                 />
 
                                                 {/* Vignette Overlay */}
@@ -520,15 +520,11 @@ const PressSection = () => {
                                             {(() => {
                                                 const details = getVideoDetails(video.url);
                                                 return details ? (
-                                                    <img
+                                                    <OptimizedImage
                                                         src={details.thumbnail}
                                                         alt={video.title}
-                                                        className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500"
-                                                        onError={(e) => {
-                                                            if (details.type === "youtube") {
-                                                                (e.target as HTMLImageElement).style.display = "none";
-                                                            }
-                                                        }}
+                                                        className="opacity-80 group-hover:opacity-100 transition-all duration-500"
+                                                        containerClassName="absolute inset-0"
                                                     />
                                                 ) : (
                                                     <div className="w-full h-full bg-secondary flex items-center justify-center">

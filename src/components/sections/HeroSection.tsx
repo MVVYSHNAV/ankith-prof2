@@ -2,7 +2,7 @@ import { useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import gsap from "gsap";
 import { useProfile } from "@/hooks/useSupabase";
-// import heroImageDefault from "@/assets/images/6.jpeg";
+import OptimizedImage from "@/components/ui/OptimizedImage";
 
 const HeroSection = () => {
     const heroRef = useRef<HTMLDivElement>(null);
@@ -68,7 +68,7 @@ const HeroSection = () => {
         <section ref={heroRef} className="relative h-screen w-full overflow-hidden">
             {/* Background Image */}
             <div className="absolute top-[-7.5vh] left-0 w-full h-[115vh] overflow-hidden">
-                <img
+                <OptimizedImage
                     ref={imageRef}
                     src={heroImage}
                     alt={`${heroTitle} ${heroSubtitle} - Hero`}

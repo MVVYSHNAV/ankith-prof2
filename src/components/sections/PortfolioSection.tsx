@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Loader2 } from "lucide-react";
 import { useProjects } from "@/hooks/useSupabase";
+import OptimizedImage from "@/components/ui/OptimizedImage";
 
 /* ─────────────────────────────────────────────
    Types
@@ -38,12 +39,6 @@ const lightboxVariants: any = {
     exit: { opacity: 0, transition: { duration: 0.25, ease: "easeIn" } },
 };
 
-const imageVariants: any = {
-    hidden: { opacity: 0, scale: 0.92 },
-    visible: { opacity: 1, scale: 1, transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] } },
-    exit: { opacity: 0, scale: 0.94, transition: { duration: 0.25, ease: "easeIn" } },
-};
-
 /* ─────────────────────────────────────────────
    Sub-component: Gallery Card
    ───────────────────────────────────────────── */
@@ -64,12 +59,12 @@ const GalleryCard = ({ item, index, onOpen }: GalleryCardProps) => (
         onClick={() => onOpen(item)}
     >
         <div className={`overflow-hidden ${ASPECT_CLASSES[item.aspect] || "aspect-video"}`}>
-            <img
+            <OptimizedImage
                 src={item.src}
                 alt={item.alt}
                 loading="lazy"
                 decoding="async"
-                className="w-full h-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.04]"
+                className="transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.04]"
             />
         </div>
         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/25 transition-colors duration-500 ease-out pointer-events-none" />
@@ -191,14 +186,14 @@ const PortfolioSection = () => {
                         onClick={closeLightbox}
                     >
                         <button onClick={closeLightbox} className="absolute top-6 right-6 text-white/50 hover:text-white transition-colors"><X size={24} /></button>
-                        <motion.img
-                            key={lightboxImage.id}
-                            variants={imageVariants}
-                            src={lightboxImage.src}
-                            alt={lightboxImage.alt}
-                            className="max-w-full max-h-full object-contain rounded-lg"
-                            onClick={(e) => e.stopPropagation()}
-                        />
+                        <div className="w-full h-full max-w-5xl max-h-[85vh] relative" onClick={(e) => e.stopPropagation()}>
+                            <OptimizedImage
+                                key={lightboxImage.id}
+                                src={lightboxImage.src}
+                                alt={lightboxImage.alt}
+                                className="object-contain rounded-lg"
+                            />
+                        </div>
                     </motion.div>
                 )}
             </AnimatePresence>

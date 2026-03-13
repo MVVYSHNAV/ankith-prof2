@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { useProfile } from "@/hooks/useSupabase";
+import OptimizedImage from "@/components/ui/OptimizedImage";
 
 const AboutSection = () => {
     const containerRef = useRef<HTMLDivElement>(null);
@@ -24,11 +25,12 @@ const AboutSection = () => {
             <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-16 md:gap-32">
                 {/* Image */}
                 <div className="w-full md:w-1/2 relative">
-                    <motion.div style={{ y }} className="relative z-10 overflow-hidden">
-                        <img
+                    <motion.div style={{ y }} className="relative z-10 overflow-hidden aspect-[3/4]">
+                        <OptimizedImage
                             src={image}
                             alt="Ankith Madhav Portrait"
-                            className="w-full aspect-[3/4] object-cover transition-all duration-700"
+                            containerClassName="w-full h-full"
+                            className="object-cover"
                         />
                     </motion.div>
                     <div className="absolute top-10 -left-10 w-full h-full border border-white/10 -z-10 hidden md:block" />
