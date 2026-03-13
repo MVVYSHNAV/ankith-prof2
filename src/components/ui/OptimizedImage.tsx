@@ -50,22 +50,22 @@ export const OptimizedImage = forwardRef<HTMLImageElement, OptimizedImageProps>(
         src={hasError ? fallbackSrc : src}
         alt={alt}
         initial={{ opacity: 0, scale: 1.05 }}
-        animate={{ 
+        animate={{
           opacity: isLoaded ? 1 : 0,
           scale: isLoaded ? 1 : 1.05
         }}
-        transition={{ 
+        transition={{
           opacity: { duration: 0.8, ease: [0.22, 1, 0.36, 1] },
           scale: { duration: 1.2, ease: [0.22, 1, 0.36, 1] }
         }}
         onLoad={(e) => {
-            setIsLoaded(true);
-            onLoad?.(e);
+          setIsLoaded(true);
+          onLoad?.(e);
         }}
         onError={(e) => {
-            setHasError(true);
-            setIsLoaded(true); // Set to true to hide placeholder and show fallback
-            onError?.(e);
+          setHasError(true);
+          setIsLoaded(true); // Set to true to hide placeholder and show fallback
+          onError?.(e);
         }}
         className={cn(
           "w-full h-full object-cover will-change-transform",
@@ -77,7 +77,7 @@ export const OptimizedImage = forwardRef<HTMLImageElement, OptimizedImageProps>(
       {/* Fallback for error state */}
       {hasError && (
         <div className="absolute inset-0 flex items-center justify-center bg-muted/20">
-             <span className="text-[10px] uppercase tracking-widest text-muted-foreground/50">Image unavailable</span>
+          <span className="text-[10px] uppercase tracking-widest text-muted-foreground/50">Image unavailable</span>
         </div>
       )}
     </div>

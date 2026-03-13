@@ -5,26 +5,33 @@ interface PreloaderProps {
     onLoadingComplete: () => void;
 }
 
+const words = [
+    "Panache",
+    "Style",
+    "Versatility",
+    "Artistry",
+    "Ankith Madhav"
+];
+
 const Preloader = ({ onLoadingComplete }: PreloaderProps) => {
-    const [progress, setProgress] = useState(0);
+    const [index, setIndex] = useState(0);
     const [isComplete, setIsComplete] = useState(false);
 
     useEffect(() => {
-        const timer = setInterval(() => {
-            setProgress((prev) => {
-                if (prev >= 100) {
-                    clearInterval(timer);
-                    setTimeout(() => setIsComplete(true), 500);
-                    setTimeout(() => onLoadingComplete(), 2000);
-                    return 100;
-                }
-                const diff = Math.random() * 15;
-                return Math.min(prev + diff, 100);
-            });
-        }, 120);
+        if (index === words.length - 1) {
+            setTimeout(() => {
+                setIsComplete(true);
+                setTimeout(onLoadingComplete, 1000);
+            }, 1000);
+            return;
+        }
 
-        return () => clearInterval(timer);
-    }, [onLoadingComplete]);
+        const timer = setTimeout(() => {
+            setIndex((prev) => prev + 1);
+        }, index === 0 ? 1000 : 150);
+
+        return () => clearTimeout(timer);
+    }, [index, onLoadingComplete]);
 
     return (
         <AnimatePresence>
@@ -32,64 +39,62 @@ const Preloader = ({ onLoadingComplete }: PreloaderProps) => {
                 <motion.div
                     initial={{ opacity: 1 }}
                     exit={{
-                        opacity: 0,
-                        transition: { duration: 1, ease: [0.76, 0, 0.24, 1] }
+                        y: "-100%",
+                        transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1] }
                     }}
                     className="fixed inset-0 z-[10000] bg-primary flex flex-col items-center justify-center overflow-hidden"
                 >
-                    {/* Background Texture/Grain can be added here */}
                     <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
 
                     <div className="relative z-10 w-full max-w-7xl mx-auto px-6 flex flex-col items-center">
-                        {/* Progress Number */}
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            className="mb-12"
-                        >
-                            <span className="font-editorial italic text-6xl md:text-8xl text-accent/40 block">
-                                {Math.round(progress)}
-                                <span className="text-2xl ml-2 font-body not-italic tracking-widest">%</span>
-                            </span>
-                        </motion.div>
-
-                        {/* Name Reveal */}
-                        <div className="overflow-hidden py-2">
-                            <motion.h1
-                                initial={{ y: "100%" }}
-                                animate={{ y: 0 }}
-                                transition={{ duration: 1, ease: [0.33, 1, 0.68, 1], delay: 0.2 }}
-                                className="font-display text-4xl md:text-6xl lg:text-8xl tracking-[0.2em] uppercase text-white leading-none"
-                            >
-                                Ankith <span className="font-editorial italic normal-case text-accent">Madhav</span>
-                            </motion.h1>
+                        <div className="h-20 md:h-32 overflow-hidden flex items-center justify-center">
+                            <AnimatePresence mode="wait">
+                                <motion.span
+                                    key={words[index]}
+                                    initial={{ y: "100%" }}
+                                    animate={{ y: 0 }}
+                                    exit={{ y: "-100%" }}
+                                    transition={{ duration: 0.5, ease: [0.33, 1, 0.68, 1] }}
+                                    className={`font-display text-4xl md:text-6xl lg:text-8xl tracking-[0.2em] uppercase text-white leading-none ${index === words.length - 1 ? "text-accent" : ""}`}
+                                >
+                                    {words[index]}
+                                </motion.span>
+                            </AnimatePresence>
                         </div>
 
-                        {/* Decorative Line */}
                         <motion.div
                             initial={{ scaleX: 0 }}
                             animate={{ scaleX: 1 }}
-                            transition={{ duration: 1.5, ease: "easeInOut", delay: 0.5 }}
+                            transition={{ duration: 1.5, ease: "easeInOut", delay: 0.2 }}
                             className="h-px w-24 bg-accent/30 mt-8"
                         />
 
                         <motion.p
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 0.4 }}
-                            transition={{ delay: 1 }}
+                            transition={{ delay: 0.5 }}
                             className="font-body text-[10px] tracking-[0.4em] uppercase text-white mt-4"
                         >
                             The Panache Factor
                         </motion.p>
                     </div>
 
-                    {/* Splitting Panels for reveal */}
-                    <motion.div
-                        initial={{ scaleY: 0 }}
-                        animate={progress === 100 ? { scaleY: 1 } : { scaleY: 0 }}
-                        className="absolute inset-0 bg-background z-20 origin-bottom"
-                        transition={{ duration: 1, ease: [0.76, 0, 0.24, 1], delay: 0.8 }}
-                    />
+                    {/* Reveal background panels */}
+                    <div className="absolute inset-0 flex flex-col pointer-events-none">
+                        {[...Array(4)].map((_, i) => (
+                            <motion.div
+                                key={i}
+                                initial={{ scaleY: 0 }}
+                                animate={isComplete ? { scaleY: 1 } : { scaleY: 0 }}
+                                className="flex-1 bg-background origin-top"
+                                transition={{ 
+                                    duration: 0.6, 
+                                    ease: [0.76, 0, 0.24, 1],
+                                    delay: i * 0.1
+                                }}
+                            />
+                        ))}
+                    </div>
                 </motion.div>
             )}
         </AnimatePresence>
