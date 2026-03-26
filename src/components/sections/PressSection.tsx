@@ -514,7 +514,9 @@ const PressSection = () => {
                             <div className="group/scroll relative">
                                 <div
                                     ref={interviewsScrollContainerRef}
-                                    className="flex overflow-x-auto gap-4 sm:gap-6 pb-6 snap-x snap-mandatory scrollbar-hide -mx-4 px-4 sm:-mx-6 sm:px-6 md:mx-0 md:px-0 scroll-smooth"
+                                    className={`flex overflow-x-auto gap-4 sm:gap-6 pb-6 snap-x snap-mandatory scrollbar-hide -mx-4 px-4 sm:-mx-6 sm:px-6 md:mx-0 md:px-0 scroll-smooth ${
+                                        interviews.length === 1 ? "md:justify-center" : interviews.length === 2 ? "lg:justify-center" : ""
+                                    }`}
                                 >
                                     {interviews.map((video: any, index: number) => (
                                         <motion.div
@@ -592,7 +594,9 @@ const PressSection = () => {
                             <div className="group/scroll relative">
                                 <div
                                     ref={scrollContainerRef}
-                                    className="flex overflow-x-auto gap-4 sm:gap-6 pb-6 snap-x snap-mandatory scrollbar-hide -mx-4 px-4 sm:-mx-6 sm:px-6 md:mx-0 md:px-0 scroll-smooth"
+                                    className={`flex overflow-x-auto gap-4 sm:gap-6 pb-6 snap-x snap-mandatory scrollbar-hide -mx-4 px-4 sm:-mx-6 sm:px-6 md:mx-0 md:px-0 scroll-smooth ${
+                                        videos.length === 1 ? "md:justify-center" : videos.length === 2 ? "lg:justify-center" : ""
+                                    }`}
                                 >
                                     {videos.map((video: any, index: number) => (
                                         <motion.div
