@@ -232,13 +232,14 @@ const StreamingCard = ({
 const PressSection = () => {
     const sectionRef = useRef<HTMLElement>(null);
     const scrollContainerRef = useRef<HTMLDivElement>(null);
+    const interviewsScrollContainerRef = useRef<HTMLDivElement>(null);
     const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
     const { data: dbProjects } = useProjects();
 
     const [selectedVideo, setSelectedVideo] = useState<{ id: string; url: string; title?: string } | null>(null);
     const [currentIndex, setCurrentIndex] = useState(0);
 
-    const { showreelProject, filmProjects, videos } = useMemo(() => {
+    const { showreelProject, filmProjects, videos, interviews } = useMemo(() => {
         const showreel = (dbProjects || []).find(p => p.category === 'Showreel') || {
             title: "Actor AnkithMadhav's Feature Films Showreel.",
             description: "This showreel gives a glimpse into the versatile actor AnkithMadhav's commendable works in multi language Feature Films.",
@@ -268,7 +269,15 @@ const PressSection = () => {
                 url: p.video_url || ""
             }));
 
-        return { showreelProject: showreel, filmProjects: films, videos: ads };
+        const interviewsList = (dbProjects || [])
+            .filter(p => p.category === 'Interview')
+            .map(p => ({
+                id: p.id,
+                title: p.title,
+                url: p.video_url || ""
+            }));
+
+        return { showreelProject: showreel, filmProjects: films, videos: ads, interviews: interviewsList };
     }, [dbProjects]);
 
     const nextProject = () => setCurrentIndex((p) => (p + 1) % (filmProjects.length || 1));
@@ -487,6 +496,84 @@ const PressSection = () => {
                     </div>
                 </div>
             </section>
+
+            {/* ── Media gallery (Interviews) ── */}
+            {interviews.length > 0 && (
+                <section className="py-8 md:py-12 section-padding bg-background text-foreground">
+                    <div className="max-w-7xl mx-auto">
+                        <motion.div
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true, margin: "-50px" }}
+                            transition={{ duration: 0.8, delay: 0.2 }}
+                        >
+                            <h3 className="font-display text-3xl md:text-4xl lg:text-5xl font-light uppercase tracking-[0.04em] text-foreground mb-8 sm:mb-12 md:mb-16">
+                                Media <span className="font-editorial italic normal-case tracking-wide text-foreground">Interviews</span>
+                            </h3>
+
+                            <div className="group/scroll relative">
+                                <div
+                                    ref={interviewsScrollContainerRef}
+                                    className="flex overflow-x-auto gap-4 sm:gap-6 pb-6 snap-x snap-mandatory scrollbar-hide -mx-4 px-4 sm:-mx-6 sm:px-6 md:mx-0 md:px-0 scroll-smooth"
+                                >
+                                    {interviews.map((video: any, index: number) => (
+                                        <motion.div
+                                            key={video.id}
+                                            initial={{ opacity: 0, x: 20 }}
+                                            whileInView={{ opacity: 1, x: 0 }}
+                                            viewport={{ once: true }}
+                                            transition={{ duration: 0.5, delay: index * 0.08 }}
+                                            className="min-w-[78vw] sm:min-w-[340px] md:min-w-[380px] snap-center shrink-0 aspect-video bg-secondary/30 relative group cursor-pointer overflow-hidden border border-border/50 hover:border-foreground/20 rounded-lg transition-all duration-300"
+                                            onClick={() => setSelectedVideo(video)}
+                                        >
+                                            {(() => {
+                                                const details = getVideoDetails(video.url);
+                                                return details ? (
+                                                    <OptimizedImage
+                                                        src={details.thumbnail}
+                                                        alt={video.title}
+                                                        className="opacity-80 group-hover:opacity-100 transition-all duration-500"
+                                                        containerClassName="absolute inset-0"
+                                                    />
+                                                ) : (
+                                                    <div className="w-full h-full bg-secondary flex items-center justify-center">
+                                                        <span className="text-muted-foreground text-xs">Video</span>
+                                                    </div>
+                                                );
+                                            })()}
+
+                                            <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/40 transition-colors duration-300">
+                                                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-background/90 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                                                    <div className="w-0 h-0 border-t-[5px] sm:border-t-[6px] border-t-transparent border-l-[9px] sm:border-l-[10px] border-l-foreground border-b-[5px] sm:border-b-[6px] border-b-transparent ml-1" />
+                                                </div>
+                                            </div>
+
+                                            <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4 bg-gradient-to-t from-black/80 to-transparent">
+                                                <p className="font-body text-[10px] sm:text-xs tracking-wide text-white line-clamp-1">
+                                                    {video.title}
+                                                </p>
+                                            </div>
+                                        </motion.div>
+                                    ))}
+                                </div>
+
+                                {/* Floating Right Navigation Only */}
+                                <button
+                                    onClick={() => {
+                                        if (interviewsScrollContainerRef.current) {
+                                            interviewsScrollContainerRef.current.scrollBy({ left: 400, behavior: 'smooth' });
+                                        }
+                                    }}
+                                    className="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-background/40 backdrop-blur-md border border-white/10 flex items-center justify-center text-foreground opacity-0 group-hover/scroll:opacity-100 transition-opacity duration-300 hidden md:flex hover:bg-background/60"
+                                    aria-label="Scroll Right"
+                                >
+                                    <ChevronRight size={24} strokeWidth={1.5} />
+                                </button>
+                            </div>
+                        </motion.div>
+                    </div>
+                </section>
+            )}
 
             {/* ── Video gallery (More Performances) ── */}
             {videos.length > 0 && (

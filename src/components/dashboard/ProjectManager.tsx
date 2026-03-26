@@ -93,6 +93,7 @@ const ProjectForm = ({
                                 <SelectItem value="Filmography">Film Credit</SelectItem>
                                 <SelectItem value="Showreel">Showreel</SelectItem>
                                 <SelectItem value="Ad">Advertisement</SelectItem>
+                                <SelectItem value="Interview">Interview</SelectItem>
                             </SelectContent>
                         </Select>
                     </div>
@@ -417,7 +418,8 @@ const ProjectManager = ({ defaultCategory = "Portfolio", exclusive = false }: Pr
     const categories = [
         { id: 'Filmography', label: 'Film Credits' },
         { id: 'Showreel', label: 'Showreels' },
-        { id: 'Ad', label: 'Advertisements' }
+        { id: 'Ad', label: 'Advertisements' },
+        { id: 'Interview', label: 'Interviews' }
     ];
 
     return (
