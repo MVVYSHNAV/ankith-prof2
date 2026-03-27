@@ -508,15 +508,14 @@ const PressSection = () => {
                             transition={{ duration: 0.8, delay: 0.2 }}
                         >
                             <h3 className="font-display text-3xl md:text-4xl lg:text-5xl font-light uppercase tracking-[0.04em] text-foreground mb-8 sm:mb-12 md:mb-16">
-                                Media <span className="font-editorial italic normal-case tracking-wide text-foreground">Interviews</span>
+                                Media{/* Media <span className="font-editorial italic normal-case tracking-wide text-foreground">Interviews</span> */}
                             </h3>
 
                             <div className="group/scroll relative">
                                 <div
                                     ref={interviewsScrollContainerRef}
-                                    className={`flex overflow-x-auto gap-4 sm:gap-6 pb-6 snap-x snap-mandatory scrollbar-hide -mx-4 px-4 sm:-mx-6 sm:px-6 md:mx-0 md:px-0 scroll-smooth ${
-                                        interviews.length === 1 ? "md:justify-center" : interviews.length === 2 ? "lg:justify-center" : ""
-                                    }`}
+                                    className={`flex overflow-x-auto gap-4 sm:gap-6 pb-6 snap-x snap-mandatory scrollbar-hide -mx-4 px-4 sm:-mx-6 sm:px-6 md:mx-0 md:px-0 scroll-smooth ${interviews.length === 1 ? "md:justify-center" : interviews.length === 2 ? "lg:justify-center" : ""
+                                        }`}
                                 >
                                     {interviews.map((video: any, index: number) => (
                                         <motion.div
@@ -594,9 +593,8 @@ const PressSection = () => {
                             <div className="group/scroll relative">
                                 <div
                                     ref={scrollContainerRef}
-                                    className={`flex overflow-x-auto gap-4 sm:gap-6 pb-6 snap-x snap-mandatory scrollbar-hide -mx-4 px-4 sm:-mx-6 sm:px-6 md:mx-0 md:px-0 scroll-smooth ${
-                                        videos.length === 1 ? "md:justify-center" : videos.length === 2 ? "lg:justify-center" : ""
-                                    }`}
+                                    className={`flex overflow-x-auto gap-4 sm:gap-6 pb-6 snap-x snap-mandatory scrollbar-hide -mx-4 px-4 sm:-mx-6 sm:px-6 md:mx-0 md:px-0 scroll-smooth ${videos.length === 1 ? "md:justify-center" : videos.length === 2 ? "lg:justify-center" : ""
+                                        }`}
                                 >
                                     {videos.map((video: any, index: number) => (
                                         <motion.div
