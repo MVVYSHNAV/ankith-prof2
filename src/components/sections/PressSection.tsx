@@ -233,13 +233,14 @@ const PressSection = () => {
     const sectionRef = useRef<HTMLElement>(null);
     const scrollContainerRef = useRef<HTMLDivElement>(null);
     const interviewsScrollContainerRef = useRef<HTMLDivElement>(null);
+    const pressScrollContainerRef = useRef<HTMLDivElement>(null);
     const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
     const { data: dbProjects } = useProjects();
 
     const [selectedVideo, setSelectedVideo] = useState<{ id: string; url: string; title?: string } | null>(null);
     const [currentIndex, setCurrentIndex] = useState(0);
 
-    const { showreelProject, filmProjects, videos, interviews } = useMemo(() => {
+    const { showreelProject, filmProjects, videos, interviews, mediaArticles } = useMemo(() => {
         const showreel = (dbProjects || []).find(p => p.category === 'Showreel') || {
             title: "Actor AnkithMadhav's Feature Films Showreel.",
             description: "This showreel gives a glimpse into the versatile actor AnkithMadhav's commendable works in multi language Feature Films.",
@@ -269,15 +270,25 @@ const PressSection = () => {
                 url: p.video_url || ""
             }));
 
-        const interviewsList = (dbProjects || [])
-            .filter(p => p.category === 'Interview')
+        const allInterviews = (dbProjects || []).filter(p => p.category === 'Interview');
+        const interviewsList = allInterviews
+            .filter(p => getVideoDetails(p.video_url || ""))
             .map(p => ({
                 id: p.id,
                 title: p.title,
                 url: p.video_url || ""
             }));
 
-        return { showreelProject: showreel, filmProjects: films, videos: ads, interviews: interviewsList };
+        const articlesList = allInterviews
+            .filter(p => !getVideoDetails(p.video_url || ""))
+            .map(p => ({
+                id: p.id,
+                title: p.title,
+                url: p.video_url || p.streaming_url || "",
+                thumbnailUrl: p.image_url
+            }));
+
+        return { showreelProject: showreel, filmProjects: films, videos: ads, interviews: interviewsList, mediaArticles: articlesList };
     }, [dbProjects]);
 
     const nextProject = () => setCurrentIndex((p) => (p + 1) % (filmProjects.length || 1));
@@ -563,6 +574,87 @@ const PressSection = () => {
                                     onClick={() => {
                                         if (interviewsScrollContainerRef.current) {
                                             interviewsScrollContainerRef.current.scrollBy({ left: 400, behavior: 'smooth' });
+                                        }
+                                    }}
+                                    className="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-background/40 backdrop-blur-md border border-white/10 flex items-center justify-center text-foreground opacity-0 group-hover/scroll:opacity-100 transition-opacity duration-300 hidden md:flex hover:bg-background/60"
+                                    aria-label="Scroll Right"
+                                >
+                                    <ChevronRight size={24} strokeWidth={1.5} />
+                                </button>
+                            </div>
+                        </motion.div>
+                    </div>
+                </section>
+            )}
+
+            {/* ── Media Articles gallery ── */}
+            {mediaArticles.length > 0 && (
+                <section className="py-8 md:py-12 section-padding bg-background text-foreground">
+                    <div className="max-w-7xl mx-auto">
+                        <motion.div
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true, margin: "-50px" }}
+                            transition={{ duration: 0.8, delay: 0.2 }}
+                        >
+                            <h3 className="font-display text-3xl md:text-4xl lg:text-5xl font-light uppercase tracking-[0.04em] text-foreground mb-8 sm:mb-12 md:mb-16">
+                                Media <span className="font-editorial italic normal-case tracking-wide text-foreground">Articles</span>
+                            </h3>
+
+                            <div className="group/scroll relative">
+                                <div
+                                    ref={pressScrollContainerRef}
+                                    className={`flex overflow-x-auto gap-4 sm:gap-6 pb-6 snap-x snap-mandatory scrollbar-hide -mx-4 px-4 sm:-mx-6 sm:px-6 md:mx-0 md:px-0 scroll-smooth ${mediaArticles.length === 1 ? "md:justify-center" : mediaArticles.length === 2 ? "lg:justify-center" : ""
+                                        }`}
+                                >
+                                    {mediaArticles.map((article: any, index: number) => (
+                                        <motion.a
+                                            key={article.id}
+                                            href={article.url}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            initial={{ opacity: 0, x: 20 }}
+                                            whileInView={{ opacity: 1, x: 0 }}
+                                            viewport={{ once: true }}
+                                            transition={{ duration: 0.5, delay: index * 0.08 }}
+                                            className="min-w-[78vw] sm:min-w-[340px] md:min-w-[380px] snap-center shrink-0 aspect-video bg-secondary/30 relative group cursor-pointer overflow-hidden border border-border/50 hover:border-foreground/20 rounded-lg transition-all duration-300 block"
+                                        >
+                                            {article.thumbnailUrl ? (
+                                                <OptimizedImage
+                                                    src={article.thumbnailUrl}
+                                                    alt={article.title}
+                                                    className="opacity-80 group-hover:opacity-100 transition-all duration-500"
+                                                    containerClassName="absolute inset-0"
+                                                />
+                                            ) : (
+                                                <div className="w-full h-full bg-secondary flex items-center justify-center px-6 text-center">
+                                                    <p className="font-display text-xs uppercase tracking-widest text-muted-foreground/80 leading-relaxed">
+                                                        {article.title}
+                                                    </p>
+                                                </div>
+                                            )}
+
+                                            <div className="absolute inset-0 flex items-center justify-center bg-black/10 group-hover:bg-black/30 transition-colors duration-300">
+                                                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-background/90 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                                                    <svg viewBox="0 0 24 24" className="w-5 h-5 fill-none stroke-foreground stroke-2 shrink-0">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
+                                                    </svg>
+                                                </div>
+                                            </div>
+
+                                            <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4 bg-gradient-to-t from-black/80 to-transparent">
+                                                <p className="font-body text-[10px] sm:text-xs tracking-wide text-white line-clamp-1">
+                                                    {article.title}
+                                                </p>
+                                            </div>
+                                        </motion.a>
+                                    ))}
+                                </div>
+
+                                <button
+                                    onClick={() => {
+                                        if (pressScrollContainerRef.current) {
+                                            pressScrollContainerRef.current.scrollBy({ left: 400, behavior: 'smooth' });
                                         }
                                     }}
                                     className="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-background/40 backdrop-blur-md border border-white/10 flex items-center justify-center text-foreground opacity-0 group-hover/scroll:opacity-100 transition-opacity duration-300 hidden md:flex hover:bg-background/60"
