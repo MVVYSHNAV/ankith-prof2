@@ -262,33 +262,35 @@ const PressSection = () => {
                 streamingProvider: p.streaming_provider
             }));
 
-        const ads = (dbProjects || [])
-            .filter(p => p.category === 'Ad')
-            .map(p => ({
-                id: p.id,
-                title: p.title,
-                url: p.video_url || ""
-            }));
-
         const allInterviews = (dbProjects || []).filter(p => p.category === 'Interview');
+        const allAds = (dbProjects || []).filter(p => p.category === 'Ad');
+
         const interviewsList = allInterviews
-            .filter(p => getVideoDetails(p.video_url || ""))
+            .filter(p => !p.project_url && getVideoDetails(p.video_url || ""))
             .map(p => ({
                 id: p.id,
                 title: p.title,
                 url: p.video_url || ""
             }));
 
-        const articlesList = allInterviews
-            .filter(p => !getVideoDetails(p.video_url || ""))
+        const adsList = allAds
+            .filter(p => !p.project_url && getVideoDetails(p.video_url || ""))
             .map(p => ({
                 id: p.id,
                 title: p.title,
-                url: p.video_url || p.streaming_url || "",
+                url: p.video_url || ""
+            }));
+
+        const articlesList = [...allInterviews, ...allAds]
+            .filter(p => p.project_url || (p.video_url && !getVideoDetails(p.video_url)))
+            .map(p => ({
+                id: p.id,
+                title: p.title,
+                url: p.project_url || p.video_url || p.streaming_url || "",
                 thumbnailUrl: p.image_url
             }));
 
-        return { showreelProject: showreel, filmProjects: films, videos: ads, interviews: interviewsList, mediaArticles: articlesList };
+        return { showreelProject: showreel, filmProjects: films, videos: adsList, interviews: interviewsList, mediaArticles: articlesList };
     }, [dbProjects]);
 
     const nextProject = () => setCurrentIndex((p) => (p + 1) % (filmProjects.length || 1));

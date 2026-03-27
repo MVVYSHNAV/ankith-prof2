@@ -173,9 +173,20 @@ const ProjectForm = ({
                 </div>
             )}
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 border-t pt-4">
-                <div className="grid gap-2">
-                    <Label>{exclusive && defaultCategory === 'Portfolio' ? 'Portfolio Photo' : 'Thumbnail Image'}</Label>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 border-t pt-4">
+                    <div className="grid gap-2">
+                        <Label>Article Link (External Redirect)</Label>
+                        <Input
+                            value={formData.project_url}
+                            onChange={(e) => setFormData({ ...formData, project_url: e.target.value })}
+                            placeholder="https://example.com/article"
+                        />
+                    </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 border-t pt-4">
+                    <div className="grid gap-2">
+                        <Label>{exclusive && defaultCategory === 'Portfolio' ? 'Portfolio Photo' : 'Thumbnail Image'}</Label>
                     <div className="flex gap-2 items-center">
                         <Input
                             value={formData.image_url}
