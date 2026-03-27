@@ -93,7 +93,7 @@ const ProjectForm = ({
                                 <SelectItem value="Filmography">Film Credit</SelectItem>
                                 <SelectItem value="Showreel">Showreel</SelectItem>
                                 <SelectItem value="Ad">Advertisement</SelectItem>
-                                <SelectItem value="Interview">Interview</SelectItem>
+                                <SelectItem value="Interview">Media</SelectItem>
                             </SelectContent>
                         </Select>
                     </div>
@@ -419,7 +419,7 @@ const ProjectManager = ({ defaultCategory = "Portfolio", exclusive = false }: Pr
         { id: 'Filmography', label: 'Film Credits' },
         { id: 'Showreel', label: 'Showreels' },
         { id: 'Ad', label: 'Advertisements' },
-        { id: 'Interview', label: 'Interviews' }
+        { id: 'Interview', label: 'Media' }
     ];
 
     return (
@@ -436,28 +436,31 @@ const ProjectManager = ({ defaultCategory = "Portfolio", exclusive = false }: Pr
                 </Tabs>
             )}
 
-            {!isAdding ? (
-                <Button onClick={() => setIsAdding(true)} className="gap-2">
-                    <Plus size={16} /> Add New {exclusive ? defaultCategory : activeTab}
-                </Button>
-            ) : (
-                <Card className="border-accent shadow-lg shadow-accent/5">
-                    <CardHeader className="border-b pb-4 mb-4">
-                        <CardTitle className="font-display uppercase tracking-tight">Add New {exclusive ? defaultCategory : activeTab}</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <ProjectForm
-                            initialData={blankForm}
-                            onSubmit={handleAdd}
-                            onCancel={() => setIsAdding(false)}
-                            exclusive={exclusive}
-                            defaultCategory={exclusive ? defaultCategory : activeTab}
-                            isSubmitting={addProject.isPending}
-                            isNew={true}
-                        />
-                    </CardContent>
-                </Card>
-            )}
+            {(() => {
+                const activeLabel = categories.find(c => c.id === activeTab)?.label || activeTab;
+                return !isAdding ? (
+                    <Button onClick={() => setIsAdding(true)} className="gap-2">
+                        <Plus size={16} /> Add New {exclusive ? defaultCategory : activeLabel}
+                    </Button>
+                ) : (
+                    <Card className="border-accent shadow-lg shadow-accent/5">
+                        <CardHeader className="border-b pb-4 mb-4">
+                            <CardTitle className="font-display uppercase tracking-tight">Add New {exclusive ? defaultCategory : activeLabel}</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <ProjectForm
+                                initialData={blankForm}
+                                onSubmit={handleAdd}
+                                onCancel={() => setIsAdding(false)}
+                                exclusive={exclusive}
+                                defaultCategory={exclusive ? defaultCategory : activeTab}
+                                isSubmitting={addProject.isPending}
+                                isNew={true}
+                            />
+                        </CardContent>
+                    </Card>
+                );
+            })()}
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                 {isLoading ? (
