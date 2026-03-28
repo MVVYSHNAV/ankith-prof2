@@ -619,7 +619,7 @@ const PressSection = () => {
                             transition={{ duration: 0.8, delay: 0.2 }}
                         >
                             <h3 className="font-display text-3xl md:text-4xl lg:text-5xl font-light uppercase tracking-[0.04em] text-foreground mb-8 sm:mb-12 md:mb-16">
-                                Random <span className="font-editorial italic normal-case tracking-wide text-foreground">Adds</span>
+                                Ad <span className="font-editorial italic normal-case tracking-wide text-foreground">Films</span>
                             </h3>
 
                             <div className="group/scroll relative">
