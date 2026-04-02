@@ -7,9 +7,6 @@ interface PreloaderProps {
 
 const words = [
     "Panache",
-    "Style",
-    "Versatility",
-    "Artistry",
     "Ankith Madhav"
 ];
 
@@ -68,15 +65,6 @@ const Preloader = ({ onLoadingComplete }: PreloaderProps) => {
                             transition={{ duration: 1.5, ease: "easeInOut", delay: 0.2 }}
                             className="h-px w-24 bg-accent/30 mt-8"
                         />
-
-                        <motion.p
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 0.4 }}
-                            transition={{ delay: 0.5 }}
-                            className="font-body text-[10px] tracking-[0.4em] uppercase text-white mt-4"
-                        >
-                            The Panache Factor
-                        </motion.p>
                     </div>
 
                     {/* Reveal background panels */}
@@ -87,8 +75,8 @@ const Preloader = ({ onLoadingComplete }: PreloaderProps) => {
                                 initial={{ scaleY: 0 }}
                                 animate={isComplete ? { scaleY: 1 } : { scaleY: 0 }}
                                 className="flex-1 bg-background origin-top"
-                                transition={{ 
-                                    duration: 0.6, 
+                                transition={{
+                                    duration: 0.6,
                                     ease: [0.76, 0, 0.24, 1],
                                     delay: i * 0.1
                                 }}
