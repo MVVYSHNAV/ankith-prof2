@@ -2,8 +2,8 @@ import { useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Loader2 } from "lucide-react";
 import {
-    useResumeFilms, useResumeTv, useResumeTheater,
-    useResumeEducation, useResumeTraining, useResumeCommercials
+    useResumeFilms, useResumeTv, useResumeWebSeries,
+    useResumeEducation, useResumeTraining
 } from "@/hooks/useSupabase";
 
 interface ResumeSheetProps {
@@ -14,12 +14,11 @@ interface ResumeSheetProps {
 const ResumeSheet = ({ isOpen, onClose }: ResumeSheetProps) => {
     const { data: films, isLoading: filmsLoading } = useResumeFilms();
     const { data: tvShows, isLoading: tvLoading } = useResumeTv();
-    const { data: theater, isLoading: theaterLoading } = useResumeTheater();
+    const { data: webSeries, isLoading: webSeriesLoading } = useResumeWebSeries();
     const { data: education, isLoading: eduLoading } = useResumeEducation();
     const { data: training, isLoading: trainingLoading } = useResumeTraining();
-    const { data: commercials, isLoading: commercialsLoading } = useResumeCommercials();
 
-    const isLoading = filmsLoading || tvLoading || theaterLoading || eduLoading || trainingLoading || commercialsLoading;
+    const isLoading = filmsLoading || tvLoading || webSeriesLoading || eduLoading || trainingLoading;
 
     useEffect(() => {
         document.body.style.overflow = isOpen ? "hidden" : "unset";
@@ -105,8 +104,8 @@ const ResumeSheet = ({ isOpen, onClose }: ResumeSheetProps) => {
                                             </motion.div>
                                         )}
 
-                                        {/* TV & Theater */}
-                                        {((tvShows && tvShows.length > 0) || (theater && theater.length > 0)) && (
+                                        {/* TV & Web Series */}
+                                        {((tvShows && tvShows.length > 0) || (webSeries && webSeries.length > 0)) && (
                                             <div className="grid md:grid-cols-2 gap-12">
                                                 {tvShows && tvShows.length > 0 && (
                                                     <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={itemVariants} className="space-y-8">
@@ -129,21 +128,21 @@ const ResumeSheet = ({ isOpen, onClose }: ResumeSheetProps) => {
                                                         </div>
                                                     </motion.div>
                                                 )}
-
-                                                {theater && theater.length > 0 && (
+ 
+                                                {webSeries && webSeries.length > 0 && (
                                                     <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={itemVariants} className="space-y-8">
-                                                        <h3 className="font-editorial text-2xl italic border-l-2 border-accent pl-6">Theater</h3>
+                                                        <h3 className="font-editorial text-2xl italic border-l-2 border-accent pl-6">Web Series</h3>
                                                         <div className="space-y-6">
-                                                            {theater.map((play) => (
-                                                                <div key={play.id} className="space-y-1">
+                                                            {webSeries.map((series) => (
+                                                                <div key={series.id} className="space-y-1">
                                                                     <div className="flex justify-between items-baseline">
-                                                                        <h4 className="font-display text-lg">{play.play}</h4>
-                                                                        {play.year && <span className="text-xs text-muted-foreground">{play.year}</span>}
+                                                                        <h4 className="font-display text-lg">{series.play}</h4>
+                                                                        {series.year && <span className="text-xs text-muted-foreground">{series.year}</span>}
                                                                     </div>
                                                                     <p className="text-sm text-foreground/80">
-                                                                        {play.role}{play.theater && <><span className="text-muted-foreground mx-2">•</span>{play.theater}</>}
+                                                                        {series.role}{series.theater && <><span className="text-muted-foreground mx-2">•</span>{series.theater}</>}
                                                                     </p>
-                                                                    {play.director && <p className="text-xs text-muted-foreground font-light">Dir. {play.director}</p>}
+                                                                    {series.director && <p className="text-xs text-muted-foreground font-light">Dir. {series.director}</p>}
                                                                 </div>
                                                             ))}
                                                         </div>
@@ -186,22 +185,7 @@ const ResumeSheet = ({ isOpen, onClose }: ResumeSheetProps) => {
                                             </div>
                                         )}
 
-                                        {/* Commercials */}
-                                        {commercials && commercials.length > 0 && (
-                                            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={itemVariants} className="space-y-6 pb-12">
-                                                <div className="flex items-baseline justify-between border-b border-border/50 pb-4">
-                                                    <h3 className="font-editorial text-2xl italic">Commercials</h3>
-                                                    <span className="text-[10px] text-muted-foreground font-body tracking-wider uppercase">Selected Brands from 500+ Projects</span>
-                                                </div>
-                                                <div className="flex flex-wrap gap-2">
-                                                    {commercials.map((c) => (
-                                                        <span key={c.id} className="px-3 py-1.5 bg-secondary/30 border border-border/50 text-[10px] tracking-wide hover:bg-accent hover:text-white transition-colors cursor-default uppercase">
-                                                            {c.brand}
-                                                        </span>
-                                                    ))}
-                                                </div>
-                                            </motion.div>
-                                        )}
+
                                     </div>
                                 )}
                             </div>

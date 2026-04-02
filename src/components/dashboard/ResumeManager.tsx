@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Plus, Trash2, Pencil, Loader2, Save, X } from "lucide-react";
 import {
-    useResumeFilms, useResumeTv, useResumeTheater,
-    useResumeEducation, useResumeTraining, useResumeCommercials
+    useResumeFilms, useResumeTv, useResumeWebSeries,
+    useResumeEducation, useResumeTraining
 } from "@/hooks/useSupabase";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -143,69 +143,13 @@ function SectionTable<T extends { id: string }>({
     );
 }
 
-/* ─── Commercials as tag list ─── */
-const CommercialsManager = () => {
-    const { data: commercials, isLoading, add, remove } = useResumeCommercials();
-    const [brand, setBrand] = useState("");
 
-    const handleAdd = async (e: React.FormEvent) => {
-        e.preventDefault();
-        if (!brand.trim()) return;
-        try {
-            await add.mutateAsync({ brand: brand.trim() } as any);
-            toast.success("Brand added");
-            setBrand("");
-        } catch { toast.error("Failed to add"); }
-    };
-
-    return (
-        <Card className="bg-muted/30 border-border">
-            <CardHeader>
-                <CardTitle className="font-display uppercase tracking-tight">Commercials / Brands</CardTitle>
-                <CardDescription>Selected brands from 500+ projects.</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-                <form onSubmit={handleAdd} className="flex gap-2">
-                    <Input
-                        value={brand}
-                        onChange={e => setBrand(e.target.value)}
-                        placeholder="e.g. Royal Enfield"
-                        className="flex-1"
-                        required
-                    />
-                    <Button type="submit" size="sm" disabled={add.isPending} className="gap-2">
-                        <Plus size={14} /> Add
-                    </Button>
-                </form>
-
-                {isLoading ? (
-                    <div className="flex justify-center py-6"><Loader2 className="animate-spin" /></div>
-                ) : (
-                    <div className="flex flex-wrap gap-2 pt-2">
-                        {commercials?.map(c => (
-                            <span key={c.id} className="flex items-center gap-1 px-3 py-1.5 bg-secondary/30 border border-border/50 text-[11px] tracking-wide uppercase group">
-                                {c.brand}
-                                <button
-                                    onClick={() => remove.mutateAsync(c.id).then(() => toast.success("Removed")).catch(() => toast.error("Failed"))}
-                                    className="ml-1 text-muted-foreground hover:text-destructive transition-colors opacity-0 group-hover:opacity-100"
-                                >
-                                    <X size={10} />
-                                </button>
-                            </span>
-                        ))}
-                        {!commercials?.length && <p className="text-sm text-muted-foreground">No brands yet.</p>}
-                    </div>
-                )}
-            </CardContent>
-        </Card>
-    );
-};
 
 /* ─── Main ResumeManager ─── */
 const ResumeManager = () => {
     const films = useResumeFilms();
     const tv = useResumeTv();
-    const theater = useResumeTheater();
+    const webSeries = useResumeWebSeries();
     const education = useResumeEducation();
     const training = useResumeTraining();
 
@@ -215,10 +159,9 @@ const ResumeManager = () => {
                 <TabsList className="bg-muted/50 border border-border p-1 flex-wrap h-auto gap-1">
                     <TabsTrigger value="films">Feature Films</TabsTrigger>
                     <TabsTrigger value="tv">Television</TabsTrigger>
-                    <TabsTrigger value="theater">Theater</TabsTrigger>
+                    <TabsTrigger value="webseries">Web Series</TabsTrigger>
                     <TabsTrigger value="education">Education</TabsTrigger>
                     <TabsTrigger value="training">Acting Training</TabsTrigger>
-                    <TabsTrigger value="commercials">Commercials</TabsTrigger>
                 </TabsList>
 
                 <TabsContent value="films">
@@ -263,24 +206,24 @@ const ResumeManager = () => {
                     />
                 </TabsContent>
 
-                <TabsContent value="theater">
+                <TabsContent value="webseries">
                     <SectionTable
-                        title="Theater"
-                        description="Stage plays and theatrical performances."
-                        items={theater.data}
-                        isLoading={theater.isLoading}
-                        isPending={theater.add.isPending || theater.update.isPending}
+                        title="Web Series"
+                        description="Web series, streaming original content, and digital projects."
+                        items={webSeries.data}
+                        isLoading={webSeries.isLoading}
+                        isPending={webSeries.add.isPending || webSeries.update.isPending}
                         primaryKey="play"
                         fields={[
-                            { key: "play", label: "Play Title", placeholder: "e.g. Vishwaroopam" },
-                            { key: "role", label: "Role", placeholder: "e.g. Stephan" },
-                            { key: "director", label: "Director", placeholder: "e.g. Bhaskaran" },
-                            { key: "theater", label: "Theater/Venue", placeholder: "e.g. Saptaswara Theater" },
-                            { key: "year", label: "Year", placeholder: "e.g. 2018" },
+                            { key: "play", label: "Series Title", placeholder: "e.g. Scams" },
+                            { key: "role", label: "Role", placeholder: "e.g. Lead Antagonist" },
+                            { key: "director", label: "Director", placeholder: "e.g. Anurag Kashyap" },
+                            { key: "theater", label: "Platform", placeholder: "e.g. Netflix / Amazon Prime" },
+                            { key: "year", label: "Year", placeholder: "e.g. 2023" },
                         ]}
-                        onAdd={d => theater.add.mutateAsync(d as any)}
-                        onUpdate={(id, d) => theater.update.mutateAsync({ id, ...d } as any)}
-                        onDelete={id => theater.remove.mutateAsync(id)}
+                        onAdd={d => webSeries.add.mutateAsync(d as any)}
+                        onUpdate={(id, d) => webSeries.update.mutateAsync({ id, ...d } as any)}
+                        onDelete={id => webSeries.remove.mutateAsync(id)}
                     />
                 </TabsContent>
 
@@ -320,9 +263,7 @@ const ResumeManager = () => {
                     />
                 </TabsContent>
 
-                <TabsContent value="commercials">
-                    <CommercialsManager />
-                </TabsContent>
+
             </Tabs>
         </div>
     );

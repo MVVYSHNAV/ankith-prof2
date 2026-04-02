@@ -6,6 +6,7 @@ const ProjectTable = 'projects' as const;
 const SkillTable = 'skills' as const;
 const ProfileTable = 'profile' as const;
 const MessageTable = 'contact_messages' as const;
+const ResumeTheaterTable = 'resume_theater' as const;
 
 type Project = Database['public']['Tables']['projects']['Row'];
 type NewProject = Database['public']['Tables']['projects']['Insert'];
@@ -195,9 +196,9 @@ type ResumeTv = Database['public']['Tables']['resume_tv']['Row'];
 type ResumeTvInsert = Database['public']['Tables']['resume_tv']['Insert'];
 type ResumeTvUpdate = Database['public']['Tables']['resume_tv']['Update'];
 
-type ResumeTheater = Database['public']['Tables']['resume_theater']['Row'];
-type ResumeTheaterInsert = Database['public']['Tables']['resume_theater']['Insert'];
-type ResumeTheaterUpdate = Database['public']['Tables']['resume_theater']['Update'];
+type ResumeWebSeries = Database['public']['Tables']['resume_theater']['Row'];
+type ResumeWebSeriesInsert = Database['public']['Tables']['resume_theater']['Insert'];
+type ResumeWebSeriesUpdate = Database['public']['Tables']['resume_theater']['Update'];
 
 type ResumeEducation = Database['public']['Tables']['resume_education']['Row'];
 type ResumeEducationInsert = Database['public']['Tables']['resume_education']['Insert'];
@@ -213,7 +214,7 @@ type ResumeCommercialUpdate = Database['public']['Tables']['resume_commercials']
 
 export const useResumeFilms = makeResumeCrud<ResumeFilm, ResumeFilmInsert, ResumeFilmUpdate>('resume_films');
 export const useResumeTv = makeResumeCrud<ResumeTv, ResumeTvInsert, ResumeTvUpdate>('resume_tv');
-export const useResumeTheater = makeResumeCrud<ResumeTheater, ResumeTheaterInsert, ResumeTheaterUpdate>('resume_theater');
+export const useResumeWebSeries = makeResumeCrud<ResumeWebSeries, ResumeWebSeriesInsert, ResumeWebSeriesUpdate>(ResumeTheaterTable);
 export const useResumeEducation = makeResumeCrud<ResumeEducation, ResumeEducationInsert, ResumeEducationUpdate>('resume_education');
 export const useResumeTraining = makeResumeCrud<ResumeTraining, ResumeTrainingInsert, ResumeTrainingUpdate>('resume_training');
 export const useResumeCommercials = makeResumeCrud<ResumeCommercial, ResumeCommercialInsert, ResumeCommercialUpdate>('resume_commercials');
