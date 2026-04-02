@@ -67,9 +67,9 @@ const SkillManager = () => {
 
     return (
         <div className="space-y-6">
-            <div className="flex justify-between items-center">
-                <h2 className="font-body text-sm tracking-[0.2em] uppercase text-muted-foreground">Manage Skills</h2>
-                <Button onClick={() => setIsOpen(true)} className="gap-2">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <h2 className="font-body text-xs md:text-sm tracking-[0.2em] uppercase text-muted-foreground">Manage Skills</h2>
+                <Button onClick={() => setIsOpen(true)} className="gap-2 w-full sm:w-auto">
                     <Plus size={16} /> Add Talent/Skill
                 </Button>
             </div>

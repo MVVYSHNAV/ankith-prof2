@@ -104,37 +104,39 @@ function SectionTable<T extends { id: string }>({
                 {isLoading ? (
                     <div className="flex justify-center py-8"><Loader2 className="animate-spin" /></div>
                 ) : items && items.length > 0 ? (
-                    <Table>
-                        <TableHeader>
-                            <TableRow>
-                                {fields.map(f => <TableHead key={f.key}>{f.label}</TableHead>)}
-                                <TableHead className="text-right">Actions</TableHead>
-                            </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                            {items.map(item => (
-                                <TableRow key={item.id}>
-                                    {fields.map(f => (
-                                        <TableCell key={f.key} className="max-w-[200px] truncate text-sm">
-                                            {f.key === "link" && (item as any)[f.key]
-                                                ? <a href={(item as any)[f.key]} target="_blank" rel="noopener noreferrer" className="text-accent underline">Link</a>
-                                                : String((item as any)[f.key] ?? "-")}
-                                        </TableCell>
-                                    ))}
-                                    <TableCell className="text-right">
-                                        <div className="flex justify-end gap-1">
-                                            <Button variant="ghost" size="icon" onClick={() => startEdit(item)}>
-                                                <Pencil size={14} />
-                                            </Button>
-                                            <Button variant="ghost" size="icon" className="text-destructive" onClick={() => handleDelete(item.id)}>
-                                                <Trash2 size={14} />
-                                            </Button>
-                                        </div>
-                                    </TableCell>
+                    <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
+                        <Table>
+                            <TableHeader>
+                                <TableRow>
+                                    {fields.map(f => <TableHead key={f.key} className="whitespace-nowrap">{f.label}</TableHead>)}
+                                    <TableHead className="text-right whitespace-nowrap">Actions</TableHead>
                                 </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
+                            </TableHeader>
+                            <TableBody>
+                                {items.map(item => (
+                                    <TableRow key={item.id}>
+                                        {fields.map(f => (
+                                            <TableCell key={f.key} className="max-w-[200px] truncate text-sm whitespace-nowrap">
+                                                {f.key === "link" && (item as any)[f.key]
+                                                    ? <a href={(item as any)[f.key]} target="_blank" rel="noopener noreferrer" className="text-accent underline">Link</a>
+                                                    : String((item as any)[f.key] ?? "-")}
+                                            </TableCell>
+                                        ))}
+                                        <TableCell className="text-right whitespace-nowrap">
+                                            <div className="flex justify-end gap-1">
+                                                <Button variant="ghost" size="icon" onClick={() => startEdit(item)} className="h-8 w-8">
+                                                    <Pencil size={14} />
+                                                </Button>
+                                                <Button variant="ghost" size="icon" className="text-destructive h-8 w-8" onClick={() => handleDelete(item.id)}>
+                                                    <Trash2 size={14} />
+                                                </Button>
+                                            </div>
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </div>
                 ) : (
                     <p className="text-sm text-muted-foreground text-center py-4">No entries yet.</p>
                 )}
@@ -156,13 +158,15 @@ const ResumeManager = () => {
     return (
         <div className="space-y-8 pb-12">
             <Tabs defaultValue="films" className="space-y-6">
-                <TabsList className="bg-muted/50 border border-border p-1 flex-wrap h-auto gap-1">
-                    <TabsTrigger value="films">Feature Films</TabsTrigger>
-                    <TabsTrigger value="tv">Television</TabsTrigger>
-                    <TabsTrigger value="webseries">Web Series</TabsTrigger>
-                    <TabsTrigger value="education">Education</TabsTrigger>
-                    <TabsTrigger value="training">Acting Training</TabsTrigger>
-                </TabsList>
+                <div className="overflow-x-auto pb-2 scrollbar-none">
+                    <TabsList className="bg-muted/50 border border-border p-1 w-max sm:w-auto min-w-full justify-start whitespace-nowrap">
+                        <TabsTrigger value="films" className="text-xs md:text-sm px-4 py-2">Feature Films</TabsTrigger>
+                        <TabsTrigger value="tv" className="text-xs md:text-sm px-4 py-2">Television</TabsTrigger>
+                        <TabsTrigger value="webseries" className="text-xs md:text-sm px-4 py-2">Web Series</TabsTrigger>
+                        <TabsTrigger value="education" className="text-xs md:text-sm px-4 py-2">Education</TabsTrigger>
+                        <TabsTrigger value="training" className="text-xs md:text-sm px-4 py-2">Acting Training</TabsTrigger>
+                    </TabsList>
+                </div>
 
                 <TabsContent value="films">
                     <SectionTable

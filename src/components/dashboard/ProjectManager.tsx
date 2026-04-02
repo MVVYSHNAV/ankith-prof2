@@ -318,7 +318,7 @@ const ProjectCard = ({ project, exclusive, defaultCategory, updateProject, delet
     return (
         <Card className="group overflow-hidden flex flex-col h-full bg-muted/20 hover:bg-muted/40 transition-colors border-border/50">
             {project.image_url ? (
-                <div className="w-full aspect-video md:aspect-[4/3] bg-secondary/50 overflow-hidden relative">
+                <div className="w-full aspect-[4/3] sm:aspect-video md:aspect-[4/3] bg-secondary/50 overflow-hidden relative">
                     <img
                         src={project.image_url}
                         alt={project.title}
@@ -334,7 +334,7 @@ const ProjectCard = ({ project, exclusive, defaultCategory, updateProject, delet
                     </div>
                 </div>
             ) : (
-                <div className="w-full aspect-video md:aspect-[4/3] bg-secondary/30 flex items-center justify-center relative">
+                <div className="w-full aspect-[4/3] sm:aspect-video md:aspect-[4/3] bg-secondary/30 flex items-center justify-center relative">
                     <ImageIcon className="h-8 w-8 text-muted-foreground/50" />
                     <div className="absolute top-2 right-2 flex gap-1 z-10 opacity-0 group-hover:opacity-100 transition-opacity">
                         <Button variant="secondary" size="icon" className="h-8 w-8 rounded-full bg-background/80 hover:bg-background" onClick={() => setIsEditing(true)}>
@@ -437,13 +437,15 @@ const ProjectManager = ({ defaultCategory = "Portfolio", exclusive = false }: Pr
         <div className="space-y-8 pb-12">
             {!exclusive && (
                 <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-                    <TabsList className="bg-muted/30 border border-border/50">
-                        {categories.map(cat => (
-                            <TabsTrigger key={cat.id} value={cat.id} className="text-xs uppercase tracking-widest px-6">
-                                {cat.label}
-                            </TabsTrigger>
-                        ))}
-                    </TabsList>
+                    <div className="overflow-x-auto pb-2 scrollbar-none">
+                        <TabsList className="bg-muted/30 border border-border/50 w-max sm:w-auto min-w-full justify-start md:justify-center">
+                            {categories.map(cat => (
+                                <TabsTrigger key={cat.id} value={cat.id} className="text-[10px] md:text-xs uppercase tracking-widest px-4 md:px-6 py-2">
+                                    {cat.label}
+                                </TabsTrigger>
+                            ))}
+                        </TabsList>
+                    </div>
                 </Tabs>
             )}
 

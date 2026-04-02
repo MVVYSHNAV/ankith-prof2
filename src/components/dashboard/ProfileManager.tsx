@@ -308,10 +308,10 @@ const ProfileManager = () => {
                     </CardContent>
                 </Card>
 
-                <div className="sticky bottom-6 flex justify-end">
-                    <Button type="submit" size="lg" className="px-12 gap-2 shadow-2xl" disabled={updateProfile.isPending}>
-                        {updateProfile.isPending ? <Loader2 className="animate-spin" size={20} /> : <Save size={20} />}
-                        Save All Changes
+                <div className="sticky bottom-6 flex justify-end z-20">
+                    <Button type="submit" size="lg" className="w-full sm:w-auto px-12 gap-2 shadow-2xl md:text-base" disabled={updateProfile.isPending}>
+                        {updateProfile.isPending ? <Loader2 className="animate-spin" size={18} /> : <Save size={18} />}
+                        Save Changes
                     </Button>
                 </div>
             </form>
