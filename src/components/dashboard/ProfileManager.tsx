@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Save, Loader2, User, Mail, Linkedin, Github, FileText, Image as ImageIcon } from "lucide-react";
+import { User, Mail, Linkedin, FileText, Save, Loader2, Image as ImageIcon, Camera, Upload } from "lucide-react";
 import { useProfile } from "@/hooks/useSupabase";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -34,6 +34,7 @@ const ProfileManager = () => {
         career_start_year: "",
         career_end_year: "",
         career_highlight_image: "",
+        resume_url: "",
     });
     const [uploading, setUploading] = useState<string | null>(null);
 
@@ -62,6 +63,7 @@ const ProfileManager = () => {
                 career_start_year: profile.career_start_year || "",
                 career_end_year: profile.career_end_year || "",
                 career_highlight_image: profile.career_highlight_image || "",
+                resume_url: profile.resume_url || "",
             });
         }
     }, [profile]);
@@ -102,11 +104,37 @@ const ProfileManager = () => {
     return (
         <div className="max-w-4xl mx-auto space-y-8">
             <form onSubmit={handleSubmit} className="space-y-8 pb-32">
+                {/* Site Identity & Branding */}
+                <Card className="bg-muted/30 border-border border-accent/20">
+                    <CardHeader>
+                        <CardTitle className="font-display uppercase tracking-tight text-accent">Site Identity & Branding</CardTitle>
+                        <CardDescription>Global text used for titles, logos, and dashboard headings.</CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div className="grid gap-2">
+                                <Label htmlFor="site_name">Logo / Brand Name (e.g. Ankith)</Label>
+                                <Input id="site_name" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} required />
+                            </div>
+                            <div className="grid gap-2">
+                                <Label htmlFor="dashboard_title">Dashboard Main Heading</Label>
+                                <Input id="dashboard_title" value={formData.resume_url} onChange={(e) => setFormData({ ...formData, resume_url: e.target.value })} placeholder="The Panache" />
+                                <p className="text-[10px] text-muted-foreground opacity-70 italic">Default: "The Panache"</p>
+                            </div>
+                        </div>
+                        <div className="grid gap-2">
+                            <Label htmlFor="dashboard_subtitle">Site Motto / Dashboard Sub-heading</Label>
+                            <Input id="dashboard_subtitle" value={formData.about_quote} onChange={(e) => setFormData({ ...formData, about_quote: e.target.value })} placeholder="The Panache Factor" />
+                            <p className="text-[10px] text-muted-foreground opacity-70 italic">Used in navigation footer and dashboard vault title.</p>
+                        </div>
+                    </CardContent>
+                </Card>
+
                 {/* Basic Information */}
                 <Card className="bg-muted/30 border-border">
                     <CardHeader>
-                        <CardTitle className="font-display uppercase tracking-tight">Basic Information</CardTitle>
-                        <CardDescription>Your name and primary identity.</CardDescription>
+                        <CardTitle className="font-display uppercase tracking-tight">Public Profile</CardTitle>
+                        <CardDescription>Main contact and identity details.</CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-6">
                         <div className="flex flex-col sm:flex-row gap-6 items-center sm:items-start">
@@ -130,20 +158,18 @@ const ProfileManager = () => {
                             </div>
 
                             <div className="flex-1 space-y-4 w-full">
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                    <div className="grid gap-2">
-                                        <Label htmlFor="name">Full Name</Label>
-                                        <div className="relative">
-                                            <User className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
-                                            <Input id="name" className="pl-9" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} required />
-                                        </div>
+                                <div className="grid gap-2">
+                                    <Label htmlFor="name">Display Name for Hero</Label>
+                                    <div className="relative">
+                                        <User className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+                                        <Input id="name" className="pl-9" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} required />
                                     </div>
+                                </div>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                     <div className="grid gap-2">
                                         <Label htmlFor="bio">Global Role / Title</Label>
                                         <Input id="bio" value={formData.bio} onChange={(e) => setFormData({ ...formData, bio: e.target.value })} placeholder="Actor & Performance Artist" />
                                     </div>
-                                </div>
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                     <div className="grid gap-2">
                                         <Label htmlFor="email">Email</Label>
                                         <div className="relative">
@@ -151,11 +177,20 @@ const ProfileManager = () => {
                                             <Input id="email" className="pl-9" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} type="email" />
                                         </div>
                                     </div>
+                                </div>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                     <div className="grid gap-2">
                                         <Label htmlFor="linkedin">LinkedIn Profile URL</Label>
                                         <div className="relative">
                                             <Linkedin className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
                                             <Input id="linkedin" className="pl-9" value={formData.linkedin} onChange={(e) => setFormData({ ...formData, linkedin: e.target.value })} />
+                                        </div>
+                                    </div>
+                                    <div className="grid gap-2">
+                                        <Label htmlFor="github">Personal Website / Link</Label>
+                                        <div className="relative">
+                                            <FileText className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+                                            <Input id="github" className="pl-9" value={formData.github} onChange={(e) => setFormData({ ...formData, github: e.target.value })} />
                                         </div>
                                     </div>
                                 </div>

@@ -21,9 +21,15 @@ import SkillManager from "@/components/dashboard/SkillManager";
 import ProfileManager from "@/components/dashboard/ProfileManager";
 import MessageList from "@/components/dashboard/MessageList";
 import ResumeManager from "@/components/dashboard/ResumeManager";
+import { ModeToggle } from "@/components/mode-toggle";
+import ResumeSheet from "@/components/layout/ResumeSheet";
+import { useProfile } from "@/hooks/useSupabase";
+
 
 const Dashboard = () => {
+    const [isResumeOpen, setIsResumeOpen] = useState(false);
     const { signOut } = useAuth();
+    const { data: profile } = useProfile();
 
     return (
         <div className="min-h-screen bg-background text-foreground px-4 sm:px-6 md:px-12 lg:px-24 py-8 md:py-12">
@@ -35,10 +41,10 @@ const Dashboard = () => {
                             <span className="font-body text-xs tracking-[0.2em] uppercase">Return to Site</span>
                         </Link>
                         <h1 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light tracking-tight uppercase leading-tight md:leading-normal">
-                            The Panache <span className="font-editorial italic normal-case text-accent">Vault</span>
+                            {profile?.resume_url || "The Panache"} <span className="font-editorial italic normal-case text-accent">{profile?.about_quote || "Vault"}</span>
                         </h1>
                         <p className="font-body text-[9px] md:text-[10px] tracking-[0.3em] md:tracking-[0.4em] uppercase opacity-40 mt-2">
-                            Curating the Legacy of Ankith Madhav
+                            Curating the Legacy of {profile?.name || "Ankith Madhav"}
                         </p>
                     </div>
                     <button

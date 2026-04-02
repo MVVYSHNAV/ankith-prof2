@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, Loader2 } from "lucide-react";
 import {
     useResumeFilms, useResumeTv, useResumeWebSeries,
-    useResumeEducation, useResumeTraining
+    useResumeEducation, useResumeTraining, useProfile
 } from "@/hooks/useSupabase";
 
 interface ResumeSheetProps {
@@ -17,6 +17,7 @@ const ResumeSheet = ({ isOpen, onClose }: ResumeSheetProps) => {
     const { data: webSeries, isLoading: webSeriesLoading } = useResumeWebSeries();
     const { data: education, isLoading: eduLoading } = useResumeEducation();
     const { data: training, isLoading: trainingLoading } = useResumeTraining();
+    const { data: profile } = useProfile();
 
     const isLoading = filmsLoading || tvLoading || webSeriesLoading || eduLoading || trainingLoading;
 
@@ -128,7 +129,7 @@ const ResumeSheet = ({ isOpen, onClose }: ResumeSheetProps) => {
                                                         </div>
                                                     </motion.div>
                                                 )}
- 
+
                                                 {webSeries && webSeries.length > 0 && (
                                                     <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={itemVariants} className="space-y-8">
                                                         <h3 className="font-editorial text-2xl italic border-l-2 border-accent pl-6">Web Series</h3>

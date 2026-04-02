@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ModeToggle } from "@/components/mode-toggle";
 import ResumeSheet from "@/components/layout/ResumeSheet";
+import { useProfile } from "@/hooks/useSupabase";
 
 const navItems = [
     { label: "About", href: "#about" },
@@ -13,6 +14,7 @@ const Navigation = () => {
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isResumeOpen, setIsResumeOpen] = useState(false);
+    const { data: profile } = useProfile();
 
     useEffect(() => {
         const handleScroll = () => setIsScrolled(window.scrollY > 50);
@@ -38,7 +40,7 @@ const Navigation = () => {
                         transition={{ duration: 0.3 }}
                         className="font-display text-lg tracking-[0.2em] uppercase text-foreground"
                     >
-                        Ankith
+                        {profile?.name || "Ankith"}
                     </motion.a>
 
                     {/* Desktop Nav */}
@@ -102,7 +104,7 @@ const Navigation = () => {
                             className="absolute top-1/2 -right-20 pointer-events-none select-none"
                         >
                             <span className="font-editorial italic text-[20vh] tracking-tighter uppercase whitespace-nowrap">
-                                Ankith
+                                {profile?.name || "Ankith"}
                             </span>
                         </motion.div>
 
@@ -169,10 +171,10 @@ const Navigation = () => {
                                         href="/khullja-sim-sim"
                                         className="block font-body text-[10px] tracking-[0.3em] uppercase text-muted-foreground opacity-40 hover:opacity-100 transition-opacity"
                                     >
-                                        Ankith Madhav
+                                        {profile?.name || "Ankith"}
                                     </a>
                                     <span className="font-editorial italic text-xs text-muted-foreground">
-                                        The Panache Factor
+                                        {profile?.about_quote || "The Panache Factor"}
                                     </span>
                                 </div>
                             </motion.div>
