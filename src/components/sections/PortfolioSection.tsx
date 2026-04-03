@@ -192,6 +192,7 @@ const PortfolioSection = () => {
                                 src={lightboxImage.src}
                                 alt={lightboxImage.alt}
                                 className="object-contain rounded-lg"
+                                priority={true}
                             />
                         </div>
                     </motion.div>

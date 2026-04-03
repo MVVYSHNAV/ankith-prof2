@@ -3,9 +3,12 @@ import { motion, AnimatePresence, HTMLMotionProps } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { Skeleton } from "./skeleton";
 
-interface OptimizedImageProps extends HTMLMotionProps<"img"> {
+
+interface OptimizedImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   containerClassName?: string;
   fallbackSrc?: string;
+  priority?: boolean;
+  aspectRatio?: string;
 }
 
 export const OptimizedImage = forwardRef<HTMLImageElement, OptimizedImageProps>(({
@@ -13,7 +16,8 @@ export const OptimizedImage = forwardRef<HTMLImageElement, OptimizedImageProps>(
   alt,
   className,
   containerClassName,
-  fallbackSrc = "/placeholder.svg",
+  aspectRatio = "aspect-square",
+  priority = false,
   onLoad,
   onError,
   ...props
@@ -28,47 +32,32 @@ export const OptimizedImage = forwardRef<HTMLImageElement, OptimizedImageProps>(
   }, [src]);
 
   return (
-    <div className={cn("relative overflow-hidden w-full h-full", containerClassName)}>
-      {/* Placeholder / Shimmer */}
-      <AnimatePresence mode="wait">
-        {!isLoaded && !hasError && (
-          <motion.div
-            key="placeholder"
-            initial={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.4, ease: "easeInOut" }}
-            className="absolute inset-0 z-10"
-          >
-            <Skeleton className="w-full h-full rounded-none" />
-          </motion.div>
-        )}
-      </AnimatePresence>
+    <div className={cn("relative overflow-hidden bg-muted/20", aspectRatio, containerClassName)}>
+      {/* Placeholder / Blur Effect */}
+      {!isLoaded && !hasError && (
+        <div className="absolute inset-0 animate-pulse bg-muted/40" />
+      )}
 
       {/* Actual Image */}
-      <motion.img
+      <img
         ref={ref}
-        src={hasError ? fallbackSrc : src}
+        src={hasError ? "/placeholder.svg" : src}
         alt={alt}
-        initial={{ opacity: 0, scale: 1.05 }}
-        animate={{
-          opacity: isLoaded ? 1 : 0,
-          scale: isLoaded ? 1 : 1.05
-        }}
-        transition={{
-          opacity: { duration: 0.8, ease: [0.22, 1, 0.36, 1] },
-          scale: { duration: 1.2, ease: [0.22, 1, 0.36, 1] }
-        }}
         onLoad={(e) => {
           setIsLoaded(true);
           onLoad?.(e);
         }}
         onError={(e) => {
           setHasError(true);
-          setIsLoaded(true); // Set to true to hide placeholder and show fallback
+          setIsLoaded(true);
           onError?.(e);
         }}
+        loading={priority ? "eager" : "lazy"}
+        decoding={priority ? "sync" : "async"}
+        fetchPriority={priority ? "high" : "auto"}
         className={cn(
-          "w-full h-full object-cover will-change-transform",
+          "w-full h-full object-cover transition-all duration-700 ease-out",
+          isLoaded ? "opacity-100 scale-100 blur-0" : "opacity-0 scale-105 blur-sm",
           className
         )}
         {...props}
