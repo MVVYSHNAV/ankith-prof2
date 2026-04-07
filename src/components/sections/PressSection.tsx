@@ -24,7 +24,7 @@ const getVideoDetails = (url: string) => {
     if (youtubeId) return {
         type: "youtube",
         id: youtubeId,
-        thumbnail: `https://img.youtube.com/vi/${youtubeId}/hqdefault.jpg`,
+        thumbnail: `https://img.youtube.com/vi/${youtubeId}/maxresdefault.jpg`,
         embedUrl: `https://www.youtube.com/embed/${youtubeId}`,
     };
     if (vimeoId) return {
@@ -289,7 +289,124 @@ const PressSection = () => {
 
     return (
         <>
-            <section id="filmography" ref={sectionRef} className="py-24 md:py-32 lg:py-40 section-padding bg-background text-foreground transition-colors duration-500">
+            {/* ── Video gallery (Ad Films) ── */}
+            {videos.length > 0 && (
+                <section className="pt-24 md:pt-32 section-padding bg-background text-foreground">
+                    <div className="max-w-7xl mx-auto">
+                        <motion.div
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true, margin: "-50px" }}
+                            transition={{ duration: 0.8, delay: 0.2 }}
+                        >
+                            <h3 className="font-display text-3xl md:text-4xl lg:text-5xl font-light uppercase tracking-[0.04em] text-foreground mb-8 sm:mb-12 md:mb-16">
+                                Ad <span className="font-editorial italic normal-case tracking-wide text-foreground">Films</span>
+                            </h3>
+
+                            <div className="group/scroll relative">
+                                <div
+                                    ref={scrollContainerRef}
+                                    className={`flex overflow-x-auto gap-4 sm:gap-6 pb-6 snap-x snap-mandatory scrollbar-hide -mx-4 px-4 sm:-mx-6 sm:px-6 md:mx-0 md:px-0 scroll-smooth ${videos.length === 1 ? "md:justify-center" : videos.length === 2 ? "lg:justify-center" : ""
+                                        }`}
+                                >
+                                    {videos.map((video: any, index: number) => (
+                                        <motion.div
+                                            key={video.id}
+                                            initial={{ opacity: 0, x: 20 }}
+                                            whileInView={{ opacity: 1, x: 0 }}
+                                            viewport={{ once: true }}
+                                            transition={{ duration: 0.6, delay: index * 0.1 }}
+                                            className="min-w-[85vw] sm:min-w-[420px] md:min-w-[480px] lg:min-w-[540px] aspect-video bg-secondary/20 relative group cursor-pointer overflow-hidden rounded-[2.5rem] border border-white/5 transition-all duration-700 hover:shadow-2xl"
+                                            onClick={() => {
+                                                const details = getVideoDetails(video.url);
+                                                if (details) {
+                                                    setSelectedVideo(video);
+                                                } else {
+                                                    window.open(video.url, '_blank');
+                                                }
+                                            }}
+                                        >
+                                            {(() => {
+                                                const details = getVideoDetails(video.url);
+                                                if (details) {
+                                                    return (
+                                                        <OptimizedImage
+                                                            src={details.thumbnail}
+                                                            alt={video.title}
+                                                            objectFit="cover"
+                                                            className="opacity-80 group-hover:opacity-100 transition-all duration-500"
+                                                            containerClassName="absolute inset-0"
+                                                        />
+                                                    );
+                                                }
+                                                if (video.thumbnailUrl) {
+                                                    return (
+                                                        <OptimizedImage
+                                                            src={video.thumbnailUrl}
+                                                            alt={video.title}
+                                                            objectFit="cover"
+                                                            className="opacity-80 group-hover:opacity-100 transition-all duration-500"
+                                                            containerClassName="absolute inset-0"
+                                                        />
+                                                    );
+                                                }
+                                                return (
+                                                    <div className="w-full h-full bg-secondary flex items-center justify-center px-6 text-center">
+                                                        <p className="font-display text-[10px] uppercase tracking-widest text-muted-foreground/80 leading-relaxed">
+                                                            {video.title}
+                                                        </p>
+                                                    </div>
+                                                );
+                                            })()}
+
+                                            <div className="absolute top-6 right-6 z-10 transition-transform duration-500 group-hover:scale-110">
+                                                <div className="w-12 h-12 rounded-full bg-black/20 backdrop-blur-xl border border-white/30 flex items-center justify-center text-white group-hover:bg-accent group-hover:text-black group-hover:border-accent transition-all duration-500 shadow-xl">
+                                                    <svg viewBox="0 0 24 24" className="w-6 h-6 fill-none stroke-current stroke-2">
+                                                        <path d="M7 17L17 7M17 7H7M17 7V17" />
+                                                    </svg>
+                                                </div>
+                                            </div>
+
+                                            <div className="absolute bottom-6 left-6 right-6 flex justify-center">
+                                                <div className="w-full max-w-[90%] px-6 py-4 rounded-3xl bg-black/40 backdrop-blur-xl border border-white/10 opacity-0 transform translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500">
+                                                    <div className="flex items-center justify-between gap-4">
+                                                        <div className="flex-1 min-w-0">
+                                                            <p className="font-display text-[10px] uppercase tracking-[0.2em] text-accent/90 mb-1 drop-shadow-md">
+                                                                Ad Film
+                                                            </p>
+                                                            <h4 className="font-body text-sm sm:text-base font-light text-white truncate drop-shadow-md">
+                                                                {video.title}
+                                                            </h4>
+                                                        </div>
+                                                        <div className="shrink-0 w-8 h-8 rounded-full bg-accent/20 flex items-center justify-center text-accent">
+                                                            <div className="w-0 h-0 border-t-[4px] border-t-transparent border-l-[6px] border-l-accent border-b-[4px] border-b-transparent ml-1" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </motion.div>
+                                    ))}
+                                </div>
+
+                                {/* Floating Right Navigation Only */}
+                                <button
+                                    onClick={() => {
+                                        if (scrollContainerRef.current) {
+                                            scrollContainerRef.current.scrollBy({ left: 400, behavior: 'smooth' });
+                                        }
+                                    }}
+                                    className="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-background/40 backdrop-blur-md border border-white/10 flex items-center justify-center text-foreground opacity-0 group-hover/scroll:opacity-100 transition-opacity duration-300 hidden md:flex hover:bg-background/60"
+                                    aria-label="Scroll Right"
+                                >
+                                    <ChevronRight size={24} strokeWidth={1.5} />
+                                </button>
+                            </div>
+                        </motion.div>
+                    </div>
+                </section>
+            )}
+
+            <section id="filmography" ref={sectionRef} className="py-24 md:py-32 section-padding bg-background text-foreground transition-colors duration-500">
                 <div className="max-w-7xl mx-auto">
 
                     {/* ── Header ── */}
@@ -528,8 +645,8 @@ const PressSection = () => {
                                             initial={{ opacity: 0, x: 20 }}
                                             whileInView={{ opacity: 1, x: 0 }}
                                             viewport={{ once: true }}
-                                            transition={{ duration: 0.5, delay: index * 0.08 }}
-                                            className="min-w-[78vw] sm:min-w-[340px] md:min-w-[380px] snap-center shrink-0 aspect-video bg-secondary/30 relative group cursor-pointer overflow-hidden border border-border/50 hover:border-foreground/20 rounded-lg transition-all duration-300"
+                                            transition={{ duration: 0.6, delay: index * 0.1 }}
+                                            className="min-w-[75vw] sm:min-w-[280px] md:min-w-[320px] aspect-[4/5] bg-secondary/20 relative group cursor-pointer overflow-hidden rounded-[2rem] border border-white/5 transition-all duration-700 hover:shadow-2xl"
                                             onClick={() => {
                                                 const details = getVideoDetails(video.url);
                                                 if (details) {
@@ -546,114 +663,7 @@ const PressSection = () => {
                                                         <OptimizedImage
                                                             src={details.thumbnail}
                                                             alt={video.title}
-                                                            className="opacity-80 group-hover:opacity-100 transition-all duration-500"
-                                                            containerClassName="absolute inset-0"
-                                                        />
-                                                    );
-                                                }
-                                                if (video.thumbnailUrl) {
-                                                    return (
-                                                        <OptimizedImage
-                                                            src={video.thumbnailUrl}
-                                                            alt={video.title}
-                                                            className="opacity-80 group-hover:opacity-100 transition-all duration-500"
-                                                            containerClassName="absolute inset-0"
-                                                        />
-                                                    );
-                                                }
-                                                return (
-                                                    <div className="w-full h-full bg-secondary flex items-center justify-center px-6 text-center">
-                                                        <p className="font-display text-[10px] uppercase tracking-widest text-muted-foreground/80 leading-relaxed">
-                                                            {video.title}
-                                                        </p>
-                                                    </div>
-                                                );
-                                            })()}
-
-                                            <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/40 transition-colors duration-300">
-                                                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-background/90 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                                                    {getVideoDetails(video.url) ? (
-                                                        <div className="w-0 h-0 border-t-[5px] sm:border-t-[6px] border-t-transparent border-l-[9px] sm:border-l-[10px] border-l-foreground border-b-[5px] sm:border-b-[6px] border-b-transparent ml-1" />
-                                                    ) : (
-                                                        <svg viewBox="0 0 24 24" className="w-5 h-5 fill-none stroke-foreground stroke-2 shrink-0">
-                                                            <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
-                                                        </svg>
-                                                    )}
-                                                </div>
-                                            </div>
-
-                                            <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4 bg-gradient-to-t from-black/80 to-transparent">
-                                                <p className="font-body text-[10px] sm:text-xs tracking-wide text-white line-clamp-1">
-                                                    {video.title}
-                                                </p>
-                                            </div>
-                                        </motion.div>
-                                    ))}
-                                </div>
-
-                                {/* Floating Right Navigation Only */}
-                                <button
-                                    onClick={() => {
-                                        if (interviewsScrollContainerRef.current) {
-                                            interviewsScrollContainerRef.current.scrollBy({ left: 400, behavior: 'smooth' });
-                                        }
-                                    }}
-                                    className="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-background/40 backdrop-blur-md border border-white/10 flex items-center justify-center text-foreground opacity-0 group-hover/scroll:opacity-100 transition-opacity duration-300 hidden md:flex hover:bg-background/60"
-                                    aria-label="Scroll Right"
-                                >
-                                    <ChevronRight size={24} strokeWidth={1.5} />
-                                </button>
-                            </div>
-                        </motion.div>
-                    </div>
-                </section>
-            )}
-
-
-            {/* ── Video gallery (More Performances) ── */}
-            {videos.length > 0 && (
-                <section className="py-8 md:py-12 section-padding bg-background text-foreground">
-                    <div className="max-w-7xl mx-auto">
-                        <motion.div
-                            initial={{ opacity: 0, y: 30 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true, margin: "-50px" }}
-                            transition={{ duration: 0.8, delay: 0.2 }}
-                        >
-                            <h3 className="font-display text-3xl md:text-4xl lg:text-5xl font-light uppercase tracking-[0.04em] text-foreground mb-8 sm:mb-12 md:mb-16">
-                                Ad <span className="font-editorial italic normal-case tracking-wide text-foreground">Films</span>
-                            </h3>
-
-                            <div className="group/scroll relative">
-                                <div
-                                    ref={scrollContainerRef}
-                                    className={`flex overflow-x-auto gap-4 sm:gap-6 pb-6 snap-x snap-mandatory scrollbar-hide -mx-4 px-4 sm:-mx-6 sm:px-6 md:mx-0 md:px-0 scroll-smooth ${videos.length === 1 ? "md:justify-center" : videos.length === 2 ? "lg:justify-center" : ""
-                                        }`}
-                                >
-                                    {videos.map((video: any, index: number) => (
-                                        <motion.div
-                                            key={video.id}
-                                            initial={{ opacity: 0, x: 20 }}
-                                            whileInView={{ opacity: 1, x: 0 }}
-                                            viewport={{ once: true }}
-                                            transition={{ duration: 0.5, delay: index * 0.08 }}
-                                            className="min-w-[78vw] sm:min-w-[340px] md:min-w-[380px] snap-center shrink-0 aspect-video bg-secondary/30 relative group cursor-pointer overflow-hidden border border-border/50 hover:border-foreground/20 rounded-lg transition-all duration-300"
-                                            onClick={() => {
-                                                const details = getVideoDetails(video.url);
-                                                if (details) {
-                                                    setSelectedVideo(video);
-                                                } else {
-                                                    window.open(video.url, '_blank');
-                                                }
-                                            }}
-                                        >
-                                            {(() => {
-                                                const details = getVideoDetails(video.url);
-                                                if (details) {
-                                                    return (
-                                                        <OptimizedImage
-                                                            src={details.thumbnail}
-                                                            alt={video.title}
+                                                            objectFit="cover"
                                                             className="opacity-80 group-hover:opacity-100 transition-all duration-500"
                                                             containerClassName="absolute inset-0"
                                                         />
@@ -679,21 +689,30 @@ const PressSection = () => {
                                                 );
                                             })()}
 
-                                            <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/40 transition-colors duration-300">
-                                                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-background/90 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                                                    {getVideoDetails(video.url) ? (
-                                                        <div className="w-0 h-0 border-t-[5px] sm:border-t-[6px] border-t-transparent border-l-[9px] sm:border-l-[10px] border-l-foreground border-b-[5px] sm:border-b-[6px] border-b-transparent ml-1" />
-                                                    ) : (
-                                                        <svg viewBox="0 0 24 24" className="w-5 h-5 fill-none stroke-foreground stroke-2 shrink-0">
-                                                            <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
-                                                        </svg>
-                                                    )}
+                                            <div className="absolute top-4 right-4 z-10">
+                                                <div className="w-10 h-10 rounded-full bg-black/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white group-hover:bg-white group-hover:text-black transition-all duration-500">
+                                                    <svg viewBox="0 0 24 24" className="w-5 h-5 fill-none stroke-current stroke-2">
+                                                        <path d="M7 17L17 7M17 7H7M17 7V17" />
+                                                    </svg>
                                                 </div>
                                             </div>
 
-                                            <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4 bg-gradient-to-t from-black/80 to-transparent">
-                                                <p className="font-body text-[10px] sm:text-xs tracking-wide text-white line-clamp-1">
+                                            <div className="absolute bottom-0 left-0 right-0 p-6 pt-10 bg-gradient-to-t from-black/80 via-black/40 to-transparent backdrop-blur-sm">
+                                                <div className="flex gap-0.5 mb-2">
+                                                    {[1, 2, 3, 4, 5].map((s) => (
+                                                        <svg key={s} viewBox="0 0 24 24" className="w-3.5 h-3.5 fill-accent">
+                                                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                                                        </svg>
+                                                    ))}
+                                                </div>
+                                                <h4 className="font-display text-lg tracking-wide text-white font-medium mb-0.5 transform group-hover:translate-x-1 transition-transform duration-500">
                                                     {video.title}
+                                                </h4>
+                                                <p className="font-body text-[11px] uppercase tracking-[0.2em] text-white/60 font-light">
+                                                    {(() => {
+                                                        const details = getVideoDetails(video.url);
+                                                        return details ? `${details.type} Presentation` : "Official Media";
+                                                    })()}
                                                 </p>
                                             </div>
                                         </motion.div>
@@ -703,8 +722,8 @@ const PressSection = () => {
                                 {/* Floating Right Navigation Only */}
                                 <button
                                     onClick={() => {
-                                        if (scrollContainerRef.current) {
-                                            scrollContainerRef.current.scrollBy({ left: 400, behavior: 'smooth' });
+                                        if (interviewsScrollContainerRef.current) {
+                                            interviewsScrollContainerRef.current.scrollBy({ left: 400, behavior: 'smooth' });
                                         }
                                     }}
                                     className="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-background/40 backdrop-blur-md border border-white/10 flex items-center justify-center text-foreground opacity-0 group-hover/scroll:opacity-100 transition-opacity duration-300 hidden md:flex hover:bg-background/60"
@@ -717,6 +736,9 @@ const PressSection = () => {
                     </div>
                 </section>
             )}
+
+
+
 
             {/* ── Video lightbox ── */}
             {selectedVideo && (
