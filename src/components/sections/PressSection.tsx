@@ -291,7 +291,7 @@ const PressSection = () => {
         <>
             {/* ── Video gallery (Ad Films) ── */}
             {videos.length > 0 && (
-                <section className="pt-24 md:pt-32 section-padding bg-background text-foreground">
+                <section className="pt-24 md:pt-32 px-0 sm:section-padding bg-background text-foreground">
                     <div className="max-w-7xl mx-auto">
                         <motion.div
                             initial={{ opacity: 0, y: 30 }}
@@ -299,14 +299,14 @@ const PressSection = () => {
                             viewport={{ once: true, margin: "-50px" }}
                             transition={{ duration: 0.8, delay: 0.2 }}
                         >
-                            <h3 className="font-display text-3xl md:text-4xl lg:text-5xl font-light uppercase tracking-[0.04em] text-foreground mb-8 sm:mb-12 md:mb-16">
+                            <h3 className="font-display text-3xl md:text-4xl lg:text-5xl font-light uppercase tracking-[0.04em] text-foreground mb-8 sm:mb-12 md:mb-16 px-4 sm:px-0">
                                 Ad <span className="font-editorial italic normal-case tracking-wide text-foreground">Films</span>
                             </h3>
 
                             <div className="group/scroll relative">
                                 <div
                                     ref={scrollContainerRef}
-                                    className={`flex overflow-x-auto gap-4 sm:gap-6 pb-6 snap-x snap-mandatory scrollbar-hide -mx-4 px-4 sm:-mx-6 sm:px-6 md:mx-0 md:px-0 scroll-smooth ${videos.length === 1 ? "md:justify-center" : videos.length === 2 ? "lg:justify-center" : ""
+                                    className={`flex overflow-x-auto gap-4 sm:gap-6 pb-6 snap-x snap-mandatory scrollbar-hide px-4 sm:px-0 scroll-smooth ${videos.length === 1 ? "md:justify-center" : videos.length === 2 ? "lg:justify-center" : ""
                                         }`}
                                 >
                                     {videos.map((video: any, index: number) => (
@@ -621,7 +621,7 @@ const PressSection = () => {
 
             {/* ── Media gallery (Interviews) ── */}
             {interviews.length > 0 && (
-                <section className="py-8 md:py-12 section-padding bg-background text-foreground">
+                <section className="py-8 md:py-12 px-0 sm:section-padding bg-background text-foreground">
                     <div className="max-w-7xl mx-auto">
                         <motion.div
                             initial={{ opacity: 0, y: 30 }}
@@ -629,14 +629,14 @@ const PressSection = () => {
                             viewport={{ once: true, margin: "-50px" }}
                             transition={{ duration: 0.8, delay: 0.2 }}
                         >
-                            <h3 className="font-display text-3xl md:text-4xl lg:text-5xl font-light uppercase tracking-[0.04em] text-foreground mb-8 sm:mb-12 md:mb-16">
+                            <h3 className="font-display text-3xl md:text-4xl lg:text-5xl font-light uppercase tracking-[0.04em] text-foreground mb-8 sm:mb-12 md:mb-16 px-4 sm:px-0">
                                 Media{/* Media <span className="font-editorial italic normal-case tracking-wide text-foreground">Interviews</span> */}
                             </h3>
 
                             <div className="group/scroll relative">
                                 <div
                                     ref={interviewsScrollContainerRef}
-                                    className={`flex overflow-x-auto gap-4 sm:gap-6 pb-6 snap-x snap-mandatory scrollbar-hide -mx-4 px-4 sm:-mx-6 sm:px-6 md:mx-0 md:px-0 scroll-smooth ${interviews.length === 1 ? "md:justify-center" : interviews.length === 2 ? "lg:justify-center" : ""
+                                    className={`flex overflow-x-auto gap-4 sm:gap-6 pb-6 snap-x snap-mandatory scrollbar-hide px-4 sm:px-0 scroll-smooth ${interviews.length === 1 ? "md:justify-center" : interviews.length === 2 ? "lg:justify-center" : ""
                                         }`}
                                 >
                                     {interviews.map((video: any, index: number) => (

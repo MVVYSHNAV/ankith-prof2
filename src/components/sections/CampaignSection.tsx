@@ -15,7 +15,7 @@ const CampaignSection = () => {
             <div className="max-w-[1920px] mx-auto px-0">
                 <div className="relative">
                     {/* Image Container with Brand Gradient Overlay */}
-                    <div className="relative w-full h-[70vh] md:h-[90vh] overflow-hidden">
+                    <div className="relative w-full h-[100dvh] md:h-[90vh] overflow-hidden">
                         <motion.div
                             initial={{ scale: 1.05 }}
                             animate={isInView ? { scale: 1 } : {}}

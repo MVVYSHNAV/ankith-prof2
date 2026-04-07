@@ -21,8 +21,9 @@ const HeroSection = () => {
         const handleScroll = () => {
             const scrollY = window.scrollY;
             if (imageRef.current) {
-                // Parallax upward slightly to keep face visible
-                imageRef.current.style.transform = `scale(${1 + scrollY * 0.0003}) translateY(-${scrollY * 0.15}px)`;
+                // Parallax upward slightly, but much more subtle on mobile
+                const moveFactor = window.innerWidth < 768 ? 0.05 : 0.15;
+                imageRef.current.style.transform = `scale(${1 + scrollY * 0.0003}) translateY(-${scrollY * moveFactor}px)`;
             }
         };
 
