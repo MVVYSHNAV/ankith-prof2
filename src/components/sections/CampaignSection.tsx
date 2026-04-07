@@ -17,7 +17,7 @@ const CampaignSection = () => {
                     {/* Image Container with Brand Gradient Overlay */}
                     <div className="relative w-full h-[70vh] md:h-[90vh] overflow-hidden">
                         <motion.div
-                            initial={{ scale: 1.1 }}
+                            initial={{ scale: 1.05 }}
                             animate={isInView ? { scale: 1 } : {}}
                             transition={{ duration: 1.8, ease: "easeOut" }}
                             className="w-full h-full"
@@ -25,7 +25,9 @@ const CampaignSection = () => {
                             <OptimizedImage
                                 src={highlightImage}
                                 alt="Ankith Madhav Career Highlight"
-                                className="w-full h-full object-cover"
+                                objectFit="cover"
+                                containerClassName="w-full h-full"
+                                className="object-top md:object-[center_20%] lg:object-[center_25%]"
                             />
                             {/* Sophisticated gradient overlay tied to brand colors */}
                             <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-primary/80" />

@@ -58,12 +58,13 @@ const GalleryCard = ({ item, index, onOpen }: GalleryCardProps) => (
         className="break-inside-avoid mb-4 sm:mb-5 cursor-pointer group relative overflow-hidden rounded-xl sm:rounded-2xl"
         onClick={() => onOpen(item)}
     >
-        <div className={`overflow-hidden ${ASPECT_CLASSES[item.aspect] || "aspect-video"}`}>
+        <div className="overflow-hidden w-full">
             <OptimizedImage
                 src={item.src}
                 alt={item.alt}
                 loading="lazy"
                 decoding="async"
+                objectFit="cover"
                 className="transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.04]"
             />
         </div>
@@ -89,7 +90,7 @@ const PortfolioSection = () => {
                 src: p.image_url || "/placeholder.svg",
                 alt: p.title || "Portfolio Capture",
                 category: "Modeling",
-                aspect: "tall"
+                aspect: "square" // Let's use square as a default state, but we'll often override or let it be flexible
             })) as PortfolioItem[];
     }, [dbProjects]);
 
@@ -191,8 +192,10 @@ const PortfolioSection = () => {
                                 key={lightboxImage.id}
                                 src={lightboxImage.src}
                                 alt={lightboxImage.alt}
-                                className="object-contain rounded-lg"
+                                objectFit="contain"
+                                className="rounded-lg"
                                 priority={true}
+                                containerClassName="w-full h-full"
                             />
                         </div>
                     </motion.div>

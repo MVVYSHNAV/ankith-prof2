@@ -163,6 +163,7 @@ const StreamingCard = ({
                     <OptimizedImage
                         src={thumbnailUrl}
                         alt={`${title} poster`}
+                        objectFit="cover"
                         className="object-top transition-transform duration-500 group-hover:scale-105"
                         containerClassName="absolute inset-0"
                     />
@@ -410,6 +411,7 @@ const PressSection = () => {
                                                 <OptimizedImage
                                                     src={project.thumbnailUrl}
                                                     alt={project.title}
+                                                    objectFit="cover"
                                                     className="opacity-50 group-hover:opacity-80 transition-opacity duration-1000"
                                                     containerClassName="absolute inset-0"
                                                 />
@@ -662,6 +664,7 @@ const PressSection = () => {
                                                         <OptimizedImage
                                                             src={video.thumbnailUrl}
                                                             alt={video.title}
+                                                            objectFit="cover"
                                                             className="opacity-80 group-hover:opacity-100 transition-all duration-500"
                                                             containerClassName="absolute inset-0"
                                                         />

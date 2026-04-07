@@ -21,7 +21,8 @@ const HeroSection = () => {
         const handleScroll = () => {
             const scrollY = window.scrollY;
             if (imageRef.current) {
-                imageRef.current.style.transform = `scale(${1 + scrollY * 0.0003}) translateY(${scrollY * 0.3}px)`;
+                // Parallax upward slightly to keep face visible
+                imageRef.current.style.transform = `scale(${1 + scrollY * 0.0003}) translateY(-${scrollY * 0.15}px)`;
             }
         };
 
@@ -72,7 +73,7 @@ const HeroSection = () => {
                     ref={imageRef}
                     src={heroImage}
                     alt={`${heroTitle} ${heroSubtitle} - Hero`}
-                    className="w-full h-full object-cover object-[center_15%] will-change-transform"
+                    className="w-full h-full object-cover object-[center_20%] md:object-[center_15%] lg:object-[center_5%] will-change-transform"
                     priority={true}
                 />
                 <div className="absolute inset-0 bg-gradient-to-b from-primary/30 via-transparent to-background/90" />

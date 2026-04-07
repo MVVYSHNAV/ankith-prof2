@@ -9,6 +9,7 @@ interface OptimizedImageProps extends React.ImgHTMLAttributes<HTMLImageElement> 
   fallbackSrc?: string;
   priority?: boolean;
   aspectRatio?: string;
+  objectFit?: "cover" | "contain" | "fill" | "none" | "scale-down";
 }
 
 export const OptimizedImage = forwardRef<HTMLImageElement, OptimizedImageProps>(({
@@ -16,7 +17,8 @@ export const OptimizedImage = forwardRef<HTMLImageElement, OptimizedImageProps>(
   alt,
   className,
   containerClassName,
-  aspectRatio = "aspect-square",
+  aspectRatio,
+  objectFit = "cover",
   priority = false,
   onLoad,
   onError,
@@ -32,10 +34,18 @@ export const OptimizedImage = forwardRef<HTMLImageElement, OptimizedImageProps>(
   }, [src]);
 
   return (
-    <div className={cn("relative overflow-hidden bg-muted/20", aspectRatio, containerClassName)}>
+    <div className={cn(
+      "relative bg-muted/20",
+      aspectRatio ? "overflow-hidden" : "w-full",
+      aspectRatio,
+      containerClassName
+    )}>
       {/* Placeholder / Blur Effect */}
       {!isLoaded && !hasError && (
-        <div className="absolute inset-0 animate-pulse bg-muted/40" />
+        <div className={cn(
+          "animate-pulse bg-muted/40",
+          (aspectRatio || containerClassName?.includes("h-")) ? "absolute inset-0" : "w-full aspect-video"
+        )} />
       )}
 
       {/* Actual Image */}
@@ -56,7 +66,14 @@ export const OptimizedImage = forwardRef<HTMLImageElement, OptimizedImageProps>(
         decoding={priority ? "sync" : "async"}
         fetchPriority={priority ? "high" : "auto"}
         className={cn(
-          "w-full h-full object-cover transition-all duration-700 ease-out",
+          "transition-all duration-700 ease-out",
+          (aspectRatio || containerClassName?.includes("h-") || containerClassName?.includes("absolute")) 
+            ? "absolute inset-0 w-full h-full" 
+            : "w-full h-auto block",
+          objectFit === "cover" ? "object-cover" : 
+          objectFit === "contain" ? "object-contain" : 
+          objectFit === "fill" ? "object-fill" : 
+          objectFit === "scale-down" ? "object-scale-down" : "object-none",
           isLoaded ? "opacity-100 scale-100 blur-0" : "opacity-0 scale-105 blur-sm",
           className
         )}
