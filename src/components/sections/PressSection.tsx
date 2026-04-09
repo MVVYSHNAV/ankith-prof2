@@ -7,7 +7,8 @@ import OptimizedImage from "@/components/ui/OptimizedImage";
 /* ─── Video helpers ─── */
 const getYoutubeId = (url: string) => {
     if (!url) return null;
-    const match = url.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/);
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+    const match = url.match(regExp);
     return (match && match[2].length === 11) ? match[2] : null;
 };
 
@@ -24,7 +25,7 @@ const getVideoDetails = (url: string) => {
     if (youtubeId) return {
         type: "youtube",
         id: youtubeId,
-        thumbnail: `https://img.youtube.com/vi/${youtubeId}/hqdefault.jpg`,
+        thumbnail: `https://i.ytimg.com/vi/${youtubeId}/mqdefault.jpg`,
         embedUrl: `https://www.youtube.com/embed/${youtubeId}`,
     };
     if (vimeoId) return {
@@ -272,6 +273,7 @@ const PressSection = () => {
                 id: p.id,
                 title: p.title,
                 url: p.project_url || p.video_url || "",
+                videoUrl: p.video_url,
                 thumbnailUrl: p.image_url
             }));
 
@@ -281,6 +283,7 @@ const PressSection = () => {
                 id: p.id,
                 title: p.title,
                 url: p.project_url || p.video_url || "",
+                videoUrl: p.video_url,
                 thumbnailUrl: p.image_url
             }));
 
@@ -321,17 +324,17 @@ const PressSection = () => {
                                             transition={{ duration: 0.6, delay: index * 0.1 }}
                                             className="min-w-[85vw] sm:min-w-[420px] md:min-w-[480px] lg:min-w-[540px] aspect-video bg-secondary/20 relative group cursor-pointer overflow-hidden rounded-[2.5rem] border border-white/5 transition-all duration-700 hover:shadow-2xl"
                                             onClick={() => {
-                                                const details = getVideoDetails(video.url);
+                                                const details = getVideoDetails(video.videoUrl || video.url);
                                                 if (details) {
-                                                    setSelectedVideo(video);
+                                                    setSelectedVideo(video.videoUrl ? { ...video, url: video.videoUrl } : video);
                                                 } else {
                                                     window.open(video.url, '_blank');
                                                 }
                                             }}
                                         >
                                             {(() => {
-                                                const details = getVideoDetails(video.url);
-                                                const displayThumb = video.thumbnailUrl || details?.thumbnail;
+                                                const details = getVideoDetails(video.videoUrl || video.url);
+                                                const displayThumb = (video.thumbnailUrl && video.thumbnailUrl.trim() !== "") ? video.thumbnailUrl : details?.thumbnail;
 
                                                 if (displayThumb) {
                                                     return (
@@ -648,17 +651,17 @@ const PressSection = () => {
                                             transition={{ duration: 0.6, delay: index * 0.1 }}
                                             className="min-w-[75vw] sm:min-w-[280px] md:min-w-[320px] aspect-[4/5] bg-secondary/20 relative group cursor-pointer overflow-hidden rounded-[2rem] border border-white/5 transition-all duration-700 hover:shadow-2xl"
                                             onClick={() => {
-                                                const details = getVideoDetails(video.url);
+                                                const details = getVideoDetails(video.videoUrl || video.url);
                                                 if (details) {
-                                                    setSelectedVideo(video);
+                                                    setSelectedVideo(video.videoUrl ? { ...video, url: video.videoUrl } : video);
                                                 } else {
                                                     window.open(video.url, '_blank');
                                                 }
                                             }}
                                         >
                                             {(() => {
-                                                const details = getVideoDetails(video.url);
-                                                const displayThumb = video.thumbnailUrl || details?.thumbnail;
+                                                const details = getVideoDetails(video.videoUrl || video.url);
+                                                const displayThumb = (video.thumbnailUrl && video.thumbnailUrl.trim() !== "") ? video.thumbnailUrl : details?.thumbnail;
 
                                                 if (displayThumb) {
                                                     return (

@@ -32,7 +32,8 @@ import { uploadImage } from "@/lib/storage";
 /* ─── Video helpers ─── */
 const getYoutubeId = (url: string) => {
     if (!url) return null;
-    const match = url.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/);
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+    const match = url.match(regExp);
     return (match && match[2].length === 11) ? match[2] : null;
 };
 
@@ -46,7 +47,7 @@ const getVideoThumbnail = (url: string) => {
     if (!url) return null;
     const youtubeId = getYoutubeId(url);
     const vimeoId = getVimeoId(url);
-    if (youtubeId) return `https://img.youtube.com/vi/${youtubeId}/mqdefault.jpg`;
+    if (youtubeId) return `https://i.ytimg.com/vi/${youtubeId}/mqdefault.jpg`;
     if (vimeoId) return `https://vumbnail.com/${vimeoId}.jpg`;
     return null;
 };
