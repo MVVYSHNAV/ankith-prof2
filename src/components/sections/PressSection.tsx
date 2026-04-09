@@ -24,7 +24,7 @@ const getVideoDetails = (url: string) => {
     if (youtubeId) return {
         type: "youtube",
         id: youtubeId,
-        thumbnail: `https://img.youtube.com/vi/${youtubeId}/maxresdefault.jpg`,
+        thumbnail: `https://img.youtube.com/vi/${youtubeId}/hqdefault.jpg`,
         embedUrl: `https://www.youtube.com/embed/${youtubeId}`,
     };
     if (vimeoId) return {
@@ -251,17 +251,20 @@ const PressSection = () => {
 
         const films = (dbProjects || [])
             .filter(p => p.category === 'Filmography')
-            .map(p => ({
-                id: p.id,
-                title: p.title,
-                role: p.role || "Actor",
-                duration: p.duration || "",
-                description: p.description || "",
-                note: p.note || "",
-                thumbnailUrl: p.image_url,
-                streamingUrl: p.streaming_url,
-                streamingProvider: p.streaming_provider
-            }));
+            .map(p => {
+                const autoThumb = getVideoDetails(p.video_url || p.streaming_url || "")?.thumbnail;
+                return {
+                    id: p.id,
+                    title: p.title,
+                    role: p.role || "Actor",
+                    duration: p.duration || "",
+                    description: p.description || "",
+                    note: p.note || "",
+                    thumbnailUrl: p.image_url || autoThumb,
+                    streamingUrl: p.streaming_url,
+                    streamingProvider: p.streaming_provider
+                };
+            });
 
         const interviewsList = (dbProjects || [])
             .filter(p => p.category === 'Interview')
@@ -328,21 +331,12 @@ const PressSection = () => {
                                         >
                                             {(() => {
                                                 const details = getVideoDetails(video.url);
-                                                if (details) {
+                                                const displayThumb = video.thumbnailUrl || details?.thumbnail;
+
+                                                if (displayThumb) {
                                                     return (
                                                         <OptimizedImage
-                                                            src={details.thumbnail}
-                                                            alt={video.title}
-                                                            objectFit="cover"
-                                                            className="opacity-80 group-hover:opacity-100 transition-all duration-500"
-                                                            containerClassName="absolute inset-0"
-                                                        />
-                                                    );
-                                                }
-                                                if (video.thumbnailUrl) {
-                                                    return (
-                                                        <OptimizedImage
-                                                            src={video.thumbnailUrl}
+                                                            src={displayThumb}
                                                             alt={video.title}
                                                             objectFit="cover"
                                                             className="opacity-80 group-hover:opacity-100 transition-all duration-500"
@@ -525,13 +519,19 @@ const PressSection = () => {
                                             className="absolute w-full max-w-5xl h-full cursor-grab active:cursor-grabbing"
                                         >
                                             <div className="w-full h-full relative group overflow-hidden rounded-2xl md:rounded-3xl border border-foreground/10 bg-black shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)]">
-                                                <OptimizedImage
-                                                    src={project.thumbnailUrl}
-                                                    alt={project.title}
-                                                    objectFit="cover"
-                                                    className="opacity-50 group-hover:opacity-80 transition-opacity duration-1000"
-                                                    containerClassName="absolute inset-0"
-                                                />
+                                                {project.thumbnailUrl ? (
+                                                    <OptimizedImage
+                                                        src={project.thumbnailUrl}
+                                                        alt={project.title}
+                                                        objectFit="cover"
+                                                        className="opacity-50 group-hover:opacity-80 transition-opacity duration-1000"
+                                                        containerClassName="absolute inset-0"
+                                                    />
+                                                ) : (
+                                                    <div className="absolute inset-0 bg-secondary/20 flex items-center justify-center">
+                                                        <span className="font-display text-[10px] uppercase tracking-widest text-muted-foreground/40">{project.title}</span>
+                                                    </div>
+                                                )}
 
                                                 {/* Vignette Overlay */}
                                                 <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
@@ -658,21 +658,12 @@ const PressSection = () => {
                                         >
                                             {(() => {
                                                 const details = getVideoDetails(video.url);
-                                                if (details) {
+                                                const displayThumb = video.thumbnailUrl || details?.thumbnail;
+
+                                                if (displayThumb) {
                                                     return (
                                                         <OptimizedImage
-                                                            src={details.thumbnail}
-                                                            alt={video.title}
-                                                            objectFit="cover"
-                                                            className="opacity-80 group-hover:opacity-100 transition-all duration-500"
-                                                            containerClassName="absolute inset-0"
-                                                        />
-                                                    );
-                                                }
-                                                if (video.thumbnailUrl) {
-                                                    return (
-                                                        <OptimizedImage
-                                                            src={video.thumbnailUrl}
+                                                            src={displayThumb}
                                                             alt={video.title}
                                                             objectFit="cover"
                                                             className="opacity-80 group-hover:opacity-100 transition-all duration-500"
