@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Plus, Trash2, Pencil, Image as ImageIcon, Loader2, Save, X } from "lucide-react";
+import { useState, useMemo } from "react";
+import { Plus, Trash2, Pencil, Image as ImageIcon, Loader2, Save, X, Play } from "lucide-react";
 import { useProjects } from "@/hooks/useSupabase";
 import { Button } from "@/components/ui/button";
 import {
@@ -28,6 +28,28 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { uploadImage } from "@/lib/storage";
+
+/* ─── Video helpers ─── */
+const getYoutubeId = (url: string) => {
+    if (!url) return null;
+    const match = url.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/);
+    return (match && match[2].length === 11) ? match[2] : null;
+};
+
+const getVimeoId = (url: string) => {
+    if (!url) return null;
+    const match = url.match(/vimeo\.com\/([0-9]+)/);
+    return match ? match[1] : null;
+};
+
+const getVideoThumbnail = (url: string) => {
+    if (!url) return null;
+    const youtubeId = getYoutubeId(url);
+    const vimeoId = getVimeoId(url);
+    if (youtubeId) return `https://img.youtube.com/vi/${youtubeId}/mqdefault.jpg`;
+    if (vimeoId) return `https://vumbnail.com/${vimeoId}.jpg`;
+    return null;
+};
 
 interface ProjectManagerProps {
     defaultCategory?: string;
@@ -212,6 +234,25 @@ const ProjectForm = ({
                 )}
             </div>
 
+            {(formData.image_url || getVideoThumbnail(formData.video_url)) && (
+                <div className="mt-4 p-4 border rounded-lg bg-muted/30">
+                    <Label className="mb-2 block text-xs uppercase tracking-widest text-muted-foreground">Preview</Label>
+                    <div className="relative aspect-video w-full max-w-sm rounded-md overflow-hidden bg-secondary/50 border border-border/50">
+                        <img
+                            src={formData.image_url || getVideoThumbnail(formData.video_url) || ""}
+                            alt="Preview"
+                            className="w-full h-full object-cover"
+                        />
+                        {!formData.image_url && getVideoThumbnail(formData.video_url) && (
+                            <div className="absolute inset-0 flex items-center justify-center bg-black/40">
+                                <Play className="text-white h-8 w-8 opacity-70" />
+                                <span className="absolute bottom-2 left-2 text-[10px] text-white bg-black/60 px-2 py-0.5 rounded">Auto-thumbnail</span>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            )}
+
             {(!exclusive || defaultCategory !== 'Portfolio') && (
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div className="grid gap-2">
@@ -317,35 +358,52 @@ const ProjectCard = ({ project, exclusive, defaultCategory, updateProject, delet
 
     return (
         <Card className="group overflow-hidden flex flex-col h-full bg-muted/20 hover:bg-muted/40 transition-colors border-border/50">
-            {project.image_url ? (
-                <div className="w-full aspect-[4/3] sm:aspect-video md:aspect-[4/3] bg-secondary/50 overflow-hidden relative">
-                    <img
-                        src={project.image_url}
-                        alt={project.title}
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
-                    <div className="absolute top-2 right-2 flex gap-1 z-10 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <Button variant="secondary" size="icon" className="h-8 w-8 rounded-full bg-background/80 hover:bg-background" onClick={() => setIsEditing(true)}>
-                            <Pencil size={14} />
-                        </Button>
-                        <Button variant="destructive" size="icon" className="h-8 w-8 rounded-full" onClick={handleDelete}>
-                            <Trash2 size={14} />
-                        </Button>
+            {(() => {
+                const autoThumb = getVideoThumbnail(project.video_url);
+                const displayImage = project.image_url || autoThumb;
+
+                if (displayImage) {
+                    return (
+                        <div className="w-full aspect-[4/3] sm:aspect-video md:aspect-[4/3] bg-secondary/50 overflow-hidden relative">
+                            <img
+                                src={displayImage}
+                                alt={project.title}
+                                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                            />
+                            {!project.image_url && autoThumb && (
+                                <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/40 transition-colors">
+                                    <div className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center">
+                                        <Play className="text-white h-5 w-5 fill-current" />
+                                    </div>
+                                    <span className="absolute bottom-2 left-2 text-[8px] uppercase tracking-widest text-white/70 bg-black/40 px-2 py-0.5 rounded">Video Link</span>
+                                </div>
+                            )}
+                            <div className="absolute top-2 right-2 flex gap-1 z-10 opacity-0 group-hover:opacity-100 transition-opacity">
+                                <Button variant="secondary" size="icon" className="h-8 w-8 rounded-full bg-background/80 hover:bg-background" onClick={() => setIsEditing(true)}>
+                                    <Pencil size={14} />
+                                </Button>
+                                <Button variant="destructive" size="icon" className="h-8 w-8 rounded-full" onClick={handleDelete}>
+                                    <Trash2 size={14} />
+                                </Button>
+                            </div>
+                        </div>
+                    );
+                }
+
+                return (
+                    <div className="w-full aspect-[4/3] sm:aspect-video md:aspect-[4/3] bg-secondary/30 flex items-center justify-center relative">
+                        <ImageIcon className="h-8 w-8 text-muted-foreground/50" />
+                        <div className="absolute top-2 right-2 flex gap-1 z-10 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <Button variant="secondary" size="icon" className="h-8 w-8 rounded-full bg-background/80 hover:bg-background" onClick={() => setIsEditing(true)}>
+                                <Pencil size={14} />
+                            </Button>
+                            <Button variant="destructive" size="icon" className="h-8 w-8 rounded-full" onClick={handleDelete}>
+                                <Trash2 size={14} />
+                            </Button>
+                        </div>
                     </div>
-                </div>
-            ) : (
-                <div className="w-full aspect-[4/3] sm:aspect-video md:aspect-[4/3] bg-secondary/30 flex items-center justify-center relative">
-                    <ImageIcon className="h-8 w-8 text-muted-foreground/50" />
-                    <div className="absolute top-2 right-2 flex gap-1 z-10 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <Button variant="secondary" size="icon" className="h-8 w-8 rounded-full bg-background/80 hover:bg-background" onClick={() => setIsEditing(true)}>
-                            <Pencil size={14} />
-                        </Button>
-                        <Button variant="destructive" size="icon" className="h-8 w-8 rounded-full" onClick={handleDelete}>
-                            <Trash2 size={14} />
-                        </Button>
-                    </div>
-                </div>
-            )}
+                );
+            })()}
             <CardContent className="p-4 flex-1 flex flex-col">
                 <div className="mb-2 flex items-start justify-between gap-2">
                     <h3 className="font-display text-lg tracking-wide line-clamp-1">{project.title}</h3>
